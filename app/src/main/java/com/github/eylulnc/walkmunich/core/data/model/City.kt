@@ -8,7 +8,7 @@ data class City(
     val name: String,
     val country: String,
     val heroImage: HeroImage,
-    val categoriesEnabled: List<CategoryType>,
+    val categoriesEnabled: List<Category>,
     val updatedAt: String
 )
 
@@ -16,8 +16,3 @@ data class City(
 data class HeroImage(
     val imageUrl: String
 )
-
-@Serializable
-enum class CategoryType {
-    LANDMARK, MUSEUM, VIEWPOINT, COFFEE, FOOD
-}

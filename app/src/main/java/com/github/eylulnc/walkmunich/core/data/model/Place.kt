@@ -15,7 +15,7 @@ data class Place(
     val id: Long,
     val cityId: Long,
     val name: String,
-    val category: CategoryType,
+    val category: Category,
     val coords: Coordinates? = null,
     val address: String? = null,
     val openingHoursText: String? = null,
@@ -77,7 +77,7 @@ enum class PriceRange {
 data class PlaceMin(
     val id: Long,
     val name: String,
-    val category: CategoryType,
+    val category: Category,
     val imageUrl: String
 )
 

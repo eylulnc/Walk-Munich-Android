@@ -9,4 +9,10 @@ object Spacing {
     val medium = 16.dp
     val large = 24.dp
     val extraLarge = 32.dp
+
+    val heroHeight = 300.dp
+    val categorySize = 100.dp
+    val cornerRadius = 12.dp
+    val borderStroke = 1.dp
+    val categoryIconSize = 44.dp
 }

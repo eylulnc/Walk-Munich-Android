@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Walk Munich</string>
+
+    <string name="munich_title">Munich</string>
+
+    <string name="category_title">Categories</string>
+    <string name="category_attraction">Attraction</string>
+    <string name="category_food">Food</string>
+    <string name="category_viewpoint">Viewpoint</string>
+    <string name="category_coffee">Coffee</string>
+    <string name="category_museum">Museum</string>
 </resources>
