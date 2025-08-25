@@ -2,7 +2,7 @@
   "id": 1,
   "name": "Munich",
   "country": "DE",
-  "heroImage": { "imageKey": "hero_munich" },
+  "heroImage": { "imageUrl": "hero_munich" },
   "categoriesEnabled": ["LANDMARK", "MUSEUM", "VIEWPOINT", "COFFEE", "FOOD"],
   "updatedAt": "2025-08-14T12:00:00Z"
 }
