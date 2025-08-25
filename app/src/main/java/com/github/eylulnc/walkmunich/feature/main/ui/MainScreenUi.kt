@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -27,15 +26,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.ui.CategoryCard
+import com.github.eylulnc.walkmunich.core.ui.ImageResolver
 import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
 import com.github.eylulnc.walkmunich.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.ui.theme.TypographySizes
@@ -62,7 +62,7 @@ fun MainScreenUi(
 
         HeaderSection(
             cityName = state.city?.name ?: stringResource(R.string.munich_title),
-            heroImageKey = state.city?.heroImage?.imageUrl ?: ""
+            heroImageUrl = state.city?.heroImage?.imageUrl ?: ""
         )
 
         Spacer(modifier = Modifier.height(Spacing.medium))
@@ -77,15 +77,18 @@ fun MainScreenUi(
 @Composable
 private fun HeaderSection(
     cityName: String,
-    heroImageKey: String
+    heroImageUrl: String
 ) {
+
+    val resId = ImageResolver.resolveDrawable(heroImageUrl)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(Spacing.heroHeight)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.hero_munich),
+            painter = painterResource(id = resId),
             contentDescription = stringResource(R.string.munich_title),
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
