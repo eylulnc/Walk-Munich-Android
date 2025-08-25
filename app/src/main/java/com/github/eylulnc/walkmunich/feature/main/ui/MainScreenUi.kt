@@ -2,6 +2,7 @@ package com.github.eylulnc.walkmunich.feature.main.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,23 +14,33 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.R
@@ -37,6 +48,7 @@ import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.ui.CategoryCard
 import com.github.eylulnc.walkmunich.core.ui.ImageResolver
 import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
+import com.github.eylulnc.walkmunich.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.ui.theme.TypographySizes
 import org.koin.androidx.compose.koinViewModel
@@ -45,7 +57,7 @@ import org.koin.androidx.compose.koinViewModel
 fun MainScreenUi(
     viewModel: MainScreenViewModel = koinViewModel(),
     onCategoryClick: (Category) -> Unit,
-    onFavoritesItemClick: (Long) -> Unit
+    onPlaceItemClick: (Long) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -62,22 +74,56 @@ fun MainScreenUi(
 
         HeaderSection(
             cityName = state.city?.name ?: stringResource(R.string.munich_title),
-            heroImageUrl = state.city?.heroImage?.imageUrl ?: ""
+            heroImageUrl = state.city?.heroImage?.imageUrl ?: "",
+            query = state.searchQuery,
+            onQueryChange = viewModel::onQueryChange,
+            onClearQuery = viewModel::onClearQuery
         )
 
         Spacer(modifier = Modifier.height(Spacing.medium))
 
-        CategoriesSection(
-            onCategoryClick = onCategoryClick
+        Text(
+            text = "places=${state.allPlaces.size}, results=${state.searchResults.size}",
+            modifier = Modifier.padding(horizontal = Spacing.medium),
+            color = Color.Gray
         )
+
+        if (state.error != null) {
+            Text(
+                text = "ERR: ${state.error!!.take(160)}",
+                color = Color.Red,
+                modifier = Modifier.padding(horizontal = Spacing.medium)
+            )
+        }
+
+        if (state.searchQuery.isNotBlank()) {
+            SearchResultsSection(
+                searchResults = state.searchResults,
+                onPlaceClick = { place ->
+                    onPlaceItemClick(place.id)
+                }
+            )
+        } else {
+            CategoriesSection(
+                onCategoryClick = onCategoryClick
+            )
+        }
+
 
     }
 }
 
+private val SearchBarHeight = 56.dp
+private val SearchBarHorizontal = Spacing.large
+private val SearchBarOverlap = 24.dp      // how much it sits below the image
+
 @Composable
 private fun HeaderSection(
     cityName: String,
-    heroImageUrl: String
+    heroImageUrl: String,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onClearQuery : () -> Unit
 ) {
 
     val resId = ImageResolver.resolveDrawable(heroImageUrl)
@@ -104,8 +150,22 @@ private fun HeaderSection(
                 .align(Alignment.Center)
                 .padding(Spacing.large)
         )
+
+        SearchBar(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(horizontal = SearchBarHorizontal)
+                .height(SearchBarHeight)
+                .offset(y = SearchBarOverlap),
+            query = query,
+            onQueryChange = onQueryChange,
+            onClearQuery = onClearQuery
+        )
     }
+
+    Spacer(Modifier.height(SearchBarOverlap + SearchBarHeight / 2))
 }
+
 
 @Composable
 private fun CategoriesSection(
@@ -139,4 +199,59 @@ private fun CategoriesSection(
             }
         }
     }
+}
+
+@Composable
+private fun SearchBar(
+    modifier: Modifier = Modifier,
+    query: String = "",
+    onQueryChange: (String) -> Unit = {},
+    onClearQuery: () -> Unit = {}
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(28.dp),
+        color = Color.White,
+        shadowElevation = 12.dp
+    ) {
+        TextField(
+            value = query,
+            onValueChange = onQueryChange,
+            placeholder = {
+                Text(text = "Search attractions")
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search",
+                    tint = OrangeMain
+                )
+            },
+            trailingIcon = {
+                if (query.isNotEmpty()) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Clear",
+                        tint = OrangeMain,
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .clickable {
+                                onQueryChange("")
+                            }
+                    )
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(Spacing.cornerRadius)),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            singleLine = true
+        )
+    }
+
 }

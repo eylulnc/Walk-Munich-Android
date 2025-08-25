@@ -91,7 +91,7 @@ fun NavigationRoot(
                         NavEntry(key = key) {
                             MainScreenUi(
                                 onCategoryClick = { /* TODO navigate inside Home tab */ },
-                                onFavoritesItemClick = { /* TODO open detail */ }
+                                onPlaceItemClick = { /* TODO open detail */ }
                             )
                         }
                     }

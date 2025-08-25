@@ -16,12 +16,13 @@ data class Place(
     val cityId: Long,
     val name: String,
     val category: Category,
+    val imageUrl: String,
     val coords: Coordinates? = null,
     val address: String? = null,
     val openingHoursText: String? = null,
     val priceRange: PriceRange? = null,
     val tags: List<String>? = null,
-    val images: List<PlaceImage>? = null,
+    val otherImages: List<String>? = null,
     val story: PlaceStory? = null,
     val facts: List<Fact>? = null,
     val attribution: List<Attribution>? = null,
@@ -32,13 +33,6 @@ data class Place(
 data class Coordinates(
     val lat: Double,
     val lon: Double
-)
-
-@Serializable
-data class PlaceImage(
-    val imageUrl: String,
-    val thumbUrl: String? = null,
-    val caption: String? = null
 )
 
 @Serializable
@@ -73,20 +67,20 @@ enum class PriceRange {
     LOW, MEDIUM, HIGH
 }
 
-@Serializable
-data class PlaceMin(
-    val id: Long,
-    val name: String,
-    val category: Category,
-    val imageUrl: String
-)
-
-@Serializable
-data class PlacesMinResponse(
-    val cityId: Long,
-    val cityName: String,
-    val updatedAt: String,
-    val places: List<PlaceMin>
-)
+//@Serializable
+//data class PlaceMin(
+//    val id: Long,
+//    val name: String,
+//    val category: Category,
+//    val imageUrl: String
+//)
+//
+//@Serializable
+//data class PlacesMinResponse(
+//    val cityId: Long,
+//    val cityName: String,
+//    val updatedAt: String,
+//    val places: List<PlaceMin>
+//)
 
 
