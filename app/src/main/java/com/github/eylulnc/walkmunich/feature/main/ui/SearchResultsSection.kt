@@ -39,18 +39,29 @@ import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 
 @Composable
 fun SearchResultsSection(
+    modifier: Modifier = Modifier,
     searchResults: List<SearchResult>,
-    onPlaceClick: (Place) -> Unit,
-    modifier: Modifier = Modifier
+    isSearching: Boolean = false,
+    onPlaceClick: (Place) -> Unit
 ) {
-    if (searchResults.isNotEmpty()) {
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
+        if (isSearching) {
+            // Show searching indicator
             Text(
-                text = "Search Results (${searchResults.size})",
+                text = stringResource(R.string.searching),
+                style = MaterialTheme.typography.headlineSmall,
+                fontSize = TypographySizes.large,
+                fontWeight = FontWeight.Medium,
+                color = Color.Gray,
+                modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)
+            )
+        } else if (searchResults.isNotEmpty()) {
+            Text(
+                text = stringResource(R.string.search_results, searchResults.size),
                 style = MaterialTheme.typography.headlineSmall,
                 fontSize = TypographySizes.large,
                 fontWeight = FontWeight.Bold,
@@ -72,7 +83,16 @@ fun SearchResultsSection(
                     )
                 }
             }
-
+        } else {
+            // Only show "No results" when search is complete and no results found
+            Text(
+                text = stringResource(R.string.no_search_results),
+                style = MaterialTheme.typography.headlineSmall,
+                fontSize = TypographySizes.large,
+                fontWeight = FontWeight.Bold,
+                color = Color.Gray,
+                modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)
+            )
         }
     }
 }

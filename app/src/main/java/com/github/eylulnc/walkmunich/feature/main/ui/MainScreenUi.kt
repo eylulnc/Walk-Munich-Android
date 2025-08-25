@@ -46,11 +46,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.ui.composable.CategoryCard
-import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
-import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
+import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
+import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -90,6 +90,7 @@ fun MainScreenUi(
             if (state.searchQuery.isNotBlank()) {
                 SearchResultsSection(
                     searchResults = state.searchResults,
+                    isSearching = state.isSearching,
                     onPlaceClick = { place ->
                         onPlaceItemClick(place.id)
                     }
@@ -204,7 +205,7 @@ private fun SearchBar(
             value = query,
             onValueChange = onQueryChange,
             placeholder = {
-                Text(text = "Search attractions")
+                Text(text = stringResource(R.string.search_attractions))
             },
             leadingIcon = {
                 Icon(

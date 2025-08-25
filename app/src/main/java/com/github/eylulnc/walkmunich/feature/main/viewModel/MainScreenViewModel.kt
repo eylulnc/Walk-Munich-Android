@@ -22,7 +22,8 @@ data class MainUiState(
 
     val searchQuery: String = "",
     val allPlaces: List<Place> = emptyList(),
-    val searchResults: List<SearchResult> = emptyList()
+    val searchResults: List<SearchResult> = emptyList(),
+    val isSearching: Boolean = false
 )
 
 class MainScreenViewModel(
@@ -70,6 +71,13 @@ class MainScreenViewModel(
     fun onQueryChange(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
         searchJob?.cancel()
+        
+        if (query.isBlank()) {
+            _uiState.update { it.copy(searchResults = emptyList(), isSearching = false) }
+            return
+        }
+        
+        _uiState.update { it.copy(isSearching = true) }
         searchJob = viewModelScope.launch {
             delay(150)
             applySearch(query, _uiState.value.allPlaces)
@@ -80,7 +88,7 @@ class MainScreenViewModel(
 
     private fun applySearch(query: String, data: List<Place>) {
         if (query.isBlank()) {
-            _uiState.update { it.copy(searchResults = emptyList()) }
+            _uiState.update { it.copy(searchResults = emptyList(), isSearching = false) }
             return
         }
         val q = normalize(query)
@@ -108,7 +116,7 @@ class MainScreenViewModel(
             .sortedBy { it.second }
             .map { it.first }
 
-        _uiState.update { it.copy(searchResults = results) }
+        _uiState.update { it.copy(searchResults = results, isSearching = false) }
     }
 
     private fun normalize(s: String): String =

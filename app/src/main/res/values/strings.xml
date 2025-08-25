@@ -9,4 +9,10 @@
     <string name="category_viewpoint">Viewpoint</string>
     <string name="category_coffee">Coffee</string>
     <string name="category_museum">Museum</string>
+
+    <string name="search_attractions">Search attractions</string>
+    <string name="searching">Searching...</string>
+    <string name="search_results">Search Results (%1$d)</string>
+    <string name="no_search_results">No results found</string>
+
 </resources>
