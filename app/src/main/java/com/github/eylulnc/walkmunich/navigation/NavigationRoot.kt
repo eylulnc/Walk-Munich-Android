@@ -9,7 +9,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
-import com.github.eylulnc.walkmunich.MainScreenUi
+import com.github.eylulnc.walkmunich.feature.main.ui.MainScreenUi
 import kotlinx.serialization.Serializable
 
 @Serializable

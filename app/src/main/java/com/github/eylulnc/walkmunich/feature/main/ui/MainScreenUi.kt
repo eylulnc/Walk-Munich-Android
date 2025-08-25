@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich
+package com.github.eylulnc.walkmunich.feature.main.ui
 
 import androidx.compose.runtime.Composable
 
