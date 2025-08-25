@@ -26,8 +26,8 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.github.eylulnc.walkmunich.feature.main.ui.MainScreenUi
-import com.github.eylulnc.walkmunich.ui.theme.OrangeMain
-import com.github.eylulnc.walkmunich.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 
 @Composable
 fun NavigationRoot(

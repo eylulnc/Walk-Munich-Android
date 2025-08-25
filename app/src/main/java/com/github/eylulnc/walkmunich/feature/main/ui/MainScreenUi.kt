@@ -45,12 +45,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Category
-import com.github.eylulnc.walkmunich.core.ui.CategoryCard
-import com.github.eylulnc.walkmunich.core.ui.ImageResolver
+import com.github.eylulnc.walkmunich.core.ui.composable.CategoryCard
+import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
-import com.github.eylulnc.walkmunich.ui.theme.OrangeMain
-import com.github.eylulnc.walkmunich.ui.theme.Spacing
-import com.github.eylulnc.walkmunich.ui.theme.TypographySizes
+import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -82,40 +82,26 @@ fun MainScreenUi(
 
         Spacer(modifier = Modifier.height(Spacing.medium))
 
-        Text(
-            text = "places=${state.allPlaces.size}, results=${state.searchResults.size}",
-            modifier = Modifier.padding(horizontal = Spacing.medium),
-            color = Color.Gray
-        )
-
-        if (state.error != null) {
-            Text(
-                text = "ERR: ${state.error!!.take(160)}",
-                color = Color.Red,
-                modifier = Modifier.padding(horizontal = Spacing.medium)
-            )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            if (state.searchQuery.isNotBlank()) {
+                SearchResultsSection(
+                    searchResults = state.searchResults,
+                    onPlaceClick = { place ->
+                        onPlaceItemClick(place.id)
+                    }
+                )
+            } else {
+                CategoriesSection(
+                    onCategoryClick = onCategoryClick
+                )
+            }
         }
-
-        if (state.searchQuery.isNotBlank()) {
-            SearchResultsSection(
-                searchResults = state.searchResults,
-                onPlaceClick = { place ->
-                    onPlaceItemClick(place.id)
-                }
-            )
-        } else {
-            CategoriesSection(
-                onCategoryClick = onCategoryClick
-            )
-        }
-
-
     }
 }
-
-private val SearchBarHeight = 56.dp
-private val SearchBarHorizontal = Spacing.large
-private val SearchBarOverlap = 24.dp      // how much it sits below the image
 
 @Composable
 private fun HeaderSection(
@@ -154,16 +140,16 @@ private fun HeaderSection(
         SearchBar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(horizontal = SearchBarHorizontal)
-                .height(SearchBarHeight)
-                .offset(y = SearchBarOverlap),
+                .padding(horizontal = Spacing.SearchBarHorizontal)
+                .height(Spacing.SearchBarHeight)
+                .offset(y = Spacing.SearchBarOverlap),
             query = query,
             onQueryChange = onQueryChange,
             onClearQuery = onClearQuery
         )
     }
 
-    Spacer(Modifier.height(SearchBarOverlap + SearchBarHeight / 2))
+    Spacer(Modifier.height(Spacing.SearchBarOverlap + Spacing.SearchBarHeight / 2))
 }
 
 
@@ -236,7 +222,7 @@ private fun SearchBar(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .clickable {
-                                onQueryChange("")
+                                onClearQuery()
                             }
                     )
                 }

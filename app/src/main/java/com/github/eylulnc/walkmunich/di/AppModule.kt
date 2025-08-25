@@ -4,8 +4,8 @@ import com.github.eylulnc.walkmunich.feature.main.data.city.repository.CityRepos
 import com.github.eylulnc.walkmunich.feature.main.data.city.service.CityService
 import com.github.eylulnc.walkmunich.feature.main.data.city.service.CityServiceImpl
 import com.github.eylulnc.walkmunich.feature.main.data.place.repository.PlacesRepository
-import com.github.eylulnc.walkmunich.feature.main.data.place.service.PlacesMinService
-import com.github.eylulnc.walkmunich.feature.main.data.place.service.PlacesMinServiceImpl
+import com.github.eylulnc.walkmunich.feature.main.data.place.service.PlacesService
+import com.github.eylulnc.walkmunich.feature.main.data.place.service.PlacesServiceImpl
 import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
@@ -18,7 +18,7 @@ val appModule = module {
     single<CityService> { CityServiceImpl(androidContext(), get()) }
     single { CityRepository(get()) }
 
-    single<PlacesMinService> { PlacesMinServiceImpl(androidContext(), get()) }
+    single<PlacesService> { PlacesServiceImpl(androidContext(), get()) }
     single { PlacesRepository(get()) }
 
     viewModelOf(::MainScreenViewModel)

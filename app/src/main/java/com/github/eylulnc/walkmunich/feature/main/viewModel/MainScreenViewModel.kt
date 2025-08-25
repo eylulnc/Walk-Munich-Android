@@ -62,7 +62,7 @@ class MainScreenViewModel(
                 applySearch(_uiState.value.searchQuery, data)
             }.onFailure { e ->
                 // Don’t fail the whole screen; just keep search empty
-                _uiState.update { it.copy(error = it.error ?: e.stackTraceToString()) }
+                _uiState.update { it.copy(error = it.error ?: e.message) }
             }
         }
     }

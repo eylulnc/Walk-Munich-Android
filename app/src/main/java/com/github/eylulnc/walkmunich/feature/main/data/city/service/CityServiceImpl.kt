@@ -14,9 +14,7 @@ class CityServiceImpl(
 
     override suspend fun fetchCity(): City = withContext(Dispatchers.IO) {
         delay(300) // simulate latency
-        val files = context.assets.list("api")?.toList() ?: emptyList()
-        check("city.json" in files) { "assets/api/city.json missing. Found: $files" }
-        val path = "city.json"
+        val path = "api/city.json"
         val text = context.assets.open(path).bufferedReader().use { it.readText() }
         json.decodeFromString(City.serializer(), text)
     }

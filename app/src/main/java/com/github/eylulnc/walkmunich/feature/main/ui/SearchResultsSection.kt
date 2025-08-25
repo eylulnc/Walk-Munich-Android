@@ -1,10 +1,13 @@
 package com.github.eylulnc.walkmunich.feature.main.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,11 +29,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.SearchResult
 import com.github.eylulnc.walkmunich.core.data.model.toUi
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
+import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 
 @Composable
 fun SearchResultsSection(
@@ -42,19 +47,23 @@ fun SearchResultsSection(
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .fillMaxHeight()
         ) {
             Text(
-                text = "Search Results",
+                text = "Search Results (${searchResults.size})",
                 style = MaterialTheme.typography.headlineSmall,
+                fontSize = TypographySizes.large,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = Color.Black,
+                modifier = Modifier.padding(horizontal = Spacing.large, vertical = Spacing.medium)
             )
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
+
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentPadding = PaddingValues(horizontal = Spacing.large, vertical = Spacing.medium),
+                verticalArrangement = Arrangement.spacedBy(Spacing.itemGap)
             ) {
                 items(searchResults) { searchResult ->
                     SearchResultCard(
@@ -63,6 +72,7 @@ fun SearchResultsSection(
                     )
                 }
             }
+
         }
     }
 }
@@ -81,26 +91,33 @@ private fun SearchResultCard(
             containerColor = Color.White
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = Spacing.small
         )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(Spacing.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Place image
-            androidx.compose.foundation.Image(
-                painter = painterResource(id = R.drawable.hero_munich),
+            //  Place image - use actual place image if available, fallback to hero image
+            // TODO add related images
+            val imageResId = try {
+                ImageResolver.resolveDrawable(searchResult.place.imageUrl)
+            } catch (e: Exception) {
+                R.drawable.hero_munich // fallback
+            }
+            
+            Image(
+                painter = painterResource(id = imageResId),
                 contentDescription = searchResult.place.name,
                 modifier = Modifier
-                    .size(60.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .size(Spacing.SearchBarImageSize)
+                    .clip(RoundedCornerShape(Spacing.small)),
                 contentScale = ContentScale.Crop
             )
             
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(Spacing.medium))
             
             // Place details
             Column(
@@ -112,11 +129,11 @@ private fun SearchResultCard(
                     fontWeight = FontWeight.Medium
                 )
                 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(Spacing.extraSmall))
 
                 val category = searchResult.category.toUi()
                 Text(
-                    text = stringResource( category.titleResource),
+                    text = stringResource(category.titleResource),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray
                 )

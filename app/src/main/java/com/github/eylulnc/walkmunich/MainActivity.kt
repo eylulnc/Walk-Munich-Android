@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.github.eylulnc.walkmunich.navigation.NavigationRoot
-import com.github.eylulnc.walkmunich.ui.theme.WalkMunichTheme
+import com.github.eylulnc.walkmunich.core.ui.theme.WalkMunichTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

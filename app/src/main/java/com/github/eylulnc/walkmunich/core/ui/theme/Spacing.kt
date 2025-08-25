@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.ui.theme
+package com.github.eylulnc.walkmunich.core.ui.theme
 
 import androidx.compose.ui.unit.dp
 
@@ -15,4 +15,13 @@ object Spacing {
     val cornerRadius = 12.dp
     val borderStroke = 1.dp
     val categoryIconSize = 44.dp
+
+    val itemGap = 12.dp
+
+
+    val SearchBarHeight = 56.dp
+    val SearchBarHorizontal = large
+    val SearchBarOverlap = 24.dp
+    val SearchBarImageSize = 60.dp
+
 }

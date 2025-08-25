@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.core.ui
+package com.github.eylulnc.walkmunich.core.ui.util
 
 import androidx.annotation.DrawableRes
 import com.github.eylulnc.walkmunich.R

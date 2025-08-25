@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.core.ui
+package com.github.eylulnc.walkmunich.core.ui.composable
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -25,9 +25,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.data.model.toUi
-import com.github.eylulnc.walkmunich.ui.theme.OrangeMain
-import com.github.eylulnc.walkmunich.ui.theme.Spacing
-import com.github.eylulnc.walkmunich.ui.theme.TypographySizes
+import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 
 @Composable
 fun CategoryCard(
