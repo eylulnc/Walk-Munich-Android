@@ -55,7 +55,7 @@ fun NavigationRoot(
         contentWindowInsets = WindowInsets(0),
         bottomBar = {
             Column {
-                HorizontalDivider(thickness = Spacing.borderStroke, color = Color.LightGray)
+                HorizontalDivider(thickness = Spacing.BorderStroke, color = Color.LightGray)
 
                 NavigationBar(
                     containerColor = Color.White,

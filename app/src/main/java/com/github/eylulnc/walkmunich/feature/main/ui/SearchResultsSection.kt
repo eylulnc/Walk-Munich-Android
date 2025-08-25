@@ -55,15 +55,15 @@ fun SearchResultsSection(
                 fontSize = TypographySizes.large,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
-                modifier = Modifier.padding(horizontal = Spacing.large, vertical = Spacing.medium)
+                modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)
             )
 
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                contentPadding = PaddingValues(horizontal = Spacing.large, vertical = Spacing.medium),
-                verticalArrangement = Arrangement.spacedBy(Spacing.itemGap)
+                contentPadding = PaddingValues(horizontal = Spacing.Large, vertical = Spacing.Medium),
+                verticalArrangement = Arrangement.spacedBy(Spacing.ItemGap)
             ) {
                 items(searchResults) { searchResult ->
                     SearchResultCard(
@@ -91,13 +91,13 @@ private fun SearchResultCard(
             containerColor = Color.White
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = Spacing.small
+            defaultElevation = Spacing.Small
         )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Spacing.medium),
+                .padding(Spacing.Medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             //  Place image - use actual place image if available, fallback to hero image
@@ -113,11 +113,11 @@ private fun SearchResultCard(
                 contentDescription = searchResult.place.name,
                 modifier = Modifier
                     .size(Spacing.SearchBarImageSize)
-                    .clip(RoundedCornerShape(Spacing.small)),
+                    .clip(RoundedCornerShape(Spacing.Small)),
                 contentScale = ContentScale.Crop
             )
             
-            Spacer(modifier = Modifier.width(Spacing.medium))
+            Spacer(modifier = Modifier.width(Spacing.Medium))
             
             // Place details
             Column(
@@ -129,7 +129,7 @@ private fun SearchResultCard(
                     fontWeight = FontWeight.Medium
                 )
                 
-                Spacer(modifier = Modifier.height(Spacing.extraSmall))
+                Spacer(modifier = Modifier.height(Spacing.ExtraSmall))
 
                 val category = searchResult.category.toUi()
                 Text(

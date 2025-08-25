@@ -80,7 +80,7 @@ fun MainScreenUi(
             onClearQuery = viewModel::onClearQuery
         )
 
-        Spacer(modifier = Modifier.height(Spacing.medium))
+        Spacer(modifier = Modifier.height(Spacing.Medium))
 
         Box(
             modifier = Modifier
@@ -117,7 +117,7 @@ private fun HeaderSection(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(Spacing.heroHeight)
+            .height(Spacing.HeroHeight)
     ) {
         Image(
             painter = painterResource(id = resId),
@@ -134,7 +134,7 @@ private fun HeaderSection(
             fontSize = TypographySizes.heroTitle,
             modifier = Modifier
                 .align(Alignment.Center)
-                .padding(Spacing.large)
+                .padding(Spacing.Large)
         )
 
         SearchBar(
@@ -160,7 +160,7 @@ private fun CategoriesSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = Spacing.medium)
+            .padding(vertical = Spacing.Medium)
     ) {
         Text(
             text = stringResource(R.string.category_title),
@@ -168,14 +168,14 @@ private fun CategoriesSection(
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
-            modifier = Modifier.padding(horizontal = Spacing.medium)
+            modifier = Modifier.padding(horizontal = Spacing.Medium)
         )
 
-        Spacer(modifier = Modifier.height(Spacing.medium))
+        Spacer(modifier = Modifier.height(Spacing.Medium))
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(Spacing.medium),
-            contentPadding = PaddingValues(start = Spacing.medium, end = Spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(Spacing.Medium),
+            contentPadding = PaddingValues(start = Spacing.Medium, end = Spacing.Medium)
         ) {
             items(Category.entries.toTypedArray()) { category ->
                 CategoryCard(
@@ -229,7 +229,7 @@ private fun SearchBar(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(Spacing.cornerRadius)),
+                .clip(RoundedCornerShape(Spacing.CornerRadius)),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,

@@ -37,24 +37,24 @@ fun CategoryCard(
 ) {
     Card(
         modifier = modifier
-            .size(Spacing.categorySize)
+            .size(Spacing.CategorySize)
             .clickable { onClick() },
-        shape = RoundedCornerShape(Spacing.cornerRadius),
+        shape = RoundedCornerShape(Spacing.CornerRadius),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = Spacing.extraSmall
+            defaultElevation = Spacing.ExtraSmall
         ),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
         border = BorderStroke(
-            width = Spacing.borderStroke,
+            width = Spacing.BorderStroke,
             color = Color.LightGray
         )
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(Spacing.small),
+                .padding(Spacing.Small),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -66,10 +66,10 @@ fun CategoryCard(
                     imageVector = categoryUi.icon,
                     contentDescription = stringResource(categoryUi.titleResource),
                     tint = OrangeMain,
-                    modifier = Modifier.size(Spacing.categoryIconSize)
+                    modifier = Modifier.size(Spacing.CategoryIconSize)
                 )
 
-                Spacer(modifier = Modifier.height(Spacing.small))
+                Spacer(modifier = Modifier.height(Spacing.Small))
 
                 Text(
                     text = stringResource(categoryUi.titleResource),
