@@ -3,7 +3,6 @@ package com.github.eylulnc.walkmunich.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Route
 import androidx.compose.ui.graphics.vector.ImageVector
 

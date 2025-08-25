@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.feature.main.data
+package com.github.eylulnc.walkmunich.feature.main.data.city.service
 
 import android.content.Context
 import com.github.eylulnc.walkmunich.core.data.model.City

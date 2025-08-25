@@ -1,6 +1,7 @@
-package com.github.eylulnc.walkmunich.feature.main.data
+package com.github.eylulnc.walkmunich.feature.main.data.city.repository
 
 import com.github.eylulnc.walkmunich.core.data.model.City
+import com.github.eylulnc.walkmunich.feature.main.data.city.service.CityService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
