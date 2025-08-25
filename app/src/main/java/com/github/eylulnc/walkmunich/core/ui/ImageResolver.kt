@@ -8,7 +8,7 @@ object ImageResolver {
     fun resolveDrawable(imageUrl: String): Int {
         return when (imageUrl) {
             "hero_munich" -> R.drawable.hero_munich
-            else -> R.drawable.hero_munich //TO-DO :: add fallback placeholder image
+            else -> R.drawable.hero_munich //TODO :: add fallback placeholder image
         }
     }
 }
