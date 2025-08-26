@@ -1,5 +1,6 @@
 package com.github.eylulnc.walkmunich.feature.main.ui
 
+import android.content.res.Resources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -124,7 +125,7 @@ private fun SearchResultCard(
             // TODO add related images
             val imageResId = try {
                 ImageResolver.resolveDrawable(searchResult.place.imageUrl)
-            } catch (e: Exception) {
+            } catch (e: Resources.NotFoundException) {
                 R.drawable.hero_munich // fallback
             }
             
