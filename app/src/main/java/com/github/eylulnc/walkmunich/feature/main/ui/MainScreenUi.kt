@@ -8,16 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,8 +35,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Category
@@ -64,11 +57,6 @@ fun MainScreenUi(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .windowInsetsPadding(
-                WindowInsets.navigationBars.only(
-                    WindowInsetsSides.Start + WindowInsetsSides.End + WindowInsetsSides.Bottom
-                )
-            )
             .background(Color.White)
     ) {
 
@@ -150,7 +138,7 @@ private fun HeaderSection(
         )
     }
 
-    Spacer(Modifier.height(Spacing.SearchBarOverlap + Spacing.SearchBarHeight / 2))
+    Spacer(Modifier.height((Spacing.SearchBarOverlap + Spacing.SearchBarHeight) / 2))
 }
 
 
@@ -166,7 +154,7 @@ private fun CategoriesSection(
         Text(
             text = stringResource(R.string.category_title),
             style = MaterialTheme.typography.headlineSmall,
-            fontSize = 28.sp,
+            fontSize = TypographySizes.large,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
             modifier = Modifier.padding(horizontal = Spacing.Medium)
@@ -197,9 +185,9 @@ private fun SearchBar(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(28.dp),
+        shape = RoundedCornerShape(Spacing.Large),
         color = Color.White,
-        shadowElevation = 12.dp
+        shadowElevation = Spacing.Medium
     ) {
         TextField(
             value = query,
@@ -221,7 +209,7 @@ private fun SearchBar(
                         contentDescription = "Clear",
                         tint = OrangeMain,
                         modifier = Modifier
-                            .padding(end = 8.dp)
+                            .padding(end = Spacing.Small)
                             .clickable {
                                 onClearQuery()
                             }
