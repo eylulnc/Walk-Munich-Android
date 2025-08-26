@@ -26,6 +26,7 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.github.eylulnc.walkmunich.feature.main.ui.MainScreenUi
+import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 
@@ -98,9 +99,8 @@ fun NavigationRoot(
 
                     is RouteListScreen -> {
                         NavEntry(key = key) {
-                            Text(
-                                "Routes",
-                                modifier = Modifier.safeContentPadding()
+                            RouteListScreenUi(
+                                onRouteClick = { /* TODO navigate to detail later */ }
                             )
                         }
                     }

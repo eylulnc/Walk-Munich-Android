@@ -7,6 +7,10 @@ import com.github.eylulnc.walkmunich.feature.main.data.place.repository.PlacesRe
 import com.github.eylulnc.walkmunich.feature.main.data.place.service.PlacesService
 import com.github.eylulnc.walkmunich.feature.main.data.place.service.PlacesServiceImpl
 import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
+import com.github.eylulnc.walkmunich.feature.route.data.RoutesRepository
+import com.github.eylulnc.walkmunich.feature.route.data.RoutesService
+import com.github.eylulnc.walkmunich.feature.route.data.RoutesServiceImpl
+import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteListViewModel
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
@@ -21,5 +25,9 @@ val appModule = module {
     single<PlacesService> { PlacesServiceImpl(androidContext(), get()) }
     single { PlacesRepository(get()) }
 
+    single<RoutesService> { RoutesServiceImpl(androidContext(), get()) }
+    single { RoutesRepository(get()) }
+
     viewModelOf(::MainScreenViewModel)
+    viewModelOf(::RouteListViewModel)
 }

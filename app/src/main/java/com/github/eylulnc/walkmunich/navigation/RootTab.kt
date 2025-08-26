@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class RootTab(val label: String, val icon: ImageVector) {
     data object Home : RootTab("Home", Icons.Outlined.Home)
-    data object Route : RootTab("Route", Icons.Outlined.Route)
+    data object Route : RootTab("Routes", Icons.Outlined.Route)
     data object Favorites : RootTab("Favorites", Icons.Outlined.FavoriteBorder)
 }
 
