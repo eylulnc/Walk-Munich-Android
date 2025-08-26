@@ -67,20 +67,3 @@ enum class PriceRange {
     LOW, MEDIUM, HIGH
 }
 
-//@Serializable
-//data class PlaceMin(
-//    val id: Long,
-//    val name: String,
-//    val category: Category,
-//    val imageUrl: String
-//)
-//
-//@Serializable
-//data class PlacesMinResponse(
-//    val cityId: Long,
-//    val cityName: String,
-//    val updatedAt: String,
-//    val places: List<PlaceMin>
-//)
-
-
