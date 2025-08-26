@@ -36,8 +36,7 @@ data class RouteSegment(
 data class RouteStop(
     val ord: Int,
     val placeId: Long,
-    val estDurationMin: Int?,
-    val isBreak: Boolean,
-    val detourMinutes: Int?
+    val name: String,
+    val category: Category
 )
 
