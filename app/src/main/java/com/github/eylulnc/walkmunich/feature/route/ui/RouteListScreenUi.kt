@@ -40,10 +40,36 @@ fun RouteListScreenUi(
             .background(Color.White)
             .safeContentPadding()
     ) {
-        LazyColumn {
-            items(state.routes) { route ->
-                RouteRow(route = route) { onRouteClick(route.id) }
-                Spacer(Modifier.height(Spacing.Medium))
+        when {
+            state.isLoading -> {
+                // Center the loading indicator
+                androidx.compose.foundation.layout.Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+            state.error != null -> {
+                // Center the error message
+                androidx.compose.foundation.layout.Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = state.error ?: "Unknown error",
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
+            else -> {
+                LazyColumn {
+                    items(state.routes) { route ->
+                        RouteRow(route = route) { onRouteClick(route.id) }
+                        Spacer(Modifier.height(Spacing.Medium))
+                    }
+                }
             }
         }
     }
