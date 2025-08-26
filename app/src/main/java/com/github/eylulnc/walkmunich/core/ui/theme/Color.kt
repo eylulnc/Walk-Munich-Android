@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.ui.theme
+package com.github.eylulnc.walkmunich.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

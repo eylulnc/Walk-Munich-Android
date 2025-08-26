@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.ui.theme
+package com.github.eylulnc.walkmunich.core.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
