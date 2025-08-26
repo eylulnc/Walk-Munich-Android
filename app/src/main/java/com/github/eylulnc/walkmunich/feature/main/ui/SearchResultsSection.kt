@@ -123,11 +123,8 @@ private fun SearchResultCard(
         ) {
             //  Place image - use actual place image if available, fallback to hero image
             // TODO add related images
-            val imageResId = try {
-                ImageResolver.resolveDrawable(searchResult.place.imageUrl)
-            } catch (e: Resources.NotFoundException) {
-                R.drawable.hero_munich // fallback
-            }
+            val imageResId = ImageResolver.resolveDrawable(searchResult.place.imageUrl)
+                ?: R.drawable.hero_munich // fallback
             
             Image(
                 painter = painterResource(id = imageResId),
