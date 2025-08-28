@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -26,6 +27,7 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.github.eylulnc.walkmunich.feature.home.ui.MainScreenUi
+import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
@@ -44,6 +46,10 @@ fun NavigationRoot(
     // Save an Int instead of the sealed object
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val currentTab = tabs[selectedTabIndex]
+
+    // State for route navigation
+    var currentRouteScreen by remember { mutableStateOf<RouteScreen>(RouteScreen.List) }
+    var selectedRouteId by remember { mutableStateOf<Long?>(null) }
 
     val currentBackStack = when (currentTab) {
         RootTab.Home -> homeBackStack
@@ -64,7 +70,14 @@ fun NavigationRoot(
                     tabs.forEachIndexed { index, tab ->
                         NavigationBarItem(
                             selected = index == selectedTabIndex,
-                            onClick = { selectedTabIndex = index },
+                            onClick = { 
+                                selectedTabIndex = index
+                                // Reset route navigation when switching tabs
+                                if (index == 1) { // Route tab
+                                    currentRouteScreen = RouteScreen.List
+                                    selectedRouteId = null
+                                }
+                            },
                             icon = { Icon(tab.icon, contentDescription = null) },
                             label = { Text(tab.label) },
                             colors = NavigationBarItemDefaults.colors(
@@ -99,9 +112,32 @@ fun NavigationRoot(
 
                     is RouteListScreen -> {
                         NavEntry(key = key) {
-                            RouteListScreenUi(
-                                onRouteClick = { /* TODO navigate to detail later */ }
-                            )
+                            when (currentRouteScreen) {
+                                RouteScreen.List -> {
+                                    RouteListScreenUi(
+                                        onRouteClick = { routeId ->
+                                            selectedRouteId = routeId
+                                            currentRouteScreen = RouteScreen.Detail
+                                        }
+                                    )
+                                }
+                                RouteScreen.Detail -> {
+                                    selectedRouteId?.let { routeId ->
+                                        RouteDetailScreenUi(
+                                            routeId = routeId,
+                                            onBackClick = { 
+                                                currentRouteScreen = RouteScreen.List
+                                                selectedRouteId = null
+                                            }
+                                        )
+                                    } ?: RouteListScreenUi(
+                                        onRouteClick = { routeId ->
+                                            selectedRouteId = routeId
+                                            currentRouteScreen = RouteScreen.Detail
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
 
@@ -119,4 +155,9 @@ fun NavigationRoot(
             }
         )
     }
+}
+
+sealed class RouteScreen {
+    object List : RouteScreen()
+    object Detail : RouteScreen()
 }

@@ -10,6 +10,7 @@ import com.github.eylulnc.walkmunich.feature.home.viewModel.MainScreenViewModel
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesRepository
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesService
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesServiceImpl
+import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewModel
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteListViewModel
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
@@ -30,4 +31,5 @@ val appModule = module {
 
     viewModelOf(::MainScreenViewModel)
     viewModelOf(::RouteListViewModel)
+    viewModelOf(::RouteDetailViewModel)
 }
