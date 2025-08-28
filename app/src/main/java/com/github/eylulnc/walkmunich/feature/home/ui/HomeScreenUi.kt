@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.feature.main.ui
+package com.github.eylulnc.walkmunich.feature.home.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -43,7 +43,7 @@ import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
-import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
+import com.github.eylulnc.walkmunich.feature.home.viewModel.MainScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
