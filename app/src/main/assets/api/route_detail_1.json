@@ -1,0 +1,25 @@
+{
+  "id": 2,
+  "cityId": 1,
+  "title": "1-Day Itinerary",
+  "segments": [
+    {
+      "id": 101,
+      "title": "Day 1 – Old Town",
+      "dayIndex": 1,
+      "stops": [
+        { "ord": 1,  "placeId": 1001, "name": "Marienplatz",                 "category": "LANDMARK" },
+        { "ord": 2,  "placeId": 1002, "name": "Viktualienmarkt",             "category": "FOOD" },
+        { "ord": 3,  "placeId": 1003, "name": "Frauenkirche",                 "category": "LANDMARK" },
+        { "ord": 4,  "placeId": 1004, "name": "St. Peter Kirche", "category": "VIEWPOINT" },
+        { "ord": 5,  "placeId": 1005, "name": "Max-Joseph-Platz",             "category": "LANDMARK" },
+        { "ord": 6,  "placeId": 1006, "name": "Kanso",                        "category": "COFFEE" },
+        { "ord": 7,  "placeId": 1007, "name": "Odeonsplatz",                  "category": "LANDMARK" },
+        { "ord": 8,  "placeId": 1008, "name": "Theatinerkirche",              "category": "LANDMARK" },
+        { "ord": 9,  "placeId": 1009, "name": "Residenz & Hofgarten",         "category": "LANDMARK" },
+        { "ord": 10, "placeId": 1010, "name": "Eisbachwelle",                 "category": "VIEWPOINT" }
+      ]
+    }
+  ],
+  "updatedAt": "2025-08-14T12:00:00Z"
+}

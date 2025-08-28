@@ -15,17 +15,16 @@ data class RoutesResponse(
     val routes: List<RouteSummary>
 )
 
+@Serializable
 data class RouteDetail(
     val id: Long,
     val cityId: Long,
     val title: String,
-    val targetBreakEveryMin: Int?,
-    val maxDetourMin: Int?,
-    val paceMinPerKm: Int?,
     val segments: List<RouteSegment>,
     val updatedAt: String
 )
 
+@Serializable
 data class RouteSegment(
     val id: Long,
     val title: String,
@@ -33,6 +32,7 @@ data class RouteSegment(
     val stops: List<RouteStop>
 )
 
+@Serializable
 data class RouteStop(
     val ord: Int,
     val placeId: Long,
