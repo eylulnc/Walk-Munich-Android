@@ -1,6 +1,7 @@
 package com.github.eylulnc.walkmunich.feature.route.data
 
 import android.content.Context
+import com.github.eylulnc.walkmunich.core.data.model.RouteDetail
 import com.github.eylulnc.walkmunich.core.data.model.RouteSummary
 import com.github.eylulnc.walkmunich.core.data.model.RoutesResponse
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,13 @@ class RoutesServiceImpl(
         val path = "api/routes_$cityId.json"
         val text = context.assets.open(path).bufferedReader().use { it.readText() }
         json.decodeFromString(RoutesResponse.serializer(), text).routes
+    }
+
+    override suspend fun fetchRouteDetail(routeId: Long): RouteDetail = withContext(Dispatchers.IO) {
+        delay(300)
+        val path = "api/route_detail_$routeId.json"
+        val text = context.assets.open(path).bufferedReader().use { it.readText() }
+        json.decodeFromString(RouteDetail.serializer(), text)
     }
 }
 
