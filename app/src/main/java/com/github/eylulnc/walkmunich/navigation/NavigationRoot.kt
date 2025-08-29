@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -123,13 +124,15 @@ fun NavigationRoot(
                                 }
                                 RouteScreen.Detail -> {
                                     selectedRouteId?.let { routeId ->
-                                        RouteDetailScreenUi(
-                                            routeId = routeId,
-                                            onBackClick = { 
-                                                currentRouteScreen = RouteScreen.List
-                                                selectedRouteId = null
-                                            }
-                                        )
+                                        key(routeId) {
+                                            RouteDetailScreenUi(
+                                                routeId = routeId,
+                                                onBackClick = { 
+                                                    currentRouteScreen = RouteScreen.List
+                                                    selectedRouteId = null
+                                                }
+                                            )
+                                        }
                                     } ?: RouteListScreenUi(
                                         onRouteClick = { routeId ->
                                             selectedRouteId = routeId

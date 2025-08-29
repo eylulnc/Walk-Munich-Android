@@ -14,6 +14,7 @@ import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewMode
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteListViewModel
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -31,5 +32,5 @@ val appModule = module {
 
     viewModelOf(::MainScreenViewModel)
     viewModelOf(::RouteListViewModel)
-    viewModelOf(::RouteDetailViewModel)
+    factoryOf(::RouteDetailViewModel)
 }
