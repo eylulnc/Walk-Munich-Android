@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.feature.main.ui
+package com.github.eylulnc.walkmunich.feature.home.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -43,7 +42,7 @@ import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
-import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
+import com.github.eylulnc.walkmunich.feature.home.viewModel.MainScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -117,7 +116,6 @@ private fun HeaderSection(
 
         Text(
             text = cityName,
-            style = MaterialTheme.typography.headlineLarge,
             color = Color.White,
             fontWeight = FontWeight.ExtraBold,
             fontSize = TypographySizes.heroTitle,
@@ -153,7 +151,6 @@ private fun CategoriesSection(
     ) {
         Text(
             text = stringResource(R.string.category_title),
-            style = MaterialTheme.typography.headlineSmall,
             fontSize = TypographySizes.large,
             fontWeight = FontWeight.Bold,
             color = Color.Black,

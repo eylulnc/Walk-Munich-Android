@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.feature.main.data.place.service
+package com.github.eylulnc.walkmunich.feature.home.data.place.service
 
 import android.content.Context
 import com.github.eylulnc.walkmunich.core.data.model.Place

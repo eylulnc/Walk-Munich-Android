@@ -1,15 +1,16 @@
 package com.github.eylulnc.walkmunich.di
 
-import com.github.eylulnc.walkmunich.feature.main.data.city.repository.CityRepository
-import com.github.eylulnc.walkmunich.feature.main.data.city.service.CityService
-import com.github.eylulnc.walkmunich.feature.main.data.city.service.CityServiceImpl
-import com.github.eylulnc.walkmunich.feature.main.data.place.repository.PlacesRepository
-import com.github.eylulnc.walkmunich.feature.main.data.place.service.PlacesService
-import com.github.eylulnc.walkmunich.feature.main.data.place.service.PlacesServiceImpl
-import com.github.eylulnc.walkmunich.feature.main.viewModel.MainScreenViewModel
+import com.github.eylulnc.walkmunich.feature.home.data.city.repository.CityRepository
+import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityService
+import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityServiceImpl
+import com.github.eylulnc.walkmunich.feature.home.data.place.repository.PlacesRepository
+import com.github.eylulnc.walkmunich.feature.home.data.place.service.PlacesService
+import com.github.eylulnc.walkmunich.feature.home.data.place.service.PlacesServiceImpl
+import com.github.eylulnc.walkmunich.feature.home.viewModel.MainScreenViewModel
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesRepository
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesService
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesServiceImpl
+import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewModel
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteListViewModel
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
@@ -30,4 +31,5 @@ val appModule = module {
 
     viewModelOf(::MainScreenViewModel)
     viewModelOf(::RouteListViewModel)
+    viewModelOf(::RouteDetailViewModel)
 }
