@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.Normalizer
 
-data class MainUiState(
+data class HomeScreenUiState(
     val isLoading: Boolean = true,
     val city: City? = null,
     val error: String? = null,
@@ -26,13 +26,13 @@ data class MainUiState(
     val isSearching: Boolean = false
 )
 
-class MainScreenViewModel(
+class HomeScreenViewModel(
     private val repository: CityRepository,
     private val placesRepository: PlacesRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MainUiState())
-    val uiState: StateFlow<MainUiState> = _uiState
+    private val _uiState = MutableStateFlow(HomeScreenUiState())
+    val uiState: StateFlow<HomeScreenUiState> = _uiState
 
     private var searchJob: Job? = null
 
