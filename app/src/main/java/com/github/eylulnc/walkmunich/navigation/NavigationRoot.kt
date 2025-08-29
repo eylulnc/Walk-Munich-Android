@@ -32,6 +32,8 @@ import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun NavigationRoot(
@@ -48,10 +50,6 @@ fun NavigationRoot(
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val currentTab = tabs[selectedTabIndex]
 
-    // State for route navigation
-    var currentRouteScreen by remember { mutableStateOf<RouteScreen>(RouteScreen.List) }
-    var selectedRouteId by remember { mutableStateOf<Long?>(null) }
-
     val currentBackStack = when (currentTab) {
         RootTab.Home -> homeBackStack
         RootTab.Route -> routeBackStack
@@ -64,20 +62,12 @@ fun NavigationRoot(
         bottomBar = {
             Column {
                 HorizontalDivider(thickness = Spacing.BorderStroke, color = Color.LightGray)
-
-                NavigationBar(
-                    containerColor = Color.White,
-                ) {
+                NavigationBar(containerColor = Color.White) {
                     tabs.forEachIndexed { index, tab ->
                         NavigationBarItem(
                             selected = index == selectedTabIndex,
-                            onClick = { 
+                            onClick = {
                                 selectedTabIndex = index
-                                // Reset route navigation when switching tabs
-                                if (index == 1) { // Route tab
-                                    currentRouteScreen = RouteScreen.List
-                                    selectedRouteId = null
-                                }
                             },
                             icon = { Icon(tab.icon, contentDescription = null) },
                             label = { Text(tab.label) },
@@ -105,42 +95,30 @@ fun NavigationRoot(
                     is MainScreen -> {
                         NavEntry(key = key) {
                             MainScreenUi(
-                                onCategoryClick = { /* TODO navigate inside Home tab */ },
-                                onPlaceItemClick = { /* TODO open detail */ }
+                                onCategoryClick = { /* TODO */ },
+                                onPlaceItemClick = { /* TODO */ }
                             )
                         }
                     }
 
                     is RouteListScreen -> {
                         NavEntry(key = key) {
-                            when (currentRouteScreen) {
-                                RouteScreen.List -> {
-                                    RouteListScreenUi(
-                                        onRouteClick = { routeId ->
-                                            selectedRouteId = routeId
-                                            currentRouteScreen = RouteScreen.Detail
-                                        }
-                                    )
+                            RouteListScreenUi(
+                                onRouteClick = { routeId ->
+                                    routeBackStack.add(RouteDetailScreen(routeId))
                                 }
-                                RouteScreen.Detail -> {
-                                    selectedRouteId?.let { routeId ->
-                                        key(routeId) {
-                                            RouteDetailScreenUi(
-                                                routeId = routeId,
-                                                onBackClick = { 
-                                                    currentRouteScreen = RouteScreen.List
-                                                    selectedRouteId = null
-                                                }
-                                            )
-                                        }
-                                    } ?: RouteListScreenUi(
-                                        onRouteClick = { routeId ->
-                                            selectedRouteId = routeId
-                                            currentRouteScreen = RouteScreen.Detail
-                                        }
-                                    )
-                                }
-                            }
+                            )
+                        }
+                    }
+
+                    is RouteDetailScreen -> {
+                        NavEntry(key = key) {
+                            RouteDetailScreenUi(
+                                viewModel = koinViewModel {
+                                    parametersOf(key.routeId)
+                                },
+                                onBackClick = { routeBackStack.remove(key) }
+                            )
                         }
                     }
 
@@ -158,9 +136,4 @@ fun NavigationRoot(
             }
         )
     }
-}
-
-sealed class RouteScreen {
-    object List : RouteScreen()
-    object Detail : RouteScreen()
 }

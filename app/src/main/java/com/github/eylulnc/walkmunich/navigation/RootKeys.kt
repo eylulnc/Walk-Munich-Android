@@ -6,3 +6,4 @@ import kotlinx.serialization.Serializable
 @Serializable data object MainScreen : NavKey
 @Serializable data object RouteListScreen : NavKey
 @Serializable data object FavoritesScreen : NavKey
+@Serializable data class RouteDetailScreen(val routeId: Long) : NavKey

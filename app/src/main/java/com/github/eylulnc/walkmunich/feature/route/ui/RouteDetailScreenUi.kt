@@ -30,6 +30,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,13 +52,9 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RouteDetailScreenUi(
-    routeId: Long,
+    viewModel: RouteDetailViewModel = koinViewModel(),
     onBackClick: () -> Unit
 ) {
-    val viewModel: RouteDetailViewModel = koinViewModel<RouteDetailViewModel> {
-        parametersOf(routeId)
-    }
-
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(

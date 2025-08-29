@@ -1,5 +1,6 @@
 package com.github.eylulnc.walkmunich.di
 
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.eylulnc.walkmunich.feature.home.data.city.repository.CityRepository
 import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityService
 import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityServiceImpl
@@ -32,5 +33,5 @@ val appModule = module {
 
     viewModelOf(::MainScreenViewModel)
     viewModelOf(::RouteListViewModel)
-    factoryOf(::RouteDetailViewModel)
+    viewModelOf(::RouteDetailViewModel)
 }
