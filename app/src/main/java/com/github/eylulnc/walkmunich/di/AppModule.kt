@@ -6,7 +6,7 @@ import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityServiceI
 import com.github.eylulnc.walkmunich.feature.home.data.place.repository.PlacesRepository
 import com.github.eylulnc.walkmunich.feature.home.data.place.service.PlacesService
 import com.github.eylulnc.walkmunich.feature.home.data.place.service.PlacesServiceImpl
-import com.github.eylulnc.walkmunich.feature.home.viewModel.MainScreenViewModel
+import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesRepository
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesService
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesServiceImpl
@@ -29,7 +29,7 @@ val appModule = module {
     single<RoutesService> { RoutesServiceImpl(androidContext(), get()) }
     single { RoutesRepository(get()) }
 
-    viewModelOf(::MainScreenViewModel)
+    viewModelOf(::HomeScreenViewModel)
     viewModelOf(::RouteListViewModel)
     viewModelOf(::RouteDetailViewModel)
 }

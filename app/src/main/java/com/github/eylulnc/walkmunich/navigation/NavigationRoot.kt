@@ -13,9 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -27,11 +25,11 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
-import com.github.eylulnc.walkmunich.feature.home.ui.MainScreenUi
-import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
-import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
+import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
+import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -39,7 +37,7 @@ import org.koin.core.parameter.parametersOf
 fun NavigationRoot(
     modifier: Modifier = Modifier
 ) {
-    val homeBackStack = rememberNavBackStack(MainScreen)
+    val homeBackStack = rememberNavBackStack(HomeScreen)
     val routeBackStack = rememberNavBackStack(RouteListScreen)
     val favBackStack = rememberNavBackStack(FavoritesScreen)
 
@@ -92,9 +90,9 @@ fun NavigationRoot(
             ),
             entryProvider = { key ->
                 when (key) {
-                    is MainScreen -> {
+                    is HomeScreen -> {
                         NavEntry(key = key) {
-                            MainScreenUi(
+                            HomeScreenUi(
                                 onCategoryClick = { /* TODO */ },
                                 onPlaceItemClick = { /* TODO */ }
                             )

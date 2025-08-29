@@ -42,12 +42,12 @@ import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
-import com.github.eylulnc.walkmunich.feature.home.viewModel.MainScreenViewModel
+import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MainScreenUi(
-    viewModel: MainScreenViewModel = koinViewModel(),
+fun HomeScreenUi(
+    viewModel: HomeScreenViewModel = koinViewModel(),
     onCategoryClick: (Category) -> Unit,
     onPlaceItemClick: (Long) -> Unit
 ) {
