@@ -117,7 +117,6 @@ private fun HeaderSection(
 
         Text(
             text = cityName,
-            style = MaterialTheme.typography.headlineLarge,
             color = Color.White,
             fontWeight = FontWeight.ExtraBold,
             fontSize = TypographySizes.heroTitle,
@@ -153,7 +152,6 @@ private fun CategoriesSection(
     ) {
         Text(
             text = stringResource(R.string.category_title),
-            style = MaterialTheme.typography.headlineSmall,
             fontSize = TypographySizes.large,
             fontWeight = FontWeight.Bold,
             color = Color.Black,

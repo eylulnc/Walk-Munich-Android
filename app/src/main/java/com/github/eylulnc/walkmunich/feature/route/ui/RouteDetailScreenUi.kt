@@ -1,7 +1,8 @@
 package com.github.eylulnc.walkmunich.feature.route.ui
 
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -18,8 +18,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,17 +36,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.data.model.RouteDetail
+import com.github.eylulnc.walkmunich.core.data.model.RouteSegment
 import com.github.eylulnc.walkmunich.core.data.model.RouteStop
 import com.github.eylulnc.walkmunich.core.data.model.toUi
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -57,29 +56,29 @@ fun RouteDetailScreenUi(
     routeId: Long,
     onBackClick: () -> Unit
 ) {
-    val viewModel: RouteDetailViewModel = koinViewModel<RouteDetailViewModel> { 
-        parametersOf(routeId) 
+    val viewModel: RouteDetailViewModel = koinViewModel<RouteDetailViewModel> {
+        parametersOf(routeId)
     }
-    
+
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
         TopAppBar(
-            title = { 
+            title = {
                 Text(
                     text = state.routeDetail?.title ?: "Route Details",
-                    style = MaterialTheme.typography.titleLarge,
+                    fontSize = TypographySizes.large,
                     fontWeight = FontWeight.Bold
                 )
             },
             navigationIcon = {
                 IconButton(onClick = onBackClick) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
                         tint = OrangeMain
                     )
@@ -90,7 +89,7 @@ fun RouteDetailScreenUi(
                 titleContentColor = Color.Black
             )
         )
-        
+
         when {
             state.isLoading -> {
                 Box(
@@ -100,6 +99,7 @@ fun RouteDetailScreenUi(
                     CircularProgressIndicator(color = OrangeMain)
                 }
             }
+
             state.error != null -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -122,6 +122,7 @@ fun RouteDetailScreenUi(
                     }
                 }
             }
+
             state.routeDetail != null -> {
                 RouteDetailContent(routeDetail = state.routeDetail!!)
             }
@@ -137,21 +138,43 @@ private fun RouteDetailContent(routeDetail: RouteDetail) {
             .verticalScroll(rememberScrollState())
             .padding(horizontal = Spacing.Medium)
     ) {
-        // Route stops visualization
-        RouteStopsVisualization(routeDetail.segments.flatMap { it.stops })
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(Spacing.Large)
+        ) {
+            routeDetail.segments.forEachIndexed { segmentIndex, segment ->
+                ItinerarySegment(
+                    segment = segment,
+                    displaySubtitle = routeDetail.segments.size != 1
+
+                )
+            }
+        }
     }
 }
 
+
 @Composable
-private fun RouteStopsVisualization(stops: List<RouteStop>) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
+private fun ItinerarySegment(
+    segment: RouteSegment,
+    displaySubtitle: Boolean
     ) {
-        stops.forEachIndexed { index, stop ->
+    Column(
+        modifier = Modifier.padding(Spacing.Medium),
+        verticalArrangement = Arrangement.spacedBy(Spacing.Medium)
+    ) {
+        if (displaySubtitle) {
+            Text(
+                text = segment.title,
+                fontSize = TypographySizes.medium,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black
+            )
+        }
+
+        segment.stops.forEachIndexed { stopIndex, stop ->
             RouteStopItem(
-                stop = stop,
-                isLast = index == stops.size - 1,
-                showConnector = index < stops.size - 1
+                stop = stop
             )
         }
     }
@@ -159,16 +182,14 @@ private fun RouteStopsVisualization(stops: List<RouteStop>) {
 
 @Composable
 private fun RouteStopItem(
-    stop: RouteStop,
-    isLast: Boolean,
-    showConnector: Boolean
+    stop: RouteStop
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Stop number circle
             Box(
@@ -181,13 +202,13 @@ private fun RouteStopItem(
                 Text(
                     text = stop.ord.toString(),
                     color = Color.White,
-                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = TypographySizes.medium,
                     fontWeight = FontWeight.Bold
                 )
             }
-            
+
             Spacer(modifier = Modifier.width(Spacing.Small))
-            
+
             // Stop details card
             Card(
                 modifier = Modifier
@@ -196,11 +217,13 @@ private fun RouteStopItem(
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 shape = RoundedCornerShape(Spacing.CornerRadius),
-                border = androidx.compose.foundation.BorderStroke(
+                border = BorderStroke(
                     width = 1.dp,
                     color = Color.LightGray
                 )
             ) {
+                val categoryUi = stop.category.toUi()
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -208,75 +231,23 @@ private fun RouteStopItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Place,
+                        imageVector = categoryUi.icon,
                         contentDescription = null,
                         tint = Color.Gray,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(20.dp)
                     )
-                    
+
                     Spacer(modifier = Modifier.width(Spacing.Small))
-                    
-                    Column {
-                        Text(
-                            text = stop.name,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.Black
-                        )
-                        
-                        if (stop.category != null) {
-                            val categoryUi = stop.category.toUi()
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    imageVector = categoryUi.icon,
-                                    contentDescription = null,
-                                    tint = Color.Gray,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = stringResource(categoryUi.titleResource),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = Color.Gray
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Connector line (except for the last item)
-        if (showConnector && !isLast) {
-            Spacer(modifier = Modifier.height(Spacing.Small))
-            
-            // Draw dashed line connector
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-                    .padding(start = 20.dp)
-            ) {
-                val path = Path().apply {
-                    moveTo(0f, 0f)
-                    lineTo(0f, size.height)
-                }
-                
-                drawPath(
-                    path = path,
-                    color = OrangeMain,
-                    style = Stroke(
-                        width = 2.dp.toPx(),
-                        pathEffect = androidx.compose.ui.graphics.PathEffect.dashPathEffect(
-                            floatArrayOf(10f, 10f)
-                        )
+
+                    Text(
+                        text = stop.name,
+                        fontSize = TypographySizes.medium,
+                        fontWeight = FontWeight.Normal,
+                        color = Color.Black
                     )
-                )
+                }
             }
-            
-            Spacer(modifier = Modifier.height(Spacing.Small))
         }
+
     }
 }
