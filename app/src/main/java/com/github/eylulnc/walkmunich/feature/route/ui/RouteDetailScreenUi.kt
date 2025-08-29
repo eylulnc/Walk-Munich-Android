@@ -30,7 +30,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,7 +46,6 @@ import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewModel
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -143,19 +141,17 @@ private fun RouteDetailContent(routeDetail: RouteDetail) {
                 ItinerarySegment(
                     segment = segment,
                     displaySubtitle = routeDetail.segments.size != 1
-
                 )
             }
         }
     }
 }
 
-
 @Composable
 private fun ItinerarySegment(
     segment: RouteSegment,
     displaySubtitle: Boolean
-    ) {
+) {
     Column(
         modifier = Modifier.padding(Spacing.Medium),
         verticalArrangement = Arrangement.spacedBy(Spacing.Medium)

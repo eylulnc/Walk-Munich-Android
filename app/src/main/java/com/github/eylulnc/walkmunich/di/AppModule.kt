@@ -1,6 +1,5 @@
 package com.github.eylulnc.walkmunich.di
 
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.eylulnc.walkmunich.feature.home.data.city.repository.CityRepository
 import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityService
 import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityServiceImpl
@@ -15,7 +14,6 @@ import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewMode
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteListViewModel
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
