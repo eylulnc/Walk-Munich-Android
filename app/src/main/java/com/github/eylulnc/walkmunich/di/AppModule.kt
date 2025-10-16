@@ -3,9 +3,9 @@ package com.github.eylulnc.walkmunich.di
 import com.github.eylulnc.walkmunich.feature.home.data.city.repository.CityRepository
 import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityService
 import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityServiceImpl
-import com.github.eylulnc.walkmunich.feature.home.data.place.repository.PlacesRepository
-import com.github.eylulnc.walkmunich.feature.home.data.place.service.PlacesService
-import com.github.eylulnc.walkmunich.feature.home.data.place.service.PlacesServiceImpl
+import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
+import com.github.eylulnc.walkmunich.core.data.service.PlacesService
+import com.github.eylulnc.walkmunich.core.data.service.PlacesServiceImpl
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesRepository
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesService

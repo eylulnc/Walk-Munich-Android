@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.feature.home.data.place.service
+package com.github.eylulnc.walkmunich.core.data.service
 
 import android.content.Context
 import com.github.eylulnc.walkmunich.core.data.model.Place
@@ -15,7 +15,7 @@ class PlacesServiceImpl(
 
     override suspend fun fetchPlaces(): List<Place> = withContext(Dispatchers.IO) {
         delay(300)
-        val path = "api/place.min.json"
+        val path = "api/place.json"
         val text = context.assets.open(path).bufferedReader().use { it.readText() }
         json.decodeFromString(PlacesResponse.serializer(), text).places
     }

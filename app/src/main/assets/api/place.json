@@ -1,0 +1,645 @@
+{
+  "cityId": 1,
+  "cityName": "Munich",
+  "updatedAt": "2025-10-16T12:00:00Z",
+  "places": [
+    {
+      "id": 1,
+      "cityId": 1,
+      "name": "Marienplatz",
+      "category": "LANDMARK",
+      "imageUrl": "marienplatz",
+      "coords": { "lat": 48.137154, "lon": 11.575382 },
+      "address": "Marienplatz, 80331 München, Germany",
+      "openingHoursText": "Always open",
+      "priceRange": "LOW",
+      "tags": ["historic", "square", "central"],
+      "otherImages": ["marienplatz_2", "marienplatz_3"],
+      "story": {
+        "mainTitle": "The Heart of Munich",
+        "subTitle": "Historic City Center",
+        "overview": "Marienplatz is the central square in the heart of Munich's Altstadt (Old Town).",
+        "highlights": [
+          { "title": "Gothic Architecture", "text": "Home to the New Town Hall with its famous Glockenspiel." },
+          { "title": "Historic Significance", "text": "Dating back to 1158, it's been the city's main square for centuries." }
+        ]
+      },
+      "facts": [
+        { "text": "The square was named after the Mariensäule (Mary's Column) erected in 1638.", "sourceName": "Munich City Archives", "sourceUrl": "https://www.muenchen.de" }
+      ],
+      "attribution": [
+        { "text": "Photo by Munich Tourism Board", "url": "https://www.muenchen.de" }
+      ],
+      "updatedAt": "2025-08-14T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "cityId": 1,
+      "name": "Nymphenburg Palace",
+      "category": "LANDMARK",
+      "imageUrl": "nymphenburg_palace",
+      "coords": { "lat": 48.158902, "lon": 11.503906 },
+      "address": "Schloss Nymphenburg 1, 80638 München, Germany",
+      "openingHoursText": "9:00 AM - 6:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["palace", "baroque", "garden"],
+      "otherImages": ["nymphenburg_2", "nymphenburg_3"],
+      "story": {
+        "mainTitle": "Baroque Masterpiece",
+        "subTitle": "Summer Residence of Bavarian Kings",
+        "overview": "Nymphenburg Palace is one of the largest royal palaces in Europe.",
+        "highlights": [
+          { "title": "Baroque Architecture", "text": "Built in the 17th century, it showcases magnificent baroque design." },
+          { "title": "Beautiful Gardens", "text": "Surrounded by extensive gardens and parklands." }
+        ]
+      },
+      "facts": [
+        { "text": "Construction began in 1664 by Elector Ferdinand Maria.", "sourceName": "Bavarian Palace Department", "sourceUrl": "https://www.schloesser.bayern.de" }
+      ],
+      "attribution": [
+        { "text": "Photo by Bavarian Palace Department", "url": "https://www.schloesser.bayern.de" }
+      ],
+      "updatedAt": "2025-08-14T12:00:00Z"
+    },
+    {
+      "id": 3,
+      "cityId": 1,
+      "name": "BMW Museum",
+      "category": "MUSEUM",
+      "imageUrl": "bmw_museum",
+      "coords": { "lat": 48.177716, "lon": 11.5598 },
+      "address": "Am Olympiapark 2, 80809 München, Germany",
+      "openingHoursText": "10:00 AM - 6:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["automotive", "technology", "design"],
+      "otherImages": ["bmw_2", "bmw_3"],
+      "story": {
+        "mainTitle": "Automotive Excellence",
+        "subTitle": "BMW's Heritage and Innovation",
+        "overview": "The BMW Museum showcases the company's history and automotive innovations.",
+        "highlights": [
+          { "title": "Historic Collection", "text": "Features classic BMW models and concept cars." },
+          { "title": "Interactive Exhibits", "text": "Modern displays showcasing BMW's engineering achievements." }
+        ]
+      },
+      "facts": [
+        { "text": "Opened in 1973, the museum building is shaped like a car cylinder head.", "sourceName": "BMW Group", "sourceUrl": "https://www.bmwgroup.com" }
+      ],
+      "attribution": [
+        { "text": "Photo by BMW Group", "url": "https://www.bmwgroup.com" }
+      ],
+      "updatedAt": "2025-08-14T12:00:00Z"
+    },
+    {
+      "id": 4,
+      "cityId": 1,
+      "name": "Alter Peter Tower",
+      "category": "VIEWPOINT",
+      "imageUrl": "alter_peter",
+      "coords": { "lat": 48.137154, "lon": 11.575382 },
+      "address": "Rindermarkt 1, 80331 München, Germany",
+      "openingHoursText": "9:00 AM - 5:00 PM",
+      "priceRange": "LOW",
+      "tags": ["church", "tower", "viewpoint"],
+      "otherImages": ["alter_peter_2", "alter_peter_3"],
+      "story": {
+        "mainTitle": "Munich's Oldest Church",
+        "subTitle": "St. Peter's Church Tower",
+        "overview": "Alter Peter is Munich's oldest parish church, offering panoramic city views.",
+        "highlights": [
+          { "title": "Historic Church", "text": "First mentioned in 1225, it's the city's oldest church." },
+          { "title": "Panoramic Views", "text": "Climb the tower for breathtaking views of Munich." }
+        ]
+      },
+      "facts": [
+        { "text": "The church was first mentioned in documents from 1225.", "sourceName": "Munich City Archives", "sourceUrl": "https://www.muenchen.de" }
+      ],
+      "attribution": [
+        { "text": "Photo by Munich Tourism Board", "url": "https://www.muenchen.de" }
+      ],
+      "updatedAt": "2025-08-14T12:00:00Z"
+    },
+    {
+      "id": 5,
+      "cityId": 1,
+      "name": "Kanso Coffee",
+      "category": "COFFEE",
+      "imageUrl": "kanso",
+      "coords": { "lat": 48.137154, "lon": 11.575382 },
+      "address": "Kaufingerstraße 15, 80331 München, Germany",
+      "openingHoursText": "7:00 AM - 7:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["coffee", "specialty", "artisan"],
+      "otherImages": ["kanso_2", "kanso_3"],
+      "story": {
+        "mainTitle": "Artisan Coffee Experience",
+        "subTitle": "Specialty Coffee in Munich",
+        "overview": "Kanso Coffee offers high-quality, carefully sourced coffee beans and expert brewing.",
+        "highlights": [
+          { "title": "Quality Beans", "text": "Sourced from sustainable farms around the world." },
+          { "title": "Expert Brewing", "text": "Baristas trained in various brewing methods." }
+        ]
+      },
+      "facts": [
+        { "text": "Founded in 2018, Kanso focuses on single-origin coffee beans.", "sourceName": "Kanso Coffee", "sourceUrl": "https://www.kansocoffee.de" }
+      ],
+      "attribution": [
+        { "text": "Photo by Kanso Coffee", "url": "https://www.kansocoffee.de" }
+      ],
+      "updatedAt": "2025-08-14T12:00:00Z"
+    },
+    {
+      "id": 6,
+      "cityId": 1,
+      "name": "Hofbräuhaus",
+      "category": "FOOD",
+      "imageUrl": "hofbraeuhaus",
+      "coords": { "lat": 48.137154, "lon": 11.575382 },
+      "address": "Platzl 9, 80331 München, Germany",
+      "openingHoursText": "9:00 AM - 11:30 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["beer", "traditional", "bavarian"],
+      "otherImages": ["hofbraeuhaus_2", "hofbraeuhaus_3"],
+      "story": {
+        "mainTitle": "Bavarian Beer Tradition",
+        "subTitle": "Historic Beer Hall",
+        "overview": "Hofbräuhaus is one of Munich's most famous beer halls, serving traditional Bavarian cuisine.",
+        "highlights": [
+          { "title": "Historic Setting", "text": "Founded in 1589, it's one of Munich's oldest beer halls." },
+          { "title": "Traditional Cuisine", "text": "Authentic Bavarian dishes and world-famous beer." }
+        ]
+      },
+      "facts": [
+        { "text": "Founded in 1589 by Wilhelm V, Duke of Bavaria.", "sourceName": "Hofbräuhaus", "sourceUrl": "https://www.hofbraeuhaus.de" }
+      ],
+      "attribution": [
+        { "text": "Photo by Hofbräuhaus", "url": "https://www.hofbraeuhaus.de" }
+      ],
+      "updatedAt": "2025-08-14T12:00:00Z"
+    },
+    {
+      "id": 7,
+      "cityId": 1,
+      "name": "Viktualienmarkt",
+      "category": "FOOD",
+      "imageUrl": "viktualienmarkt",
+      "coords": { "lat": 48.1352, "lon": 11.5760 },
+      "address": "Viktualienmarkt 3, 80331 München, Germany",
+      "openingHoursText": "Mon–Sat 8:00 AM – 8:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["market", "local", "food"],
+      "otherImages": ["viktualienmarkt_2", "viktualienmarkt_3"],
+      "story": {
+        "mainTitle": "Munich's Open-Air Market",
+        "subTitle": "Fresh Produce & Delicacies",
+        "overview": "A bustling market with fresh produce, flowers, and Bavarian specialties.",
+        "highlights": [
+          { "title": "Beer Garden", "text": "A central beer garden shaded by chestnut trees." },
+          { "title": "Local Specialties", "text": "Cheeses, sausages, honey, and seasonal goods." }
+        ]
+      },
+      "facts": [
+        { "text": "The market moved here from Marienplatz in 1807.", "sourceName": "City of Munich" }
+      ],
+      "attribution": [
+        { "text": "Photo by Munich Tourism Board" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 8,
+      "cityId": 1,
+      "name": "Residenz München",
+      "category": "MUSEUM",
+      "imageUrl": "residenz",
+      "coords": { "lat": 48.1400, "lon": 11.5799 },
+      "address": "Residenzstraße 1, 80333 München, Germany",
+      "openingHoursText": "9:00 AM – 6:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["palace", "museum", "treasury"],
+      "otherImages": ["residenz_2", "residenz_3"],
+      "story": {
+        "mainTitle": "Seat of Bavarian Rulers",
+        "subTitle": "Palatial Rooms & Treasury",
+        "overview": "The largest city palace in Germany, with lavish rooms and a world-class treasury.",
+        "highlights": [
+          { "title": "Antiquarium", "text": "A Renaissance banquet hall of breathtaking scale." },
+          { "title": "Treasury", "text": "Royal regalia, crowns, and precious objects." }
+        ]
+      },
+      "facts": [
+        { "text": "Expanded over centuries from a 14th-century castle.", "sourceName": "Bavarian Administration of State-Owned Palaces" }
+      ],
+      "attribution": [
+        { "text": "Photo by Bayerische Schlösserverwaltung" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 9,
+      "cityId": 1,
+      "name": "Deutsches Museum",
+      "category": "MUSEUM",
+      "imageUrl": "deutsches_museum",
+      "coords": { "lat": 48.1303, "lon": 11.5820 },
+      "address": "Museumsinsel 1, 80538 München, Germany",
+      "openingHoursText": "9:00 AM – 5:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["science", "technology", "hands-on"],
+      "otherImages": ["deutsches_2", "deutsches_3"],
+      "story": {
+        "mainTitle": "Hands-On Science",
+        "subTitle": "World’s Largest Science Museum",
+        "overview": "Interactive exhibits spanning physics, aviation, space, and computing.",
+        "highlights": [
+          { "title": "Historic Aircraft", "text": "Original planes and engineering marvels." },
+          { "title": "Experiment Areas", "text": "Try science with guided demos and labs." }
+        ]
+      },
+      "facts": [
+        { "text": "Founded 1903; on its own island on the Isar River.", "sourceName": "Deutsches Museum" }
+      ],
+      "attribution": [
+        { "text": "Photo by Deutsches Museum" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 10,
+      "cityId": 1,
+      "name": "English Garden (Eisbachwelle)",
+      "category": "LANDMARK",
+      "imageUrl": "english_garden_eisbach",
+      "coords": { "lat": 48.1420, "lon": 11.5879 },
+      "address": "Prinzregentenstraße, 80538 München, Germany",
+      "openingHoursText": "Always open",
+      "priceRange": "LOW",
+      "tags": ["park", "surfing", "nature"],
+      "otherImages": ["eisbach_2", "eisbach_3"],
+      "story": {
+        "mainTitle": "City Surfing",
+        "subTitle": "The Eisbach Wave",
+        "overview": "A standing river wave where surfers ride year-round in the city center.",
+        "highlights": [
+          { "title": "Urban Surf Spot", "text": "Unique surf culture in a public park." },
+          { "title": "Scenic Walks", "text": "Trails, meadows, and beer gardens nearby." }
+        ]
+      },
+      "facts": [
+        { "text": "The English Garden is among the largest urban parks worldwide.", "sourceName": "City of Munich" }
+      ],
+      "attribution": [
+        { "text": "Photo by München Tourismus" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 11,
+      "cityId": 1,
+      "name": "Allianz Arena",
+      "category": "LANDMARK",
+      "imageUrl": "allianz_arena",
+      "coords": { "lat": 48.2188, "lon": 11.6247 },
+      "address": "Werner-Heisenberg-Allee 25, 80939 München, Germany",
+      "openingHoursText": "Tour times vary",
+      "priceRange": "MEDIUM",
+      "tags": ["football", "architecture", "stadium"],
+      "otherImages": ["allianz_2", "allianz_3"],
+      "story": {
+        "mainTitle": "Iconic Stadium",
+        "subTitle": "Home of FC Bayern",
+        "overview": "Futuristic facade illuminated in team colors; tours and museum available.",
+        "highlights": [
+          { "title": "Illuminated Panels", "text": "ETFE cushions glow in vibrant colors." },
+          { "title": "Arena Tours", "text": "Locker rooms, tunnel, and pitch views." }
+        ]
+      },
+      "facts": [
+        { "text": "Opened in 2005; designed by Herzog & de Meuron.", "sourceName": "FC Bayern München" }
+      ],
+      "attribution": [
+        { "text": "Photo by FC Bayern" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 12,
+      "cityId": 1,
+      "name": "Olympiapark",
+      "category": "VIEWPOINT",
+      "imageUrl": "olympiapark",
+      "coords": { "lat": 48.1731, "lon": 11.5460 },
+      "address": "Spiridon-Louis-Ring 21, 80809 München, Germany",
+      "openingHoursText": "Always open (sites vary)",
+      "priceRange": "LOW",
+      "tags": ["park", "architecture", "views"],
+      "otherImages": ["olympia_2", "olympia_3"],
+      "story": {
+        "mainTitle": "1972 Olympic Legacy",
+        "subTitle": "Tent Roof & Tower",
+        "overview": "A landmark park with a sweeping tensile roof and panoramic tower.",
+        "highlights": [
+          { "title": "Olympiaturm", "text": "Observation deck with city and Alps views." },
+          { "title": "Events & Lakes", "text": "Concerts, sports, and paddle boating." }
+        ]
+      },
+      "facts": [
+        { "text": "The roof was revolutionary lightweight architecture.", "sourceName": "Olympiapark München" }
+      ],
+      "attribution": [
+        { "text": "Photo by Olympiapark München" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 13,
+      "cityId": 1,
+      "name": "Asamkirche (St. Johann Nepomuk)",
+      "category": "LANDMARK",
+      "imageUrl": "asamkirche",
+      "coords": { "lat": 48.1341, "lon": 11.5709 },
+      "address": "Sendlinger Str. 32, 80331 München, Germany",
+      "openingHoursText": "9:00 AM – 5:30 PM",
+      "priceRange": "LOW",
+      "tags": ["church", "baroque", "interior"],
+      "otherImages": ["asam_2", "asam_3"],
+      "story": {
+        "mainTitle": "Rococo Gem",
+        "subTitle": "Built by the Asam Brothers",
+        "overview": "An ornate small church packed with Baroque/Rococo artistry.",
+        "highlights": [
+          { "title": "Dramatic Interior", "text": "Stucco, frescoes, and gilded details." },
+          { "title": "Artist’s Vision", "text": "Originally a private chapel for the builders." }
+        ]
+      },
+      "facts": [
+        { "text": "Completed around 1746 by Egid Quirin and Cosmas Damian Asam.", "sourceName": "Parish Information" }
+      ],
+      "attribution": [
+        { "text": "Photo by München Tourismus" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 14,
+      "cityId": 1,
+      "name": "Theatinerkirche",
+      "category": "LANDMARK",
+      "imageUrl": "theatinerkirche",
+      "coords": { "lat": 48.1421, "lon": 11.5775 },
+      "address": "Salvatorplatz 2A, 80333 München, Germany",
+      "openingHoursText": "9:00 AM – 7:00 PM",
+      "priceRange": "LOW",
+      "tags": ["church", "baroque", "yellow"],
+      "otherImages": ["theatiner_2", "theatiner_3"],
+      "story": {
+        "mainTitle": "Lemon-Yellow Landmark",
+        "subTitle": "Baroque Basilica",
+        "overview": "A striking Baroque church marking Odeonsplatz with twin towers and dome.",
+        "highlights": [
+          { "title": "Royal Tombs", "text": "Resting place of Wittelsbach dynasty members." },
+          { "title": "Serene Interior", "text": "White stucco and elegant proportions." }
+        ]
+      },
+      "facts": [
+        { "text": "Construction started 1663 by Italian architects.", "sourceName": "Parish Information" }
+      ],
+      "attribution": [
+        { "text": "Photo by München Tourismus" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 15,
+      "cityId": 1,
+      "name": "Alte Pinakothek",
+      "category": "MUSEUM",
+      "imageUrl": "alte_pinakothek",
+      "coords": { "lat": 48.1484, "lon": 11.5719 },
+      "address": "Barer Str. 27, 80333 München, Germany",
+      "openingHoursText": "10:00 AM – 6:00 PM (Tue closed)",
+      "priceRange": "MEDIUM",
+      "tags": ["art", "old-masters", "gallery"],
+      "otherImages": ["alte_2", "alte_3"],
+      "story": {
+        "mainTitle": "Old Masters",
+        "subTitle": "European Painting Highlights",
+        "overview": "Masterpieces by Dürer, Rubens, Rembrandt, and more.",
+        "highlights": [
+          { "title": "Rubens Cycle", "text": "One of the largest collections of Rubens." },
+          { "title": "Dürer", "text": "Famous self-portrait and altarpieces." }
+        ]
+      },
+      "facts": [
+        { "text": "Commissioned by King Ludwig I; opened 1836.", "sourceName": "Bayerische Staatsgemäldesammlungen" }
+      ],
+      "attribution": [
+        { "text": "Photo by Alte Pinakothek" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 16,
+      "cityId": 1,
+      "name": "Pinakothek der Moderne",
+      "category": "MUSEUM",
+      "imageUrl": "pinakothek_der_moderne",
+      "coords": { "lat": 48.1479, "lon": 11.5713 },
+      "address": "Barer Str. 40, 80333 München, Germany",
+      "openingHoursText": "10:00 AM – 6:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["modern-art", "design", "architecture"],
+      "otherImages": ["pdm_2", "pdm_3"],
+      "story": {
+        "mainTitle": "Four Museums in One",
+        "subTitle": "Art, Architecture, Design, Graphics",
+        "overview": "A major modern and contemporary art hub with iconic rotunda.",
+        "highlights": [
+          { "title": "Design Sammlung", "text": "Industrial and product design icons." },
+          { "title": "Rotunda", "text": "Striking central space for installations." }
+        ]
+      },
+      "facts": [
+        { "text": "Opened in 2002; designed by Stephan Braunfels.", "sourceName": "Pinakotheken" }
+      ],
+      "attribution": [
+        { "text": "Photo by Pinakothek der Moderne" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 17,
+      "cityId": 1,
+      "name": "Neue Pinakothek (Collection Highlights)",
+      "category": "MUSEUM",
+      "imageUrl": "neue_pinakothek",
+      "coords": { "lat": 48.1489, "lon": 11.5726 },
+      "address": "Barer Str. 29, 80799 München, Germany",
+      "openingHoursText": "Check current status",
+      "priceRange": "MEDIUM",
+      "tags": ["art", "19th-century", "impressionism"],
+      "otherImages": ["neue_2", "neue_3"],
+      "story": {
+        "mainTitle": "19th-Century Art",
+        "subTitle": "From Classicism to Impressionism",
+        "overview": "Masterpieces by Van Gogh, Monet, and German Romantics (venue status varies).",
+        "highlights": [
+          { "title": "Van Gogh", "text": "Iconic sunflower studies and landscapes." },
+          { "title": "Monet", "text": "Shimmering light studies and gardens." }
+        ]
+      },
+      "facts": [
+        { "text": "Founded by King Ludwig I; current building under renovation phases.", "sourceName": "Pinakotheken" }
+      ],
+      "attribution": [
+        { "text": "Photo by Pinakotheken" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 18,
+      "cityId": 1,
+      "name": "Café Frischhut (Schmalznudel)",
+      "category": "FOOD",
+      "imageUrl": "frischhut",
+      "coords": { "lat": 48.1345, "lon": 11.5732 },
+      "address": "Prälat-Zistl-Str. 8, 80331 München, Germany",
+      "openingHoursText": "6:00 AM – 6:00 PM",
+      "priceRange": "LOW",
+      "tags": ["bakery", "pastry", "traditional"],
+      "otherImages": ["frischhut_2", "frischhut_3"],
+      "story": {
+        "mainTitle": "Munich’s Sweet Tradition",
+        "subTitle": "Schmalznudel & Rohrnudel",
+        "overview": "Beloved spot for fresh, warm Bavarian pastries.",
+        "highlights": [
+          { "title": "Schmalznudel", "text": "Crispy outside, fluffy inside." },
+          { "title": "Coffee & Treats", "text": "Perfect morning stop near Viktualienmarkt." }
+        ]
+      },
+      "facts": [
+        { "text": "Family-run institution for decades.", "sourceName": "Local Guides" }
+      ],
+      "attribution": [
+        { "text": "Photo by Café Frischhut" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 19,
+      "cityId": 1,
+      "name": "Man Versus Machine Coffee Roasters",
+      "category": "COFFEE",
+      "imageUrl": "mvm_coffee",
+      "coords": { "lat": 48.1306, "lon": 11.5658 },
+      "address": "Müllerstraße 23, 80469 München, Germany",
+      "openingHoursText": "8:00 AM – 6:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["coffee", "roastery", "specialty"],
+      "otherImages": ["mvm_2", "mvm_3"],
+      "story": {
+        "mainTitle": "Specialty Roastery",
+        "subTitle": "Third-Wave Coffee",
+        "overview": "Minimalist shop with award-winning beans and precise brews.",
+        "highlights": [
+          { "title": "Filter & Espresso", "text": "Rotating single-origin lineup." },
+          { "title": "Roastery", "text": "Careful sourcing and roasting profiles." }
+        ]
+      },
+      "facts": [
+        { "text": "Known for competition-level roasting.", "sourceName": "Specialty Coffee Community" }
+      ],
+      "attribution": [
+        { "text": "Photo by MvM Coffee" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 20,
+      "cityId": 1,
+      "name": "Dallmayr Delikatessen",
+      "category": "FOOD",
+      "imageUrl": "dallmayr",
+      "coords": { "lat": 48.1380, "lon": 11.5768 },
+      "address": "Dienerstraße 14-15, 80331 München, Germany",
+      "openingHoursText": "Mon–Sat 9:30 AM – 7:00 PM",
+      "priceRange": "HIGH",
+      "tags": ["delicatessen", "gourmet", "historic"],
+      "otherImages": ["dallmayr_2", "dallmayr_3"],
+      "story": {
+        "mainTitle": "Gourmet Institution",
+        "subTitle": "Fine Foods & Coffee",
+        "overview": "Historic delicatessen with premium foods, pâtisserie, and coffee.",
+        "highlights": [
+          { "title": "Food Hall", "text": "Counters of cheeses, meats, and sweets." },
+          { "title": "Café & Restaurant", "text": "Elegant stops upstairs." }
+        ]
+      },
+      "facts": [
+        { "text": "Roots back to the 18th century.", "sourceName": "Dallmayr" }
+      ],
+      "attribution": [
+        { "text": "Photo by Dallmayr" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 21,
+      "cityId": 1,
+      "name": "Schneider Bräuhaus",
+      "category": "FOOD",
+      "imageUrl": "schneider_braeuhaus",
+      "coords": { "lat": 48.1363, "lon": 11.5772 },
+      "address": "Tal 7, 80331 München, Germany",
+      "openingHoursText": "10:00 AM – 11:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["beer", "weissbier", "bavarian"],
+      "otherImages": ["schneider_2", "schneider_3"],
+      "story": {
+        "mainTitle": "Weißbier Legend",
+        "subTitle": "Classic Bavarian Pub",
+        "overview": "Historic brewery restaurant famous for wheat beers.",
+        "highlights": [
+          { "title": "Tap Selection", "text": "From Original to Aventinus." },
+          { "title": "Hearty Fare", "text": "Sausages, roast pork, dumplings." }
+        ]
+      },
+      "facts": [
+        { "text": "Schneider Weisse dates to 1872.", "sourceName": "Schneider Weisse" }
+      ],
+      "attribution": [
+        { "text": "Photo by Schneider Bräuhaus" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    },
+    {
+      "id": 22,
+      "cityId": 1,
+      "name": "Cafe Luitpold",
+      "category": "COFFEE",
+      "imageUrl": "cafe_luitpold",
+      "coords": { "lat": 48.1408, "lon": 11.5774 },
+      "address": "Brienner Str. 11, 80333 München, Germany",
+      "openingHoursText": "8:00 AM – 10:00 PM",
+      "priceRange": "MEDIUM",
+      "tags": ["café", "patisserie", "historic"],
+      "otherImages": ["luitpold_2", "luitpold_3"],
+      "story": {
+        "mainTitle": "Belle Époque Café",
+        "subTitle": "Patisserie & Coffeehouse",
+        "overview": "Elegant café serving cakes, chocolates, and refined coffee.",
+        "highlights": [
+          { "title": "Torts & Pralines", "text": "House-made sweets and classics." },
+          { "title": "Salon Ambience", "text": "Historic interior reimagined." }
+        ]
+      },
+      "facts": [
+        { "text": "A Munich café icon with a storied past.", "sourceName": "Cafe Luitpold" }
+      ],
+      "attribution": [
+        { "text": "Photo by Cafe Luitpold" }
+      ],
+      "updatedAt": "2025-10-16T12:00:00Z"
+    }
+  ]
+}

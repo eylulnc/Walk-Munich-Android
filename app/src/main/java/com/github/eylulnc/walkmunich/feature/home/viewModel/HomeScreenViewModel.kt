@@ -6,7 +6,7 @@ import com.github.eylulnc.walkmunich.core.data.model.City
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.SearchResult
 import com.github.eylulnc.walkmunich.feature.home.data.city.repository.CityRepository
-import com.github.eylulnc.walkmunich.feature.home.data.place.repository.PlacesRepository
+import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

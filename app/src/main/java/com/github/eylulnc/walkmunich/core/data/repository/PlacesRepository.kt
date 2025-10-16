@@ -1,7 +1,7 @@
-package com.github.eylulnc.walkmunich.feature.home.data.place.repository
+package com.github.eylulnc.walkmunich.core.data.repository
 
 import com.github.eylulnc.walkmunich.core.data.model.Place
-import com.github.eylulnc.walkmunich.feature.home.data.place.service.PlacesService
+import com.github.eylulnc.walkmunich.core.data.service.PlacesService
 
 class PlacesRepository(
     private val service: PlacesService
