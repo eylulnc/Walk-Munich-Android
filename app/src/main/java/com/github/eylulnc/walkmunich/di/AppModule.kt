@@ -1,8 +1,8 @@
 package com.github.eylulnc.walkmunich.di
 
-import com.github.eylulnc.walkmunich.feature.home.data.city.repository.CityRepository
-import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityService
-import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityServiceImpl
+import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
+import com.github.eylulnc.walkmunich.feature.home.data.service.CityService
+import com.github.eylulnc.walkmunich.feature.home.data.service.CityServiceImpl
 import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
 import com.github.eylulnc.walkmunich.core.data.service.PlacesService
 import com.github.eylulnc.walkmunich.core.data.service.PlacesServiceImpl
