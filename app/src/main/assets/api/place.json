@@ -17,7 +17,6 @@
       "otherImages": ["marienplatz_2", "marienplatz_3"],
       "story": {
         "mainTitle": "The Heart of Munich",
-        "subTitle": "Historic City Center",
         "overview": "Marienplatz is the central square in the heart of Munich's Altstadt (Old Town).",
         "highlights": [
           { "title": "Gothic Architecture", "text": "Home to the New Town Hall with its famous Glockenspiel." },
@@ -46,7 +45,6 @@
       "otherImages": ["nymphenburg_2", "nymphenburg_3"],
       "story": {
         "mainTitle": "Baroque Masterpiece",
-        "subTitle": "Summer Residence of Bavarian Kings",
         "overview": "Nymphenburg Palace is one of the largest royal palaces in Europe.",
         "highlights": [
           { "title": "Baroque Architecture", "text": "Built in the 17th century, it showcases magnificent baroque design." },
@@ -75,7 +73,6 @@
       "otherImages": ["bmw_2", "bmw_3"],
       "story": {
         "mainTitle": "Automotive Excellence",
-        "subTitle": "BMW's Heritage and Innovation",
         "overview": "The BMW Museum showcases the company's history and automotive innovations.",
         "highlights": [
           { "title": "Historic Collection", "text": "Features classic BMW models and concept cars." },
@@ -104,7 +101,6 @@
       "otherImages": ["alter_peter_2", "alter_peter_3"],
       "story": {
         "mainTitle": "Munich's Oldest Church",
-        "subTitle": "St. Peter's Church Tower",
         "overview": "Alter Peter is Munich's oldest parish church, offering panoramic city views.",
         "highlights": [
           { "title": "Historic Church", "text": "First mentioned in 1225, it's the city's oldest church." },
@@ -133,7 +129,6 @@
       "otherImages": ["kanso_2", "kanso_3"],
       "story": {
         "mainTitle": "Artisan Coffee Experience",
-        "subTitle": "Specialty Coffee in Munich",
         "overview": "Kanso Coffee offers high-quality, carefully sourced coffee beans and expert brewing.",
         "highlights": [
           { "title": "Quality Beans", "text": "Sourced from sustainable farms around the world." },
@@ -162,7 +157,6 @@
       "otherImages": ["hofbraeuhaus_2", "hofbraeuhaus_3"],
       "story": {
         "mainTitle": "Bavarian Beer Tradition",
-        "subTitle": "Historic Beer Hall",
         "overview": "Hofbräuhaus is one of Munich's most famous beer halls, serving traditional Bavarian cuisine.",
         "highlights": [
           { "title": "Historic Setting", "text": "Founded in 1589, it's one of Munich's oldest beer halls." },
@@ -191,7 +185,6 @@
       "otherImages": ["viktualienmarkt_2", "viktualienmarkt_3"],
       "story": {
         "mainTitle": "Munich's Open-Air Market",
-        "subTitle": "Fresh Produce & Delicacies",
         "overview": "A bustling market with fresh produce, flowers, and Bavarian specialties.",
         "highlights": [
           { "title": "Beer Garden", "text": "A central beer garden shaded by chestnut trees." },
@@ -220,7 +213,6 @@
       "otherImages": ["residenz_2", "residenz_3"],
       "story": {
         "mainTitle": "Seat of Bavarian Rulers",
-        "subTitle": "Palatial Rooms & Treasury",
         "overview": "The largest city palace in Germany, with lavish rooms and a world-class treasury.",
         "highlights": [
           { "title": "Antiquarium", "text": "A Renaissance banquet hall of breathtaking scale." },
@@ -249,7 +241,6 @@
       "otherImages": ["deutsches_2", "deutsches_3"],
       "story": {
         "mainTitle": "Hands-On Science",
-        "subTitle": "World’s Largest Science Museum",
         "overview": "Interactive exhibits spanning physics, aviation, space, and computing.",
         "highlights": [
           { "title": "Historic Aircraft", "text": "Original planes and engineering marvels." },
@@ -278,7 +269,6 @@
       "otherImages": ["eisbach_2", "eisbach_3"],
       "story": {
         "mainTitle": "City Surfing",
-        "subTitle": "The Eisbach Wave",
         "overview": "A standing river wave where surfers ride year-round in the city center.",
         "highlights": [
           { "title": "Urban Surf Spot", "text": "Unique surf culture in a public park." },
@@ -307,7 +297,6 @@
       "otherImages": ["allianz_2", "allianz_3"],
       "story": {
         "mainTitle": "Iconic Stadium",
-        "subTitle": "Home of FC Bayern",
         "overview": "Futuristic facade illuminated in team colors; tours and museum available.",
         "highlights": [
           { "title": "Illuminated Panels", "text": "ETFE cushions glow in vibrant colors." },
@@ -336,7 +325,6 @@
       "otherImages": ["olympia_2", "olympia_3"],
       "story": {
         "mainTitle": "1972 Olympic Legacy",
-        "subTitle": "Tent Roof & Tower",
         "overview": "A landmark park with a sweeping tensile roof and panoramic tower.",
         "highlights": [
           { "title": "Olympiaturm", "text": "Observation deck with city and Alps views." },
@@ -365,7 +353,6 @@
       "otherImages": ["asam_2", "asam_3"],
       "story": {
         "mainTitle": "Rococo Gem",
-        "subTitle": "Built by the Asam Brothers",
         "overview": "An ornate small church packed with Baroque/Rococo artistry.",
         "highlights": [
           { "title": "Dramatic Interior", "text": "Stucco, frescoes, and gilded details." },
@@ -394,7 +381,6 @@
       "otherImages": ["theatiner_2", "theatiner_3"],
       "story": {
         "mainTitle": "Lemon-Yellow Landmark",
-        "subTitle": "Baroque Basilica",
         "overview": "A striking Baroque church marking Odeonsplatz with twin towers and dome.",
         "highlights": [
           { "title": "Royal Tombs", "text": "Resting place of Wittelsbach dynasty members." },
@@ -423,7 +409,6 @@
       "otherImages": ["alte_2", "alte_3"],
       "story": {
         "mainTitle": "Old Masters",
-        "subTitle": "European Painting Highlights",
         "overview": "Masterpieces by Dürer, Rubens, Rembrandt, and more.",
         "highlights": [
           { "title": "Rubens Cycle", "text": "One of the largest collections of Rubens." },
@@ -452,7 +437,6 @@
       "otherImages": ["pdm_2", "pdm_3"],
       "story": {
         "mainTitle": "Four Museums in One",
-        "subTitle": "Art, Architecture, Design, Graphics",
         "overview": "A major modern and contemporary art hub with iconic rotunda.",
         "highlights": [
           { "title": "Design Sammlung", "text": "Industrial and product design icons." },
@@ -481,7 +465,6 @@
       "otherImages": ["neue_2", "neue_3"],
       "story": {
         "mainTitle": "19th-Century Art",
-        "subTitle": "From Classicism to Impressionism",
         "overview": "Masterpieces by Van Gogh, Monet, and German Romantics (venue status varies).",
         "highlights": [
           { "title": "Van Gogh", "text": "Iconic sunflower studies and landscapes." },
@@ -510,7 +493,6 @@
       "otherImages": ["frischhut_2", "frischhut_3"],
       "story": {
         "mainTitle": "Munich’s Sweet Tradition",
-        "subTitle": "Schmalznudel & Rohrnudel",
         "overview": "Beloved spot for fresh, warm Bavarian pastries.",
         "highlights": [
           { "title": "Schmalznudel", "text": "Crispy outside, fluffy inside." },
@@ -539,7 +521,6 @@
       "otherImages": ["mvm_2", "mvm_3"],
       "story": {
         "mainTitle": "Specialty Roastery",
-        "subTitle": "Third-Wave Coffee",
         "overview": "Minimalist shop with award-winning beans and precise brews.",
         "highlights": [
           { "title": "Filter & Espresso", "text": "Rotating single-origin lineup." },
@@ -568,7 +549,6 @@
       "otherImages": ["dallmayr_2", "dallmayr_3"],
       "story": {
         "mainTitle": "Gourmet Institution",
-        "subTitle": "Fine Foods & Coffee",
         "overview": "Historic delicatessen with premium foods, pâtisserie, and coffee.",
         "highlights": [
           { "title": "Food Hall", "text": "Counters of cheeses, meats, and sweets." },
@@ -597,7 +577,6 @@
       "otherImages": ["schneider_2", "schneider_3"],
       "story": {
         "mainTitle": "Weißbier Legend",
-        "subTitle": "Classic Bavarian Pub",
         "overview": "Historic brewery restaurant famous for wheat beers.",
         "highlights": [
           { "title": "Tap Selection", "text": "From Original to Aventinus." },
@@ -626,7 +605,6 @@
       "otherImages": ["luitpold_2", "luitpold_3"],
       "story": {
         "mainTitle": "Belle Époque Café",
-        "subTitle": "Patisserie & Coffeehouse",
         "overview": "Elegant café serving cakes, chocolates, and refined coffee.",
         "highlights": [
           { "title": "Torts & Pralines", "text": "House-made sweets and classics." },
