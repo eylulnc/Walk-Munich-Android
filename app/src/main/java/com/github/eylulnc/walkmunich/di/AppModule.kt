@@ -1,11 +1,11 @@
 package com.github.eylulnc.walkmunich.di
 
-import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
-import com.github.eylulnc.walkmunich.feature.home.data.service.CityService
-import com.github.eylulnc.walkmunich.feature.home.data.service.CityServiceImpl
 import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
 import com.github.eylulnc.walkmunich.core.data.service.PlacesService
 import com.github.eylulnc.walkmunich.core.data.service.PlacesServiceImpl
+import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
+import com.github.eylulnc.walkmunich.feature.home.data.service.CityService
+import com.github.eylulnc.walkmunich.feature.home.data.service.CityServiceImpl
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import com.github.eylulnc.walkmunich.feature.place.viewmodel.PlaceViewModel
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesRepository
@@ -15,6 +15,7 @@ import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewMode
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteListViewModel
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -33,5 +34,8 @@ val appModule = module {
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::RouteListViewModel)
     viewModelOf(::RouteDetailViewModel)
-    viewModelOf(::PlaceViewModel)
+
+    viewModel { (placeId: Long, subTitle: String?) ->
+        PlaceViewModel(get(), placeId, subTitle)
+    }
 }
