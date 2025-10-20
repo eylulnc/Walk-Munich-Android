@@ -7,6 +7,7 @@ import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
 import com.github.eylulnc.walkmunich.core.data.service.PlacesService
 import com.github.eylulnc.walkmunich.core.data.service.PlacesServiceImpl
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
+import com.github.eylulnc.walkmunich.feature.place.viewmodel.PlaceViewModel
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesRepository
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesService
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesServiceImpl
@@ -32,4 +33,5 @@ val appModule = module {
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::RouteListViewModel)
     viewModelOf(::RouteDetailViewModel)
+    viewModelOf(::PlaceViewModel)
 }

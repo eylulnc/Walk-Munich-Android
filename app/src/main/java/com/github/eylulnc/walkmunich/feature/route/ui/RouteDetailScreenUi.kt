@@ -2,6 +2,7 @@ package com.github.eylulnc.walkmunich.feature.route.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun RouteDetailScreenUi(
     viewModel: RouteDetailViewModel = koinViewModel(),
+    onPlaceItemClick: (Long) -> Unit,
     onBackClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -119,14 +121,14 @@ fun RouteDetailScreenUi(
             }
 
             state.routeDetail != null -> {
-                RouteDetailContent(routeDetail = state.routeDetail!!)
+                RouteDetailContent(routeDetail = state.routeDetail!!, onPlaceItemClick = onPlaceItemClick)
             }
         }
     }
 }
 
 @Composable
-private fun RouteDetailContent(routeDetail: RouteDetail) {
+private fun RouteDetailContent(routeDetail: RouteDetail, onPlaceItemClick: (Long) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -140,7 +142,8 @@ private fun RouteDetailContent(routeDetail: RouteDetail) {
             routeDetail.segments.forEachIndexed { segmentIndex, segment ->
                 ItinerarySegment(
                     segment = segment,
-                    displaySubtitle = routeDetail.segments.size != 1
+                    displaySubtitle = routeDetail.segments.size != 1,
+                    onPlaceItemClick = onPlaceItemClick
                 )
             }
         }
@@ -150,7 +153,8 @@ private fun RouteDetailContent(routeDetail: RouteDetail) {
 @Composable
 private fun ItinerarySegment(
     segment: RouteSegment,
-    displaySubtitle: Boolean
+    displaySubtitle: Boolean,
+    onPlaceItemClick: (Long) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(Spacing.Medium),
@@ -167,7 +171,8 @@ private fun ItinerarySegment(
 
         segment.stops.forEachIndexed { stopIndex, stop ->
             RouteStopItem(
-                stop = stop
+                stop = stop,
+                onClick = { onPlaceItemClick(stop.placeId) }
             )
         }
     }
@@ -175,7 +180,8 @@ private fun ItinerarySegment(
 
 @Composable
 private fun RouteStopItem(
-    stop: RouteStop
+    stop: RouteStop,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -206,7 +212,8 @@ private fun RouteStopItem(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = Spacing.Small),
+                    .padding(start = Spacing.Small)
+                    .clickable(onClick = onClick),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 shape = RoundedCornerShape(Spacing.CornerRadius),
@@ -241,6 +248,5 @@ private fun RouteStopItem(
                 }
             }
         }
-
     }
 }

@@ -28,6 +28,7 @@ import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
+import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
 import org.koin.androidx.compose.koinViewModel
@@ -94,7 +95,13 @@ fun NavigationRoot(
                         NavEntry(key = key) {
                             HomeScreenUi(
                                 onCategoryClick = { /* TODO */ },
-                                onPlaceItemClick = { /* TODO */ }
+                                onPlaceItemClick = { placeId ->
+                                    homeBackStack.add(
+                                        PlaceDetailScreen(
+                                            placeId
+                                        )
+                                    )
+                                }
                             )
                         }
                     }
@@ -115,7 +122,14 @@ fun NavigationRoot(
                                 viewModel = koinViewModel {
                                     parametersOf(key.routeId)
                                 },
-                                onBackClick = { routeBackStack.remove(key) }
+                                onBackClick = { routeBackStack.remove(key) },
+                                onPlaceItemClick = { placeId ->
+                                    routeBackStack.add(
+                                        PlaceDetailScreen(
+                                            placeId
+                                        )
+                                    )
+                                }
                             )
                         }
                     }
@@ -125,6 +139,19 @@ fun NavigationRoot(
                             Text(
                                 "Favorites",
                                 modifier = Modifier.safeContentPadding()
+                            )
+                        }
+                    }
+
+                    is PlaceDetailScreen -> {
+                        NavEntry(key = key) {
+                            PlaceDetailScreenUi(
+                                viewModel = koinViewModel {
+                                    parametersOf(key.placeId)
+                                },
+                                onBackClick = {
+                                    currentBackStack.remove(key)
+                                }
                             )
                         }
                     }

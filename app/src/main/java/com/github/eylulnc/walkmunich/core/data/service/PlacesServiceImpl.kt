@@ -19,4 +19,10 @@ class PlacesServiceImpl(
         val text = context.assets.open(path).bufferedReader().use { it.readText() }
         json.decodeFromString(PlacesResponse.serializer(), text).places
     }
+
+    override suspend fun getPlace(id: Long): Place {
+        return fetchPlaces().first { it.id == id }
+    }
+
+
 }

@@ -7,4 +7,5 @@ class PlacesRepository(
     private val service: PlacesService
 ) {
     suspend fun getPlaces(): List<Place> = service.fetchPlaces()
+    suspend fun getPlace(id:Long): Place = service.getPlace(id)
 }
