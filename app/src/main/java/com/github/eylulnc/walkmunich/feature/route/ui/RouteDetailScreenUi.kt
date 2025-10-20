@@ -53,7 +53,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun RouteDetailScreenUi(
     viewModel: RouteDetailViewModel = koinViewModel(),
-    onPlaceItemClick: (Long) -> Unit,
+    onPlaceItemClick: (Long, String?) -> Unit,
     onBackClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -103,7 +103,7 @@ fun RouteDetailScreenUi(
 }
 
 @Composable
-private fun RouteDetailContent(routeDetail: RouteDetail, onPlaceItemClick: (Long) -> Unit) {
+private fun RouteDetailContent(routeDetail: RouteDetail, onPlaceItemClick: (Long, String?) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -129,7 +129,7 @@ private fun RouteDetailContent(routeDetail: RouteDetail, onPlaceItemClick: (Long
 private fun ItinerarySegment(
     segment: RouteSegment,
     displaySubtitle: Boolean,
-    onPlaceItemClick: (Long) -> Unit
+    onPlaceItemClick: (Long, String?) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(Spacing.Medium),
@@ -145,9 +145,11 @@ private fun ItinerarySegment(
         }
 
         segment.stops.forEachIndexed { stopIndex, stop ->
+            val nextStop = segment.stops.getOrNull(stopIndex + 1)
+            val subTitle = nextStop?.let { "Next stop: ${it.name}" }
             RouteStopItem(
                 stop = stop,
-                onClick = { onPlaceItemClick(stop.placeId) }
+                onClick = { onPlaceItemClick(stop.placeId, subTitle) }
             )
         }
     }

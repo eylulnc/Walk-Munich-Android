@@ -123,10 +123,11 @@ fun NavigationRoot(
                                     parametersOf(key.routeId)
                                 },
                                 onBackClick = { routeBackStack.remove(key) },
-                                onPlaceItemClick = { placeId ->
+                                onPlaceItemClick = { placeId, subTitle ->
                                     routeBackStack.add(
                                         PlaceDetailScreen(
-                                            placeId
+                                            placeId,
+                                            subTitle
                                         )
                                     )
                                 }
@@ -147,7 +148,7 @@ fun NavigationRoot(
                         NavEntry(key = key) {
                             PlaceDetailScreenUi(
                                 viewModel = koinViewModel {
-                                    parametersOf(key.placeId)
+                                    parametersOf(key.placeId, key.nextStop)
                                 },
                                 onBackClick = {
                                     currentBackStack.remove(key)

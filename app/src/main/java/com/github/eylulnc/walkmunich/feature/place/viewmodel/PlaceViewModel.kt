@@ -12,18 +12,21 @@ import kotlinx.coroutines.launch
 data class PlaceUiState(
     val isLoading: Boolean = true,
     val place: Place? = null,
+    val subTitle: String? = null,
     val error: String? = null
 )
 
 class PlaceViewModel(
     private val repository: PlacesRepository,
-    private val placeId: Long
+    private val placeId: Long,
+    private val subTitle: String? = null
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlaceUiState())
     val uiState: StateFlow<PlaceUiState> = _uiState
 
     init {
+        if (subTitle != null) _uiState.update { it.copy(subTitle = subTitle) }
         loadPlace()
     }
 
