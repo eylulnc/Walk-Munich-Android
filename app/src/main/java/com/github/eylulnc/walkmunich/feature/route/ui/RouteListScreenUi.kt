@@ -15,17 +15,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.data.model.RouteSummary
+import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
+import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteListViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -44,26 +44,10 @@ fun RouteListScreenUi(
     ) {
         when {
             state.isLoading -> {
-                // Center the loading indicator
-                androidx.compose.foundation.layout.Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                LoadingState()
             }
             state.error != null -> {
-                // Center the error message
-                androidx.compose.foundation.layout.Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = state.error ?: "Unknown error",
-                        color = Color.Red,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
+                ErrorState(errorMessage = state.error)
             }
             else -> {
                 LazyColumn {
@@ -108,5 +92,3 @@ private fun RouteRow(route: RouteSummary, onClick: () -> Unit) {
         }
     }
 }
-
-

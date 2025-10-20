@@ -22,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,6 +41,8 @@ import com.github.eylulnc.walkmunich.core.data.model.RouteDetail
 import com.github.eylulnc.walkmunich.core.data.model.RouteSegment
 import com.github.eylulnc.walkmunich.core.data.model.RouteStop
 import com.github.eylulnc.walkmunich.core.data.model.toUi
+import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
+import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
@@ -87,37 +88,11 @@ fun RouteDetailScreenUi(
 
         when {
             state.isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(color = OrangeMain)
-                }
+                LoadingState()
             }
 
             state.error != null -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Error loading route",
-                            fontSize = TypographySizes.large,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Red
-                        )
-                        Spacer(modifier = Modifier.height(Spacing.Small))
-                        Text(
-                            text = state.error ?: "Unknown error",
-                            fontSize = TypographySizes.medium,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Gray
-                        )
-                    }
-                }
+                ErrorState(errorMessage = state.error)
             }
 
             state.routeDetail != null -> {
