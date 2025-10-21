@@ -23,11 +23,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -73,28 +75,35 @@ private fun PlaceDetailContent(
     subTitle: String?,
     onBackClick: () -> Unit
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
     Box(modifier = Modifier.fillMaxSize()) {
+
         Column(
             modifier = Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(rememberScrollState())
                 .background(Color.White)
         ) {
-            // Hero image
             val imageId = ImageResolver.resolveDrawable(place.imageUrl)
-            Image(
-                painter = painterResource(imageId),
-                contentDescription = place.name,
-                contentScale = ContentScale.Crop,
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(Spacing.HeroHeight)
-            )
+            ) {
+                Image(
+                    painter = painterResource(imageId),
+                    contentDescription = place.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
 
             StoryContent(place = place, subTitle = subTitle)
         }
 
         TopAppBar(
-            title = { },
+            title = { /* no title here */ },
             navigationIcon = {
                 IconButton(onClick = onBackClick) {
                     Icon(
@@ -116,10 +125,12 @@ private fun PlaceDetailContent(
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent,
                 titleContentColor = Color.White,
-                navigationIconContentColor = Color.White
+                scrolledContainerColor = Color.Transparent,
+                navigationIconContentColor = Color.White,
+                actionIconContentColor = Color.White
             ),
-            modifier = Modifier
-                .statusBarsPadding()
+            scrollBehavior = scrollBehavior,
+            modifier = Modifier.statusBarsPadding()
         )
     }
 }

@@ -27,7 +27,7 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
-import com.github.eylulnc.walkmunich.feature.category.ui.CategoryPlacesScreenUi
+import com.github.eylulnc.walkmunich.feature.home.ui.category.ui.CategoryPlacesScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
 import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi

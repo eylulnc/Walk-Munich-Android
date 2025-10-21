@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.feature.category.viewmodel
+package com.github.eylulnc.walkmunich.feature.home.ui.category.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
