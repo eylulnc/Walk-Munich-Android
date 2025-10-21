@@ -34,7 +34,7 @@ private val LightColorScheme = lightColorScheme(
     surface = BgLight,
     onSurface = Color.Black,
     surfaceVariant = BlueLight.copy(alpha = 0.35f),
-    onSurfaceVariant = BlueNavy,
+    onSurfaceVariant = Color.DarkGray,
 
     // outline / error
     outline = Color.LightGray,
@@ -62,7 +62,7 @@ private val DarkColorScheme = darkColorScheme(
     surface = SurfaceDark,
     onSurface = Color(0xFFECECEC),
     surfaceVariant = SurfaceDark.copy(alpha = 0.7f),
-    onSurfaceVariant = Color(0xFFCFD8DC),
+    onSurfaceVariant = Color.LightGray,
 
     outline = Color(0xFF909090),
     error = RedOrange,

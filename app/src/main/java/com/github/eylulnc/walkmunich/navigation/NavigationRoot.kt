@@ -76,6 +76,8 @@ fun NavigationRoot(
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = OrangeMain,
                                 selectedTextColor = OrangeMain,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                 indicatorColor = Color.Transparent
                             )
                         )
