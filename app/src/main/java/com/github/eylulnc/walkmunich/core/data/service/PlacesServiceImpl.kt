@@ -24,10 +24,4 @@ class PlacesServiceImpl(
     override suspend fun getPlace(id: Long): Place {
         return fetchPlaces().first { it.id == id }
     }
-
-    override suspend fun getPlace(category: Category): Place {
-        return fetchPlaces().first { it.category == category }
-    }
-
-
 }
