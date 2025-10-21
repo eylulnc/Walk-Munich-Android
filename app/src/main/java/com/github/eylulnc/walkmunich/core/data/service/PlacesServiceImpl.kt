@@ -1,6 +1,7 @@
 package com.github.eylulnc.walkmunich.core.data.service
 
 import android.content.Context
+import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.PlacesResponse
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,10 @@ class PlacesServiceImpl(
 
     override suspend fun getPlace(id: Long): Place {
         return fetchPlaces().first { it.id == id }
+    }
+
+    override suspend fun getPlace(category: Category): Place {
+        return fetchPlaces().first { it.category == category }
     }
 
 
