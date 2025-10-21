@@ -3,6 +3,7 @@ package com.github.eylulnc.walkmunich.di
 import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
 import com.github.eylulnc.walkmunich.core.data.service.PlacesService
 import com.github.eylulnc.walkmunich.core.data.service.PlacesServiceImpl
+import com.github.eylulnc.walkmunich.feature.category.viewmodel.CategoryPlacesViewModel
 import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
 import com.github.eylulnc.walkmunich.feature.home.data.service.CityService
 import com.github.eylulnc.walkmunich.feature.home.data.service.CityServiceImpl
@@ -37,5 +38,9 @@ val appModule = module {
 
     viewModel { (placeId: Long, subTitle: String?) ->
         PlaceViewModel(get(), placeId, subTitle)
+    }
+
+    viewModel { (category: com.github.eylulnc.walkmunich.core.data.model.Category) ->
+        CategoryPlacesViewModel(get(), category)
     }
 }

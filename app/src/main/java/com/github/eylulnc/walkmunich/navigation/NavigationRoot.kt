@@ -27,6 +27,7 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.feature.category.ui.CategoryPlacesScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
 import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
@@ -94,7 +95,9 @@ fun NavigationRoot(
                     is HomeScreen -> {
                         NavEntry(key = key) {
                             HomeScreenUi(
-                                onCategoryClick = { /* TODO */ },
+                                onCategoryClick = { category ->
+                                    homeBackStack.add(CategoryPlacesScreen(category))
+                                },
                                 onPlaceItemClick = { placeId ->
                                     homeBackStack.add(
                                         PlaceDetailScreen(
@@ -152,6 +155,21 @@ fun NavigationRoot(
                                 },
                                 onBackClick = {
                                     currentBackStack.remove(key)
+                                }
+                            )
+                        }
+                    }
+
+                    is CategoryPlacesScreen -> {
+                        NavEntry(key = key) {
+                            CategoryPlacesScreenUi(
+                                viewModel = koinViewModel {
+                                    parametersOf(key.category)
+                                },
+                                onPlaceClick = { placeId ->
+                                    currentBackStack.add(
+                                        PlaceDetailScreen(placeId, null)
+                                    )
                                 }
                             )
                         }
