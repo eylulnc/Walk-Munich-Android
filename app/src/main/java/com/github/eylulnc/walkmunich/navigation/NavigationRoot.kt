@@ -170,6 +170,9 @@ fun NavigationRoot(
                                     currentBackStack.add(
                                         PlaceDetailScreen(placeId, null)
                                     )
+                                },
+                                onBackClick = {
+                                    currentBackStack.remove(key)
                                 }
                             )
                         }

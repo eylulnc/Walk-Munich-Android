@@ -19,7 +19,7 @@ import org.koin.androidx.compose.koinViewModel
 fun CategoryPlacesScreenUi(
     viewModel: CategoryPlacesViewModel = koinViewModel(),
     onPlaceClick: (Long) -> Unit,
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
