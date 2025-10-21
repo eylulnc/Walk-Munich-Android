@@ -2,35 +2,46 @@ package com.github.eylulnc.walkmunich.feature.place.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Fact
 import com.github.eylulnc.walkmunich.core.data.model.Highlight
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
-import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
@@ -63,7 +74,6 @@ private fun PlaceDetailContent(
     onBackClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        // --- Scrollable content ---
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
@@ -77,21 +87,19 @@ private fun PlaceDetailContent(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
+                    .height(Spacing.HeroHeight)
             )
 
-            // Content below image
             StoryContent(place = place, subTitle = subTitle)
         }
 
-        // --- Overlayed TopAppBar ---
         TopAppBar(
             title = { },
             navigationIcon = {
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = stringResource(R.string.back),
                         tint = Color.White
                     )
                 }
@@ -100,7 +108,7 @@ private fun PlaceDetailContent(
                 IconButton(onClick = { /* TODO: Favorite toggle */ }) {
                     Icon(
                         imageVector = Icons.Filled.FavoriteBorder,
-                        contentDescription = "Favorite",
+                        contentDescription = stringResource(R.string.favorite),
                         tint = Color.White
                     )
                 }
@@ -111,15 +119,6 @@ private fun PlaceDetailContent(
                 navigationIconContentColor = Color.White
             ),
             modifier = Modifier
-                .background(
-                    // Optional gradient overlay for better readability
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Black.copy(alpha = 0.4f),
-                            Color.Transparent
-                        )
-                    )
-                )
                 .statusBarsPadding()
         )
     }
@@ -134,8 +133,8 @@ private fun StoryContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = (-28).dp)
-                .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
+                .offset(y = Spacing.NegativeCardOffset)
+                .clip(RoundedCornerShape(topStart = Spacing.CardCornerRadius, topEnd = Spacing.CardCornerRadius))
                 .background(Color.White)
                 .padding(horizontal = Spacing.Large, vertical = Spacing.Large)
         ) {
@@ -151,10 +150,11 @@ private fun StoryContent(
                     Text(
                         text = subTitle,
                         fontSize = TypographySizes.medium,
-                        color = Color.Gray,
-                        modifier = Modifier.padding(bottom = Spacing.Small)
+                        color = Color.Gray
                     )
                 }
+
+                Spacer(Modifier.height(Spacing.Small))
 
                 Text(
                     text = story.overview,
@@ -179,8 +179,8 @@ private fun StoryContent(
 private fun HighlightsSection(highlights: List<Highlight>) {
     Spacer(modifier = Modifier.height(Spacing.Large))
     Text(
-        text = "Highlights",
-        fontSize = TypographySizes.medium,
+        text = stringResource(R.string.highlights),
+        fontSize = TypographySizes.subtitle,
         fontWeight = FontWeight.Bold,
         color = Color.Black
     )
@@ -194,18 +194,18 @@ private fun HighlightsSection(highlights: List<Highlight>) {
 private fun FactsSection(facts: List<Fact>) {
     Spacer(modifier = Modifier.height(Spacing.Large))
     Text(
-        text = "Fun Facts",
-        fontSize = TypographySizes.medium,
+        text = stringResource(R.string.fun_facts),
+        fontSize = TypographySizes.subtitle,
         fontWeight = FontWeight.Bold,
         color = Color.Black
     )
     Spacer(modifier = Modifier.height(Spacing.Small))
     facts.forEach { fact ->
         Text(
-            text = "• ${fact.text}",
+            text = stringResource(R.string.bullet_fact, fact.text),
             fontSize = TypographySizes.medium,
             color = Color.DarkGray,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = Spacing.ExtraSmall)
         )
     }
 }

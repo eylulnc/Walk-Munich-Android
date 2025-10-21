@@ -24,4 +24,7 @@ object Spacing {
     val SearchBarOverlap = 24.dp
     val SearchBarImageSize = 60.dp
 
+    val CardCornerRadius = 32.dp
+    val NegativeCardOffset = (-28).dp
+
 }

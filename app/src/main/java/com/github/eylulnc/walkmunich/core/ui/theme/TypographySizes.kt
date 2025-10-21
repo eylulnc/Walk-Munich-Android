@@ -9,4 +9,5 @@ object TypographySizes {
     val large = 20.sp
     val title = 24.sp
     val heroTitle = 100.sp
+    val subtitle = 18.sp
 }

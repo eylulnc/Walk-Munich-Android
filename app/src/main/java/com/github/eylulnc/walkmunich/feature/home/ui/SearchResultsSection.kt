@@ -35,7 +35,6 @@ fun SearchResultsSection(
             .fillMaxHeight()
     ) {
         if (isSearching) {
-            // Show searching indicator
             Text(
                 text = stringResource(R.string.searching),
                 style = MaterialTheme.typography.headlineSmall,
