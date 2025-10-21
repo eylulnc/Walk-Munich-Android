@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -60,9 +61,8 @@ fun HomeScreenUi(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
     ) {
-
         HeaderSection(
             cityName = state.city?.name ?: stringResource(R.string.munich_title),
             heroImageUrl = state.city?.heroImage?.imageUrl ?: "",
@@ -105,7 +105,6 @@ private fun HeaderSection(
     onClearQuery: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
-
     val resId = ImageResolver.resolveDrawable(heroImageUrl)
 
     Box(
@@ -124,7 +123,7 @@ private fun HeaderSection(
             onClick = onSettingsClick,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .systemBarsPadding(),
+                .systemBarsPadding()
         ) {
             Icon(
                 imageVector = Icons.Default.Settings,
@@ -158,7 +157,6 @@ private fun HeaderSection(
     Spacer(Modifier.height((Spacing.SearchBarOverlap + Spacing.SearchBarHeight) / 2))
 }
 
-
 @Composable
 private fun CategoriesSection(
     onCategoryClick: (Category) -> Unit
@@ -172,7 +170,7 @@ private fun CategoriesSection(
             text = stringResource(R.string.category_title),
             fontSize = TypographySizes.large,
             fontWeight = FontWeight.Bold,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(horizontal = Spacing.Medium)
         )
 
@@ -202,14 +200,14 @@ private fun SearchBar(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(Spacing.Large),
-        color = Color.White,
+        color = MaterialTheme.colorScheme.surface,
         shadowElevation = Spacing.Medium
     ) {
         TextField(
             value = query,
             onValueChange = onQueryChange,
             placeholder = {
-                Text(text = stringResource(R.string.search_attractions))
+                Text(text = stringResource(R.string.search_attractions), color = MaterialTheme.colorScheme.onSurface)
             },
             leadingIcon = {
                 Icon(
@@ -226,9 +224,7 @@ private fun SearchBar(
                         tint = OrangeMain,
                         modifier = Modifier
                             .padding(end = Spacing.Small)
-                            .clickable {
-                                onClearQuery()
-                            }
+                            .clickable { onClearQuery() }
                     )
                 }
             },
@@ -236,13 +232,12 @@ private fun SearchBar(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(Spacing.CornerRadius)),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
             singleLine = true
         )
     }
-
 }

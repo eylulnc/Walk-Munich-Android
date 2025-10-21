@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 private val LightColorScheme = lightColorScheme(
     // core roles
     primary = OrangeMain,
-    onPrimary = Color.Black,
+    onPrimary = Color.White,
     secondary = BlueTeal,
     onSecondary = Color.White,
     tertiary = Green,
@@ -37,14 +37,14 @@ private val LightColorScheme = lightColorScheme(
     onSurfaceVariant = BlueNavy,
 
     // outline / error
-    outline = BlueNavy.copy(alpha = 0.5f),
+    outline = Color.LightGray,
     error = RedOrange,
     onError = Color.White
 )
 
 private val DarkColorScheme = darkColorScheme(
     primary = OrangeMain,
-    onPrimary = Color.Black,
+    onPrimary = Color.White,
     secondary = BlueTeal,
     onSecondary = Color.White,
     tertiary = Green,

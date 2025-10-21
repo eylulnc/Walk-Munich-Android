@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -62,8 +63,8 @@ fun NavigationRoot(
         contentWindowInsets = WindowInsets(0),
         bottomBar = {
             Column {
-                HorizontalDivider(thickness = Spacing.BorderStroke, color = Color.LightGray)
-                NavigationBar(containerColor = Color.White) {
+                HorizontalDivider(thickness = Spacing.BorderStroke, color = MaterialTheme.colorScheme.outline)
+                NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                     tabs.forEachIndexed { index, tab ->
                         NavigationBarItem(
                             selected = index == selectedTabIndex,

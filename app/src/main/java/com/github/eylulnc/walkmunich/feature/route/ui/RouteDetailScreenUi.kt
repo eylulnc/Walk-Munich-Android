@@ -19,13 +19,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -104,7 +104,7 @@ private fun ItinerarySegment(
                 text = segment.title,
                 fontSize = TypographySizes.medium,
                 fontWeight = FontWeight.Medium,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -141,7 +141,7 @@ private fun RouteStopItem(
             ) {
                 Text(
                     text = stop.ord.toString(),
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     fontSize = TypographySizes.medium,
                     fontWeight = FontWeight.Bold
                 )
@@ -156,11 +156,11 @@ private fun RouteStopItem(
                     .padding(start = Spacing.Small)
                     .clickable(onClick = onClick),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(Spacing.CornerRadius),
                 border = BorderStroke(
                     width = 1.dp,
-                    color = Color.LightGray
+                    color = MaterialTheme.colorScheme.outline
                 )
             ) {
                 val categoryUi = stop.category.toUi()
@@ -174,7 +174,7 @@ private fun RouteStopItem(
                     Icon(
                         imageVector = categoryUi.icon,
                         contentDescription = null,
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(20.dp)
                     )
 
@@ -184,7 +184,7 @@ private fun RouteStopItem(
                         text = stop.name,
                         fontSize = TypographySizes.medium,
                         fontWeight = FontWeight.Normal,
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
