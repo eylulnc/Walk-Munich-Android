@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -44,6 +45,7 @@ import com.github.eylulnc.walkmunich.core.data.model.Highlight
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
+import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
@@ -83,7 +85,7 @@ private fun PlaceDetailContent(
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(rememberScrollState())
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             val imageId = ImageResolver.resolveDrawable(place.imageUrl)
             Box(
@@ -109,7 +111,7 @@ private fun PlaceDetailContent(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.back),
-                        tint = Color.White
+                        tint = OrangeMain
                     )
                 }
             },
@@ -118,16 +120,16 @@ private fun PlaceDetailContent(
                     Icon(
                         imageVector = Icons.Filled.FavoriteBorder,
                         contentDescription = stringResource(R.string.favorite),
-                        tint = Color.White
+                        tint = OrangeMain
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent,
-                titleContentColor = Color.White,
+                titleContentColor = OrangeMain,
                 scrolledContainerColor = Color.Transparent,
-                navigationIconContentColor = Color.White,
-                actionIconContentColor = Color.White
+                navigationIconContentColor = OrangeMain,
+                actionIconContentColor = OrangeMain
             ),
             scrollBehavior = scrollBehavior,
             modifier = Modifier.statusBarsPadding()
@@ -146,7 +148,7 @@ private fun StoryContent(
                 .fillMaxWidth()
                 .offset(y = Spacing.NegativeCardOffset)
                 .clip(RoundedCornerShape(topStart = Spacing.CardCornerRadius, topEnd = Spacing.CardCornerRadius))
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(horizontal = Spacing.Large, vertical = Spacing.Large)
         ) {
             Column {
@@ -154,14 +156,14 @@ private fun StoryContent(
                     text = place.name,
                     fontSize = TypographySizes.large,
                     fontWeight = FontWeight.Bold,
-                    color = Color.DarkGray,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
 
                 if (!subTitle.isNullOrEmpty()) {
                     Text(
                         text = subTitle,
                         fontSize = TypographySizes.medium,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
 
@@ -170,7 +172,7 @@ private fun StoryContent(
                 Text(
                     text = story.overview,
                     fontSize = TypographySizes.medium,
-                    color = Color.DarkGray,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Start
                 )
 
@@ -193,7 +195,7 @@ private fun HighlightsSection(highlights: List<Highlight>) {
         text = stringResource(R.string.highlights),
         fontSize = TypographySizes.subtitle,
         fontWeight = FontWeight.Bold,
-        color = Color.Black
+        color = MaterialTheme.colorScheme.onBackground
     )
     Spacer(modifier = Modifier.height(Spacing.Small))
     highlights.forEach { highlight ->
@@ -208,14 +210,14 @@ private fun FactsSection(facts: List<Fact>) {
         text = stringResource(R.string.fun_facts),
         fontSize = TypographySizes.subtitle,
         fontWeight = FontWeight.Bold,
-        color = Color.Black
+        color = MaterialTheme.colorScheme.onBackground
     )
     Spacer(modifier = Modifier.height(Spacing.Small))
     facts.forEach { fact ->
         Text(
             text = stringResource(R.string.bullet_fact, fact.text),
             fontSize = TypographySizes.medium,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(bottom = Spacing.ExtraSmall)
         )
     }
@@ -228,7 +230,7 @@ private fun HighlightItem(highlight: Highlight) {
             withStyle(
                 style = androidx.compose.ui.text.SpanStyle(
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             ) { append(highlight.title) }
 
@@ -237,7 +239,7 @@ private fun HighlightItem(highlight: Highlight) {
             withStyle(
                 style = androidx.compose.ui.text.SpanStyle(
                     fontWeight = FontWeight.Normal,
-                    color = Color.DarkGray
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             ) { append(highlight.text) }
         },

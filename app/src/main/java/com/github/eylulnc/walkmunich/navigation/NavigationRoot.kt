@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -29,6 +30,7 @@ import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.home.ui.category.ui.CategoryPlacesScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
+import com.github.eylulnc.walkmunich.feature.home.ui.settings.SettingsScreenUi
 import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
@@ -61,8 +63,8 @@ fun NavigationRoot(
         contentWindowInsets = WindowInsets(0),
         bottomBar = {
             Column {
-                HorizontalDivider(thickness = Spacing.BorderStroke, color = Color.LightGray)
-                NavigationBar(containerColor = Color.White) {
+                HorizontalDivider(thickness = Spacing.BorderStroke, color = MaterialTheme.colorScheme.outline)
+                NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                     tabs.forEachIndexed { index, tab ->
                         NavigationBarItem(
                             selected = index == selectedTabIndex,
@@ -74,6 +76,8 @@ fun NavigationRoot(
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = OrangeMain,
                                 selectedTextColor = OrangeMain,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                 indicatorColor = Color.Transparent
                             )
                         )
@@ -104,6 +108,9 @@ fun NavigationRoot(
                                             placeId
                                         )
                                     )
+                                },
+                                onSettingsClick = {
+                                    homeBackStack.add(SettingsScreen)
                                 }
                             )
                         }
@@ -171,6 +178,16 @@ fun NavigationRoot(
                                         PlaceDetailScreen(placeId, null)
                                     )
                                 },
+                                onBackClick = {
+                                    currentBackStack.remove(key)
+                                }
+                            )
+                        }
+                    }
+
+                    is SettingsScreen -> {
+                        NavEntry(key = key) {
+                            SettingsScreenUi(
                                 onBackClick = {
                                     currentBackStack.remove(key)
                                 }

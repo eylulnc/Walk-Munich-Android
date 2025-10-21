@@ -12,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.github.eylulnc.walkmunich.R
@@ -40,7 +39,7 @@ fun SearchResultsSection(
                 style = MaterialTheme.typography.headlineSmall,
                 fontSize = TypographySizes.large,
                 fontWeight = FontWeight.Medium,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)
             )
         } else if (searchResults.isNotEmpty()) {
@@ -49,7 +48,7 @@ fun SearchResultsSection(
                 style = MaterialTheme.typography.headlineSmall,
                 fontSize = TypographySizes.large,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)
             )
 
@@ -74,7 +73,7 @@ fun SearchResultsSection(
                 style = MaterialTheme.typography.headlineSmall,
                 fontSize = TypographySizes.large,
                 fontWeight = FontWeight.Bold,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)
             )
         }

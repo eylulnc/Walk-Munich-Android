@@ -14,11 +14,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,11 +44,11 @@ fun CategoryCard(
             defaultElevation = Spacing.ExtraSmall
         ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         border = BorderStroke(
             width = Spacing.BorderStroke,
-            color = Color.LightGray
+            color = MaterialTheme.colorScheme.outline
         )
     ) {
         Box(
@@ -76,7 +76,7 @@ fun CategoryCard(
                     fontSize = TypographySizes.medium,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Center,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

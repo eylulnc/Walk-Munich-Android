@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.data.model.RouteSummary
@@ -39,7 +38,7 @@ fun RouteListScreenUi(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .safeContentPadding()
     ) {
         when {
@@ -71,11 +70,11 @@ private fun RouteRow(route: RouteSummary, onClick: () -> Unit) {
             defaultElevation = Spacing.ExtraSmall
         ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         border = BorderStroke(
             width = Spacing.BorderStroke,
-            color = Color.LightGray
+            color = MaterialTheme.colorScheme.outline
         ),
         shape = RoundedCornerShape(Spacing.CornerRadius),
     ) {
