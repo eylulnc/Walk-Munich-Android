@@ -13,13 +13,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -49,7 +52,8 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreenUi(
     viewModel: HomeScreenViewModel = koinViewModel(),
     onCategoryClick: (Category) -> Unit,
-    onPlaceItemClick: (Long) -> Unit
+    onPlaceItemClick: (Long) -> Unit,
+    onSettingsClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -64,7 +68,8 @@ fun HomeScreenUi(
             heroImageUrl = state.city?.heroImage?.imageUrl ?: "",
             query = state.searchQuery,
             onQueryChange = viewModel::onQueryChange,
-            onClearQuery = viewModel::onClearQuery
+            onClearQuery = viewModel::onClearQuery,
+            onSettingsClick = onSettingsClick
         )
 
         Spacer(modifier = Modifier.height(Spacing.Medium))
@@ -97,7 +102,8 @@ private fun HeaderSection(
     heroImageUrl: String,
     query: String,
     onQueryChange: (String) -> Unit,
-    onClearQuery : () -> Unit
+    onClearQuery: () -> Unit,
+    onSettingsClick: () -> Unit
 ) {
 
     val resId = ImageResolver.resolveDrawable(heroImageUrl)
@@ -113,6 +119,19 @@ private fun HeaderSection(
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
+
+        IconButton(
+            onClick = onSettingsClick,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .systemBarsPadding(),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = stringResource(id = R.string.settings),
+                tint = Color.White
+            )
+        }
 
         Text(
             text = cityName,

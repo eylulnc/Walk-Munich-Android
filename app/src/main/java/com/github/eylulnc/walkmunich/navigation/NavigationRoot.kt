@@ -29,6 +29,7 @@ import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.home.ui.category.ui.CategoryPlacesScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
+import com.github.eylulnc.walkmunich.feature.home.ui.settings.SettingsScreenUi
 import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
@@ -104,6 +105,9 @@ fun NavigationRoot(
                                             placeId
                                         )
                                     )
+                                },
+                                onSettingsClick = {
+                                    homeBackStack.add(SettingsScreen)
                                 }
                             )
                         }
@@ -171,6 +175,16 @@ fun NavigationRoot(
                                         PlaceDetailScreen(placeId, null)
                                     )
                                 },
+                                onBackClick = {
+                                    currentBackStack.remove(key)
+                                }
+                            )
+                        }
+                    }
+
+                    is SettingsScreen -> {
+                        NavEntry(key = key) {
+                            SettingsScreenUi(
                                 onBackClick = {
                                     currentBackStack.remove(key)
                                 }
