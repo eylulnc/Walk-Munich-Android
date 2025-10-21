@@ -27,7 +27,9 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.feature.home.ui.category.ui.CategoryPlacesScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
+import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
 import org.koin.androidx.compose.koinViewModel
@@ -93,8 +95,16 @@ fun NavigationRoot(
                     is HomeScreen -> {
                         NavEntry(key = key) {
                             HomeScreenUi(
-                                onCategoryClick = { /* TODO */ },
-                                onPlaceItemClick = { /* TODO */ }
+                                onCategoryClick = { category ->
+                                    homeBackStack.add(CategoryPlacesScreen(category))
+                                },
+                                onPlaceItemClick = { placeId ->
+                                    homeBackStack.add(
+                                        PlaceDetailScreen(
+                                            placeId
+                                        )
+                                    )
+                                }
                             )
                         }
                     }
@@ -115,7 +125,15 @@ fun NavigationRoot(
                                 viewModel = koinViewModel {
                                     parametersOf(key.routeId)
                                 },
-                                onBackClick = { routeBackStack.remove(key) }
+                                onBackClick = { routeBackStack.remove(key) },
+                                onPlaceItemClick = { placeId, subTitle ->
+                                    routeBackStack.add(
+                                        PlaceDetailScreen(
+                                            placeId,
+                                            subTitle
+                                        )
+                                    )
+                                }
                             )
                         }
                     }
@@ -125,6 +143,37 @@ fun NavigationRoot(
                             Text(
                                 "Favorites",
                                 modifier = Modifier.safeContentPadding()
+                            )
+                        }
+                    }
+
+                    is PlaceDetailScreen -> {
+                        NavEntry(key = key) {
+                            PlaceDetailScreenUi(
+                                viewModel = koinViewModel {
+                                    parametersOf(key.placeId, key.subTitle)
+                                },
+                                onBackClick = {
+                                    currentBackStack.remove(key)
+                                }
+                            )
+                        }
+                    }
+
+                    is CategoryPlacesScreen -> {
+                        NavEntry(key = key) {
+                            CategoryPlacesScreenUi(
+                                viewModel = koinViewModel {
+                                    parametersOf(key.category)
+                                },
+                                onPlaceClick = { placeId ->
+                                    currentBackStack.add(
+                                        PlaceDetailScreen(placeId, null)
+                                    )
+                                },
+                                onBackClick = {
+                                    currentBackStack.remove(key)
+                                }
                             )
                         }
                     }

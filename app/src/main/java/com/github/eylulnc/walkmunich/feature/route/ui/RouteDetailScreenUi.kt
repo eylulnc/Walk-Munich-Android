@@ -2,14 +2,13 @@ package com.github.eylulnc.walkmunich.feature.route.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -17,131 +16,74 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.eylulnc.walkmunich.core.data.model.RouteDetail
+import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.RouteSegment
 import com.github.eylulnc.walkmunich.core.data.model.RouteStop
 import com.github.eylulnc.walkmunich.core.data.model.toUi
+import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
+import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
+import com.github.eylulnc.walkmunich.core.ui.composable.TopBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewModel
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RouteDetailScreenUi(
     viewModel: RouteDetailViewModel = koinViewModel(),
+    onPlaceItemClick: (Long, String?) -> Unit,
     onBackClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        TopAppBar(
-            title = {
-                Text(
-                    text = state.routeDetail?.title ?: "Route Details",
-                    fontSize = TypographySizes.large,
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
-                        tint = OrangeMain
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White,
-                titleContentColor = Color.Black
+    TopBarScreen(
+        title = {
+            Text(
+                text = state.routeDetail?.title ?: stringResource(R.string.route_details),
+                fontSize = TypographySizes.large,
+                fontWeight = FontWeight.Bold
             )
-        )
-
+        },
+        onBack = onBackClick
+    ) { contentMod ->
         when {
-            state.isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+            state.isLoading -> LoadingState()
+            state.error != null -> ErrorState(errorMessage = state.error)
+            state.routeDetail != null -> {
+                Column(
+                    modifier = contentMod
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = Spacing.Medium)
                 ) {
-                    CircularProgressIndicator(color = OrangeMain)
-                }
-            }
-
-            state.error != null -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
+                    val detail = state.routeDetail!!
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(Spacing.Large)
                     ) {
-                        Text(
-                            text = "Error loading route",
-                            fontSize = TypographySizes.large,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Red
-                        )
-                        Spacer(modifier = Modifier.height(Spacing.Small))
-                        Text(
-                            text = state.error ?: "Unknown error",
-                            fontSize = TypographySizes.medium,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Gray
-                        )
+                        detail.segments.forEach { segment ->
+                            ItinerarySegment(
+                                segment = segment,
+                                displaySubtitle = detail.segments.size != 1,
+                                onPlaceItemClick = onPlaceItemClick
+                            )
+                        }
                     }
                 }
-            }
-
-            state.routeDetail != null -> {
-                RouteDetailContent(routeDetail = state.routeDetail!!)
-            }
-        }
-    }
-}
-
-@Composable
-private fun RouteDetailContent(routeDetail: RouteDetail) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = Spacing.Medium)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(Spacing.Large)
-        ) {
-            routeDetail.segments.forEachIndexed { segmentIndex, segment ->
-                ItinerarySegment(
-                    segment = segment,
-                    displaySubtitle = routeDetail.segments.size != 1
-                )
             }
         }
     }
@@ -150,7 +92,8 @@ private fun RouteDetailContent(routeDetail: RouteDetail) {
 @Composable
 private fun ItinerarySegment(
     segment: RouteSegment,
-    displaySubtitle: Boolean
+    displaySubtitle: Boolean,
+    onPlaceItemClick: (Long, String?) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(Spacing.Medium),
@@ -166,8 +109,11 @@ private fun ItinerarySegment(
         }
 
         segment.stops.forEachIndexed { stopIndex, stop ->
+            val nextStop = segment.stops.getOrNull(stopIndex + 1)
+            val subTitle = nextStop?.let { "Next stop: ${it.name}" }
             RouteStopItem(
-                stop = stop
+                stop = stop,
+                onClick = { onPlaceItemClick(stop.placeId, subTitle) }
             )
         }
     }
@@ -175,7 +121,8 @@ private fun ItinerarySegment(
 
 @Composable
 private fun RouteStopItem(
-    stop: RouteStop
+    stop: RouteStop,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -206,7 +153,8 @@ private fun RouteStopItem(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = Spacing.Small),
+                    .padding(start = Spacing.Small)
+                    .clickable(onClick = onClick),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 shape = RoundedCornerShape(Spacing.CornerRadius),
@@ -241,6 +189,5 @@ private fun RouteStopItem(
                 }
             }
         }
-
     }
 }

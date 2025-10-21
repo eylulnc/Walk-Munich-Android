@@ -8,16 +8,14 @@
       "title": "Day 1 – Old Town",
       "dayIndex": 1,
       "stops": [
-        { "ord": 1,  "placeId": 1001, "name": "Marienplatz",          "category": "LANDMARK" },
-        { "ord": 2,  "placeId": 1002, "name": "Viktualienmarkt",      "category": "FOOD" },
-        { "ord": 3,  "placeId": 1003, "name": "Frauenkirche",         "category": "LANDMARK" },
-        { "ord": 4,  "placeId": 1004, "name": "St. Peter Kirche",     "category": "VIEWPOINT" },
-        { "ord": 5,  "placeId": 1005, "name": "Max-Joseph-Platz",     "category": "LANDMARK" },
-        { "ord": 6,  "placeId": 1006, "name": "Kanso",                "category": "COFFEE" },
-        { "ord": 7,  "placeId": 1007, "name": "Odeonsplatz",          "category": "LANDMARK" },
-        { "ord": 8,  "placeId": 1008, "name": "Theatinerkirche",      "category": "LANDMARK" },
-        { "ord": 9,  "placeId": 1009, "name": "Residenz & Hofgarten", "category": "LANDMARK" },
-        { "ord": 10, "placeId": 1011, "name": "Hofbräuhaus",          "category": "FOOD" }
+        { "ord": 1,  "placeId": 1,  "name": "Marienplatz",          "category": "LANDMARK" },
+        { "ord": 2,  "placeId": 7,  "name": "Viktualienmarkt",      "category": "FOOD" },
+        { "ord": 3,  "placeId": 13, "name": "Asamkirche",           "category": "LANDMARK" },
+        { "ord": 4,  "placeId": 4,  "name": "Alter Peter Tower",    "category": "VIEWPOINT" },
+        { "ord": 5,  "placeId": 8,  "name": "Residenz München",     "category": "MUSEUM" },
+        { "ord": 6,  "placeId": 5,  "name": "Kanso Coffee",         "category": "COFFEE" },
+        { "ord": 7,  "placeId": 14, "name": "Theatinerkirche",      "category": "LANDMARK" },
+        { "ord": 8,  "placeId": 6,  "name": "Hofbräuhaus",          "category": "FOOD" }
       ]
     },
     {
@@ -25,10 +23,10 @@
       "title": "Day 2 – Museums & Palace",
       "dayIndex": 2,
       "stops": [
-        { "ord": 1, "placeId": 1012, "name": "Alte Pinakothek",     "category": "MUSEUM" },
-        { "ord": 2, "placeId": 1013, "name": "Nymphenburg Palace", "category": "LANDMARK" },
-        { "ord": 3, "placeId": 1014, "name": "Englischer Garten",  "category": "VIEWPOINT" },
-        { "ord": 4, "placeId": 1010, "name": "Eisbachwelle",       "category": "VIEWPOINT" }
+        { "ord": 1, "placeId": 15, "name": "Alte Pinakothek",      "category": "MUSEUM" },
+        { "ord": 2, "placeId": 2,  "name": "Nymphenburg Palace",   "category": "LANDMARK" },
+        { "ord": 3, "placeId": 9,  "name": "Deutsches Museum",     "category": "MUSEUM" },
+        { "ord": 4, "placeId": 10, "name": "English Garden (Eisbachwelle)", "category": "LANDMARK" }
       ]
     },
     {
@@ -36,10 +34,10 @@
       "title": "Day 3 – Science & Modern Munich",
       "dayIndex": 3,
       "stops": [
-        { "ord": 1, "placeId": 1015, "name": "Deutsches Museum", "category": "MUSEUM" },
-        { "ord": 2, "placeId": 1016, "name": "Olympiapark",      "category": "LANDMARK" },
-        { "ord": 3, "placeId": 1017, "name": "BMW Museum",       "category": "MUSEUM" },
-        { "ord": 4, "placeId": 1018, "name": "BMW Welt",         "category": "LANDMARK" }
+        { "ord": 1, "placeId": 3,  "name": "BMW Museum",  "category": "MUSEUM" },
+        { "ord": 2, "placeId": 12, "name": "Olympiapark", "category": "VIEWPOINT" },
+        { "ord": 3, "placeId": 11, "name": "Allianz Arena", "category": "LANDMARK" },
+        { "ord": 4, "placeId": 19, "name": "Man Versus Machine Coffee Roasters", "category": "COFFEE" }
       ]
     }
   ],

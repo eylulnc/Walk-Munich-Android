@@ -15,4 +15,13 @@
     <string name="search_results">Search Results (%1$d)</string>
     <string name="no_search_results">No results found</string>
 
+    <string name="back">Back</string>
+    <string name="favorite">Favorite</string>
+    <string name="highlights">Highlights</string>
+    <string name="fun_facts">Fun Facts</string>
+    <string name="bullet_fact">• %1$s</string>
+    <string name="route_details">Route Details</string>
+    <string name="next_stop">Next stop: %1$s</string>
+    <string name="popular_places">Popular Places</string>
+    <string name="favorites">Favorites</string>
 </resources>

@@ -1,12 +1,14 @@
 package com.github.eylulnc.walkmunich.di
 
-import com.github.eylulnc.walkmunich.feature.home.data.city.repository.CityRepository
-import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityService
-import com.github.eylulnc.walkmunich.feature.home.data.city.service.CityServiceImpl
-import com.github.eylulnc.walkmunich.feature.home.data.place.repository.PlacesRepository
-import com.github.eylulnc.walkmunich.feature.home.data.place.service.PlacesService
-import com.github.eylulnc.walkmunich.feature.home.data.place.service.PlacesServiceImpl
+import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
+import com.github.eylulnc.walkmunich.core.data.service.PlacesService
+import com.github.eylulnc.walkmunich.core.data.service.PlacesServiceImpl
+import com.github.eylulnc.walkmunich.feature.home.ui.category.viewmodel.CategoryPlacesViewModel
+import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
+import com.github.eylulnc.walkmunich.feature.home.data.service.CityService
+import com.github.eylulnc.walkmunich.feature.home.data.service.CityServiceImpl
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
+import com.github.eylulnc.walkmunich.feature.place.viewmodel.PlaceViewModel
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesRepository
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesService
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesServiceImpl
@@ -14,6 +16,7 @@ import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewMode
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteListViewModel
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -32,4 +35,12 @@ val appModule = module {
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::RouteListViewModel)
     viewModelOf(::RouteDetailViewModel)
+
+    viewModel { (placeId: Long, subTitle: String?) ->
+        PlaceViewModel(get(), placeId, subTitle)
+    }
+
+    viewModel { (category: com.github.eylulnc.walkmunich.core.data.model.Category) ->
+        CategoryPlacesViewModel(get(), category)
+    }
 }
