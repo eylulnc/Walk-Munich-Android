@@ -67,4 +67,9 @@ This project is developed for **educational and personal learning purposes** onl
 It is not an official travel or navigation app and does not guarantee the accuracy of location or historical information provided.  
 All content and media used within the app are intended for non-commercial use as part of an ongoing learning project.
 
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).  
+You are free to use, modify, and distribute this project for learning or personal purposes, as long as proper credit is given.
+
 
