@@ -59,3 +59,12 @@ Here are a few early design and app screens:
 
 These screens show the current direction of the app and may change as development continues.
 
+---
+
+## ⚠️ Disclaimer
+
+This project is developed for **educational and personal learning purposes** only.  
+It is not an official travel or navigation app and does not guarantee the accuracy of location or historical information provided.  
+All content and media used within the app are intended for non-commercial use as part of an ongoing learning project.
+
+
