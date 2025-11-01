@@ -41,21 +41,23 @@ import org.koin.core.parameter.parametersOf
 fun NavigationRoot(
     modifier: Modifier = Modifier
 ) {
-    val homeBackStack = rememberNavBackStack(HomeScreen)
-    val routeBackStack = rememberNavBackStack(RouteListScreen)
-    val favBackStack = rememberNavBackStack(FavoritesScreen)
+    val exploreBackStack = rememberNavBackStack(HomeScreen)
+    val toursBackStack = rememberNavBackStack(ToursScreen)
+    val favoritesBackStack = rememberNavBackStack(FavoritesScreen)
+    val profileBackStack = rememberNavBackStack(ProfileScreen)
 
     // Order of tabs shown in the bar
-    val tabs = remember { listOf(RootTab.Home, RootTab.Route, RootTab.Favorites) }
+    val tabs = remember { listOf(RootTab.Explore, RootTab.Tours, RootTab.Favorites, RootTab.Profile) }
 
     // Save an Int instead of the sealed object
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val currentTab = tabs[selectedTabIndex]
 
     val currentBackStack = when (currentTab) {
-        RootTab.Home -> homeBackStack
-        RootTab.Route -> routeBackStack
-        RootTab.Favorites -> favBackStack
+        RootTab.Explore -> exploreBackStack
+        RootTab.Tours -> toursBackStack
+        RootTab.Favorites -> favoritesBackStack
+        RootTab.Profile -> profileBackStack
     }
 
     Scaffold(
@@ -100,27 +102,30 @@ fun NavigationRoot(
                         NavEntry(key = key) {
                             HomeScreenUi(
                                 onCategoryClick = { category ->
-                                    homeBackStack.add(CategoryPlacesScreen(category))
+                                    exploreBackStack.add(CategoryPlacesScreen(category))
                                 },
                                 onPlaceItemClick = { placeId ->
-                                    homeBackStack.add(
+                                    exploreBackStack.add(
                                         PlaceDetailScreen(
                                             placeId
                                         )
                                     )
                                 },
                                 onSettingsClick = {
-                                    homeBackStack.add(SettingsScreen)
+                                    exploreBackStack.add(ProfileScreen)
+                                },
+                                onSeeAllFavoritesClick = {
+                                    selectedTabIndex = tabs.indexOf(RootTab.Favorites)
                                 }
                             )
                         }
                     }
 
-                    is RouteListScreen -> {
+                    is ToursScreen -> {
                         NavEntry(key = key) {
                             RouteListScreenUi(
                                 onRouteClick = { routeId ->
-                                    routeBackStack.add(RouteDetailScreen(routeId))
+                                    toursBackStack.add(RouteDetailScreen(routeId))
                                 }
                             )
                         }
@@ -132,9 +137,9 @@ fun NavigationRoot(
                                 viewModel = koinViewModel {
                                     parametersOf(key.routeId)
                                 },
-                                onBackClick = { routeBackStack.remove(key) },
+                                onBackClick = { toursBackStack.remove(key) },
                                 onPlaceItemClick = { placeId, subTitle ->
-                                    routeBackStack.add(
+                                    toursBackStack.add(
                                         PlaceDetailScreen(
                                             placeId,
                                             subTitle
@@ -185,7 +190,7 @@ fun NavigationRoot(
                         }
                     }
 
-                    is SettingsScreen -> {
+                    is ProfileScreen -> {
                         NavEntry(key = key) {
                             SettingsScreenUi(
                                 onBackClick = {
@@ -195,7 +200,7 @@ fun NavigationRoot(
                         }
                     }
 
-                    else -> error("Invalid NavKey.")
+                    else -> error("Invalid NavKey. Got $key")
                 }
             }
         )

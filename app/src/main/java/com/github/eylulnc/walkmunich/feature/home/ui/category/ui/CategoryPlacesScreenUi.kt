@@ -10,7 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
 import com.github.eylulnc.walkmunich.core.ui.composable.PlaceOverviewCard
-import com.github.eylulnc.walkmunich.core.ui.composable.TopBarScreen
+import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.home.ui.category.viewmodel.CategoryPlacesViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -23,7 +23,7 @@ fun CategoryPlacesScreenUi(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    TopBarScreen(
+    WMTopAppBarScreen(
         onBack = onBackClick
     ) { listMod ->
         when {

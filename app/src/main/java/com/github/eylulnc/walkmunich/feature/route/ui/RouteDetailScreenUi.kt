@@ -36,7 +36,7 @@ import com.github.eylulnc.walkmunich.core.data.model.RouteStop
 import com.github.eylulnc.walkmunich.core.data.model.toUi
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
-import com.github.eylulnc.walkmunich.core.ui.composable.TopBarScreen
+import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
@@ -51,14 +51,8 @@ fun RouteDetailScreenUi(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    TopBarScreen(
-        title = {
-            Text(
-                text = state.routeDetail?.title ?: stringResource(R.string.route_details),
-                fontSize = TypographySizes.large,
-                fontWeight = FontWeight.Bold
-            )
-        },
+    WMTopAppBarScreen(
+        title = state.routeDetail?.title ?: stringResource(R.string.route_details),
         onBack = onBackClick
     ) { contentMod ->
         when {
