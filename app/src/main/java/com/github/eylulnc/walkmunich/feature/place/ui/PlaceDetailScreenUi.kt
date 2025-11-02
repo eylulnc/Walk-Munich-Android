@@ -35,6 +35,7 @@ import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.place.viewmodel.PlaceViewModel
 import org.koin.androidx.compose.koinViewModel
 import com.github.eylulnc.walkmunich.core.ui.composable.ExpandableSection
+import com.github.eylulnc.walkmunich.core.ui.theme.TextMutedDark
 
 @Composable
 fun PlaceDetailScreenUi(
@@ -132,7 +133,8 @@ private fun StoryContent(
                     Text(
                         text = subTitle,
                         fontSize = TypographySizes.medium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        fontWeight = FontWeight.Bold,
+                        color = TextMutedDark
                     )
                 }
 

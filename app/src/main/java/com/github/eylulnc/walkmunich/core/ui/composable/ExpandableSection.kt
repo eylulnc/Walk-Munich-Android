@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
@@ -49,6 +50,7 @@ fun ExpandableSection(title: String, content: String) {
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             )
+
             Icon(
                 imageVector = Icons.Default.ExpandMore,
                 contentDescription = null,
@@ -61,7 +63,8 @@ fun ExpandableSection(title: String, content: String) {
             Text(
                 text = content,
                 fontSize = TypographySizes.medium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Start,
                 modifier = Modifier.padding(top = Spacing.Small)
             )
         }

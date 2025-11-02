@@ -6,7 +6,8 @@ import kotlinx.serialization.Serializable
 data class RouteSummary(
     val id: Long,
     val title: String,
-    val summary: String? = null
+    val summary: String? = null,
+    val imageUrl: String? = null
 )
 
 @Serializable

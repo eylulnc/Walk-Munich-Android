@@ -1,8 +1,11 @@
 package com.github.eylulnc.walkmunich.feature.route.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,12 +23,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.RouteSummary
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
+import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteListViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -45,9 +54,11 @@ fun RouteListScreenUi(
             state.isLoading -> {
                 LoadingState()
             }
+
             state.error != null -> {
                 ErrorState(errorMessage = state.error)
             }
+
             else -> {
                 LazyColumn {
                     items(state.routes) { route ->
@@ -61,32 +72,70 @@ fun RouteListScreenUi(
 }
 
 @Composable
-private fun RouteRow(route: RouteSummary, onClick: () -> Unit) {
+private fun RouteRow(
+    route: RouteSummary,
+    onClick: () -> Unit,
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .height(Spacing.CardHeightMedium)
             .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = Spacing.ExtraSmall
-        ),
+        shape = RoundedCornerShape(Spacing.CornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = Spacing.None),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
         ),
         border = BorderStroke(
-            width = Spacing.BorderStroke,
-            color = MaterialTheme.colorScheme.outline
-        ),
-        shape = RoundedCornerShape(Spacing.CornerRadius),
+            Spacing.BorderStroke,
+            MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+        )
     ) {
-        Column(modifier = Modifier.padding(Spacing.Medium)) {
-            Text(
-                text = route.title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            if (!route.summary.isNullOrBlank()) {
-                Spacer(Modifier.height(Spacing.Small))
-                Text(text = route.summary, style = MaterialTheme.typography.bodyMedium)
+        Column(modifier = Modifier.fillMaxWidth()) {
+            val imageResId =
+                route.imageUrl?.let { ImageResolver.resolveDrawable(it) } ?: R.drawable.hero_munich
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(Spacing.CardHeightSmall)
+                    .weight(0.4f)
+            ) {
+                Image(
+                    painter = painterResource(id = imageResId),
+                    contentDescription = route.title,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
+            // 📝 Text Section
+            Column(
+                modifier = Modifier
+                    .weight(0.6f)
+                    .padding(horizontal = Spacing.Medium, vertical = Spacing.Small),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = route.title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = TypographySizes.medium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                if (!route.summary.isNullOrBlank()) {
+                    Text(
+                        text = route.summary,
+                        fontSize = TypographySizes.small,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = Spacing.Small)
+                    )
+                }
             }
         }
     }

@@ -104,7 +104,7 @@ private fun ItinerarySegment(
 
         segment.stops.forEachIndexed { stopIndex, stop ->
             val nextStop = segment.stops.getOrNull(stopIndex + 1)
-            val subTitle = nextStop?.let { "Next stop: ${it.name}" }
+            val subTitle = nextStop?.let { stringResource(R.string.next_stop, it.name)}
             RouteStopItem(
                 stop = stop,
                 onClick = { onPlaceItemClick(stop.placeId, subTitle) }
