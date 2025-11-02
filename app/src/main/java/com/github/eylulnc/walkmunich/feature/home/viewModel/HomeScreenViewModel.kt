@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.Normalizer
+import com.github.eylulnc.walkmunich.core.data.model.Category
 
 data class HomeScreenUiState(
     val isLoading: Boolean = true,
@@ -23,7 +24,10 @@ data class HomeScreenUiState(
     val searchQuery: String = "",
     val allPlaces: List<Place> = emptyList(),
     val searchResults: List<SearchResult> = emptyList(),
-    val isSearching: Boolean = false
+    val isSearching: Boolean = false,
+    val selectedCategory: Category? = null,
+    val filteredPlaces: List<Place> = emptyList(),
+    val highlightedPlace: Place? = null
 )
 
 class HomeScreenViewModel(
@@ -59,8 +63,9 @@ class HomeScreenViewModel(
             runCatching {
                 // Supports either a suspend list or a Flow<List<PlaceMin>>
                 val data = placesRepository.getPlaces() // suspend returning List<PlaceMin>
-                _uiState.update { it.copy(allPlaces = data) }
+                _uiState.update { it.copy(allPlaces = data, highlightedPlace = data.random()) }
                 applySearch(_uiState.value.searchQuery, data)
+                onCategorySelected(null)
             }.onFailure { e ->
                 // Don’t fail the whole screen; just keep search empty
                 _uiState.update { it.copy(error = e.message) }
@@ -71,12 +76,12 @@ class HomeScreenViewModel(
     fun onQueryChange(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
         searchJob?.cancel()
-        
+
         if (query.isBlank()) {
             _uiState.update { it.copy(searchResults = emptyList(), isSearching = false) }
             return
         }
-        
+
         _uiState.update { it.copy(isSearching = true) }
         searchJob = viewModelScope.launch {
             delay(150)
@@ -85,6 +90,15 @@ class HomeScreenViewModel(
     }
 
     fun onClearQuery() = onQueryChange("")
+
+    fun onCategorySelected(category: Category?) {
+        val filtered = if (category == null) {
+            _uiState.value.allPlaces.shuffled().take(10)
+        } else {
+            _uiState.value.allPlaces.filter { it.category == category }
+        }
+        _uiState.update { it.copy(selectedCategory = category, filteredPlaces = filtered) }
+    }
 
     private fun applySearch(query: String, data: List<Place>) {
         if (query.isBlank()) {

@@ -1,8 +1,8 @@
-
 package com.github.eylulnc.walkmunich.feature.home.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +33,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,9 +45,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.eylulnc.walkmunich.R
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.data.model.Category
+import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
+import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -53,53 +57,109 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreenUi(
     viewModel: HomeScreenViewModel = koinViewModel(),
-    onCategoryClick: (Category) -> Unit,
     onPlaceItemClick: (Long) -> Unit,
-    onSettingsClick: () -> Unit,
     onSeeAllFavoritesClick: () -> Unit
 ) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {
         WMTopAppBarScreen(title = "Walk Munich") {
-            CategoryChips()
+            FilteredPlacesSection(
+                places = state.filteredPlaces,
+                onPlaceClick = onPlaceItemClick,
+                selectedCategory = state.selectedCategory,
+                onCategorySelected = viewModel::onCategorySelected
+            )
             Spacer(modifier = Modifier.height(24.dp))
-            FavoritesSection(onSeeAllClick = onSeeAllFavoritesClick)
+            state.highlightedPlace?.let { HighlightSection(it) }
             Spacer(modifier = Modifier.height(24.dp))
-            HighlightSection()
+            FavoritesSection(
+                onSeeAllClick = onSeeAllFavoritesClick,
+                state.filteredPlaces,
+                onPlaceItemClick
+            )
             Spacer(modifier = Modifier.height(24.dp))
-            AllToursSection()
         }
-
     }
 }
 
 @Composable
-fun CategoryChips() {
-    val categories = listOf("For You", "Popular", "Art & Culture", "History", "Beer Gardens")
+fun CategoryChips(
+    selectedCategory: Category?,
+    onCategorySelected: (Category?) -> Unit
+) {
+    val categories = remember { listOf<Category?>(null) + Category.values() }
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(categories) { category ->
+            val isSelected = selectedCategory == category
             Button(
-                onClick = { /* TODO */ },
+                onClick = { onCategorySelected(category) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (category == "For You") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = if (category == "For You") Color.White else MaterialTheme.colorScheme.onSurfaceVariant
+                    containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
-                Text(text = category, fontSize = 14.sp)
+                val text = when (category) {
+                    null -> "For You"
+                    else -> category.name.lowercase().replaceFirstChar { it.titlecase() }
+                }
+                Text(text = text, fontSize = 14.sp)
             }
         }
     }
 }
 
 @Composable
-fun FavoritesSection(onSeeAllClick: () -> Unit) {
+fun FilteredPlacesSection(
+    places: List<Place>,
+    onPlaceClick: (Long) -> Unit,
+    selectedCategory: Category?,
+    onCategorySelected: (Category?) -> Unit
+) {
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = "Places", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            TextButton(onClick = { /*TODO*/ }) {
+                Text("See All", color = MaterialTheme.colorScheme.primary)
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        CategoryChips(
+            selectedCategory = selectedCategory,
+            onCategorySelected = onCategorySelected
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(places.take(5)) { place ->
+                PlaceCard(place = place, onPlaceClick = { onPlaceClick(place.id) })
+            }
+        }
+    }
+}
+
+@Composable
+fun FavoritesSection(
+    onSeeAllClick: () -> Unit,
+    favorites: List<Place>,
+    onPlaceClick: (Long) -> Unit
+) {
     Column {
         Row(
             modifier = Modifier
@@ -118,59 +178,41 @@ fun FavoritesSection(onSeeAllClick: () -> Unit) {
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(2) {
-                PlaceCard(isFavorite = true)
+            items(favorites.take(5)) { place ->
+                PlaceCard(place = place, onPlaceClick = { onPlaceClick(place.id) })
             }
         }
     }
 }
 
 @Composable
-fun HighlightSection() {
+fun HighlightSection(place: Place) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Text(text = "Highlight of the Day", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(8.dp))
-        HighlightCard()
+        HighlightCard(place = place)
     }
 }
 
-@Composable
-fun AllToursSection() {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "All Tours", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            TextButton(onClick = { /*TODO*/ }) {
-                Text("See All", color = MaterialTheme.colorScheme.primary)
-            }
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(3) {
-                PlaceCard(isFavorite = it % 2 == 0, showDetails = true)
-            }
-        }
-    }
-}
 
 @Composable
-fun PlaceCard(isFavorite: Boolean, showDetails: Boolean = false) {
+fun PlaceCard(
+    place: Place,
+    onPlaceClick: () -> Unit,
+    isFavorite: Boolean = false
+) {
     Card(
         modifier = Modifier.width(256.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Box(modifier = Modifier.height(150.dp)) {
+        val imageResId = ImageResolver.resolveDrawable(place.imageUrl)
+
+        Box(modifier = Modifier
+            .height(150.dp)
+            .clickable(onClick = onPlaceClick)) {
             Image(
-                painter = painterResource(id = R.drawable.placeholder), // Replace with actual image
+                painter = painterResource(id = imageResId),
                 contentDescription = "Place Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -191,25 +233,15 @@ fun PlaceCard(isFavorite: Boolean, showDetails: Boolean = false) {
             }
         }
         Column(modifier = Modifier.padding(8.dp)) {
-            Text("Place Name", fontWeight = FontWeight.Bold)
-//            if (showDetails) {
-//                Row(verticalAlignment = Alignment.CenterVertically) {
-//                    Text("🕒 2hr", fontSize = 12.sp)
-//                    Spacer(modifier = Modifier.width(8.dp))
-//                    Text("€15", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-//                }
-//            } else {
-//                Row(verticalAlignment = Alignment.CenterVertically) {
-//                    Icon(Icons.Default.Star, contentDescription = "Rating", tint = Color(0xFFFFD700), modifier = Modifier.size(16.dp))
-//                    Text("4.9 (302)", fontSize = 12.sp)
-//                }
-//            }
+            Text(place.name, fontWeight = FontWeight.Bold)
         }
     }
 }
 
 @Composable
-fun HighlightCard() {
+fun HighlightCard(place: Place) {
+    val imageResId = ImageResolver.resolveDrawable(place.imageUrl)
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -217,7 +249,7 @@ fun HighlightCard() {
     ) {
         Box(modifier = Modifier.height(200.dp)) {
             Image(
-                painter = painterResource(id = R.drawable.placeholder), // Replace with actual image
+                painter = painterResource(id = imageResId),
                 contentDescription = "Highlight Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -248,8 +280,12 @@ fun HighlightCard() {
                     .align(Alignment.BottomStart)
                     .padding(16.dp)
             ) {
-                Text("Eisbach River Surfers", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 18.sp)
-                Text("Watch the famous river surfers ride the wave.", color = Color.White.copy(alpha = 0.8f), fontSize = 14.sp)
+                Text(
+                    place.name,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    fontSize = 18.sp
+                )
             }
         }
     }
@@ -259,9 +295,7 @@ fun HighlightCard() {
 @Composable
 fun DefaultPreview() {
     HomeScreenUi(
-        onCategoryClick = {},
         onPlaceItemClick = {},
-        onSettingsClick = {},
         onSeeAllFavoritesClick = {}
     )
 }

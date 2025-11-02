@@ -101,18 +101,12 @@ fun NavigationRoot(
                     is HomeScreen -> {
                         NavEntry(key = key) {
                             HomeScreenUi(
-                                onCategoryClick = { category ->
-                                    exploreBackStack.add(CategoryPlacesScreen(category))
-                                },
                                 onPlaceItemClick = { placeId ->
                                     exploreBackStack.add(
                                         PlaceDetailScreen(
                                             placeId
                                         )
                                     )
-                                },
-                                onSettingsClick = {
-                                    exploreBackStack.add(ProfileScreen)
                                 },
                                 onSeeAllFavoritesClick = {
                                     selectedTabIndex = tabs.indexOf(RootTab.Favorites)
