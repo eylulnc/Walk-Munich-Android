@@ -2,11 +2,12 @@ package com.github.eylulnc.walkmunich.feature.home.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.data.model.City
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.SearchResult
-import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
 import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
+import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,13 +15,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.Normalizer
-import com.github.eylulnc.walkmunich.core.data.model.Category
 
 data class HomeScreenUiState(
     val isLoading: Boolean = true,
     val city: City? = null,
     val error: String? = null,
-
     val searchQuery: String = "",
     val allPlaces: List<Place> = emptyList(),
     val searchResults: List<SearchResult> = emptyList(),
@@ -61,13 +60,12 @@ class HomeScreenViewModel(
     private fun loadPlaces() {
         viewModelScope.launch {
             runCatching {
-                // Supports either a suspend list or a Flow<List<PlaceMin>>
-                val data = placesRepository.getPlaces() // suspend returning List<PlaceMin>
-                _uiState.update { it.copy(allPlaces = data, highlightedPlace = data.random()) }
+                val data = placesRepository.getPlaces()
+                _uiState.update { it.copy(allPlaces = data) }
                 applySearch(_uiState.value.searchQuery, data)
                 onCategorySelected(null)
+                _uiState.update { it.copy(highlightedPlace = data.random()) }
             }.onFailure { e ->
-                // Don’t fail the whole screen; just keep search empty
                 _uiState.update { it.copy(error = e.message) }
             }
         }
@@ -84,7 +82,7 @@ class HomeScreenViewModel(
 
         _uiState.update { it.copy(isSearching = true) }
         searchJob = viewModelScope.launch {
-            delay(150)
+            delay(450)
             applySearch(query, _uiState.value.allPlaces)
         }
     }

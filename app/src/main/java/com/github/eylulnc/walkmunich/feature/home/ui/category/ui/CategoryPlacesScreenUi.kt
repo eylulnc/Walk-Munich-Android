@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
-import com.github.eylulnc.walkmunich.core.ui.composable.PlaceOverviewCard
+import com.github.eylulnc.walkmunich.core.ui.composable.PlaceCard
 import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.home.ui.category.viewmodel.CategoryPlacesViewModel
@@ -24,21 +24,22 @@ fun CategoryPlacesScreenUi(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     WMTopAppBarScreen(
+        title = state.category?.name ?: "Category",
         onBack = onBackClick
-    ) { listMod ->
+    ) { modifier ->
         when {
             state.isLoading -> LoadingState()
             state.error != null -> ErrorState(errorMessage = state.error)
             else -> {
                 LazyColumn(
-                    modifier = listMod,
+                    modifier = modifier,
                     contentPadding = PaddingValues(Spacing.Medium),
                     verticalArrangement = Arrangement.spacedBy(Spacing.Medium)
                 ) {
                     items(state.places) { place ->
-                        PlaceOverviewCard(
+                        PlaceCard(
                             place = place,
-                            onClick = { onPlaceClick(place.id) }
+                            onPlaceClick = { onPlaceClick(place.id) }
                         )
                     }
                 }
@@ -46,7 +47,3 @@ fun CategoryPlacesScreenUi(
         }
     }
 }
-
-
-
-

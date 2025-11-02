@@ -1,16 +1,12 @@
 package com.github.eylulnc.walkmunich.feature.home.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -19,7 +15,6 @@ import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.SearchResult
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
-import com.github.eylulnc.walkmunich.core.ui.composable.PlaceOverviewCard
 
 @Composable
 fun SearchResultsSection(
@@ -31,52 +26,49 @@ fun SearchResultsSection(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .fillMaxHeight()
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = if (isSearching || searchResults.isEmpty()) Arrangement.Center else Arrangement.Top
     ) {
-        if (isSearching) {
-            Text(
-                text = stringResource(R.string.searching),
-                style = MaterialTheme.typography.headlineSmall,
-                fontSize = TypographySizes.large,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)
-            )
-        } else if (searchResults.isNotEmpty()) {
-            Text(
-                text = stringResource(R.string.search_results, searchResults.size),
-                style = MaterialTheme.typography.headlineSmall,
-                fontSize = TypographySizes.large,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)
-            )
+        when {
+            isSearching -> {
+                Text(
+                    text = stringResource(R.string.searching),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = TypographySizes.large,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    modifier = Modifier.padding(horizontal = Spacing.Large)
+                )
+            }
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                contentPadding = PaddingValues(horizontal = Spacing.Large, vertical = Spacing.Medium),
-                verticalArrangement = Arrangement.spacedBy(Spacing.ItemGap)
-            ) {
-                items(searchResults) { searchResult ->
-                    PlaceOverviewCard(
-                        place = searchResult.place,
-                        onClick = { onPlaceClick(searchResult.place) }
-                    )
+            searchResults.isNotEmpty() -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentPadding = PaddingValues(horizontal = Spacing.Large, vertical = Spacing.Medium),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.ItemGap)
+                ) {
+                    items(searchResults) { searchResult ->
+                        PlaceCard(
+                            place = searchResult.place,
+                            onPlaceClick = { onPlaceClick(searchResult.place) }
+                        )
+                    }
                 }
             }
-        } else {
-            // Only show "No results" when search is complete and no results found
-            Text(
-                text = stringResource(R.string.no_search_results),
-                style = MaterialTheme.typography.headlineSmall,
-                fontSize = TypographySizes.large,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)
-            )
+
+            else -> {
+                Text(
+                    text = stringResource(R.string.no_search_results),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = TypographySizes.large,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    modifier = Modifier.padding(horizontal = Spacing.Large)
+                )
+            }
         }
     }
 }
-

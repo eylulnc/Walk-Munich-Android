@@ -1,5 +1,6 @@
 package com.github.eylulnc.walkmunich.feature.home.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,7 +28,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -46,14 +46,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.data.model.Place
-import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
+import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
+import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
+import com.github.eylulnc.walkmunich.core.ui.composable.WMSearchTopAppBarScreen
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenUi(
     viewModel: HomeScreenViewModel = koinViewModel(),
@@ -62,30 +66,67 @@ fun HomeScreenUi(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxSize()
-    ) {
-        WMTopAppBarScreen(title = "Walk Munich") {
-            FilteredPlacesSection(
-                places = state.filteredPlaces,
-                onPlaceClick = onPlaceItemClick,
-                selectedCategory = state.selectedCategory,
-                onCategorySelected = viewModel::onCategorySelected
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            state.highlightedPlace?.let { HighlightSection(it) }
-            Spacer(modifier = Modifier.height(24.dp))
-            FavoritesSection(
-                onSeeAllClick = onSeeAllFavoritesClick,
-                state.filteredPlaces,
-                onPlaceItemClick
-            )
-            Spacer(modifier = Modifier.height(24.dp))
+    WMSearchTopAppBarScreen(
+        title = "Walk Munich",
+        searchQuery = state.searchQuery,
+        onSearchQueryChange = viewModel::onQueryChange,
+        onClearSearch = viewModel::onClearQuery
+    ) { modifier ->
+        when {
+            state.isLoading -> LoadingState()
+            state.error != null -> ErrorState(errorMessage = state.error)
+            else -> {
+                if (state.searchQuery.isNotBlank()) {
+                    Column(modifier = modifier) {
+                        Text(
+                            text = androidx.compose.ui.res.stringResource(
+                                R.string.search_results,
+                                state.searchResults.size
+                            ),
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontSize = TypographySizes.large,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.padding(
+                                horizontal = Spacing.Large,
+                                vertical = Spacing.Medium
+                            )
+                        )
+                        SearchResultsSection(
+                            searchResults = state.searchResults,
+                            isSearching = state.isSearching,
+                            onPlaceClick = { place ->
+                                onPlaceItemClick(place.id)
+                            }
+                        )
+                    }
+                } else {
+                    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+                        CategoryChips(
+                            selectedCategory = state.selectedCategory,
+                            onCategorySelected = viewModel::onCategorySelected
+                        )
+                        FilteredPlacesSection(
+                            places = state.filteredPlaces,
+                            onPlaceClick = onPlaceItemClick
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+                        state.highlightedPlace?.let { HighlightSection(it) }
+                        Spacer(modifier = Modifier.height(24.dp))
+                        FavoritesSection(
+                            onSeeAllClick = onSeeAllFavoritesClick,
+                            favorites = state.filteredPlaces,
+                            onPlaceClick = onPlaceItemClick
+                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
+                }
+            }
         }
     }
 }
+
 
 @Composable
 fun CategoryChips(
@@ -121,8 +162,6 @@ fun CategoryChips(
 fun FilteredPlacesSection(
     places: List<Place>,
     onPlaceClick: (Long) -> Unit,
-    selectedCategory: Category?,
-    onCategorySelected: (Category?) -> Unit
 ) {
     Column {
         Row(
@@ -137,11 +176,6 @@ fun FilteredPlacesSection(
                 Text("See All", color = MaterialTheme.colorScheme.primary)
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        CategoryChips(
-            selectedCategory = selectedCategory,
-            onCategorySelected = onCategorySelected
-        )
         Spacer(modifier = Modifier.height(8.dp))
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -179,7 +213,7 @@ fun FavoritesSection(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(favorites.take(5)) { place ->
-                PlaceCard(place = place, onPlaceClick = { onPlaceClick(place.id) })
+                PlaceCard(place = place, onPlaceClick = { onPlaceClick(place.id) }, isFavorite = true)
             }
         }
     }
@@ -204,7 +238,9 @@ fun PlaceCard(
     Card(
         modifier = Modifier.width(256.dp),
         shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
     ) {
         val imageResId = ImageResolver.resolveDrawable(place.imageUrl)
 
@@ -233,7 +269,7 @@ fun PlaceCard(
             }
         }
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(place.name, fontWeight = FontWeight.Bold)
+            Text(place.name, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
         }
     }
 }
