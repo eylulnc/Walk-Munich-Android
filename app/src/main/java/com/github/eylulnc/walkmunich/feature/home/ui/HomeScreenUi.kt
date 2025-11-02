@@ -1,9 +1,7 @@
 package com.github.eylulnc.walkmunich.feature.home.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -22,10 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -34,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,14 +39,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.eylulnc.walkmunich.R
-import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
+import com.github.eylulnc.walkmunich.core.ui.composable.PlaceCard
 import com.github.eylulnc.walkmunich.core.ui.composable.WMSearchTopAppBarScreen
-import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
-import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -62,7 +52,8 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreenUi(
     viewModel: HomeScreenViewModel = koinViewModel(),
     onPlaceItemClick: (Long) -> Unit,
-    onSeeAllFavoritesClick: () -> Unit
+    onSeeAllFavoritesClick: () -> Unit,
+    onSeeAllPlacesClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -78,20 +69,6 @@ fun HomeScreenUi(
             else -> {
                 if (state.searchQuery.isNotBlank()) {
                     Column(modifier = modifier) {
-                        Text(
-                            text = androidx.compose.ui.res.stringResource(
-                                R.string.search_results,
-                                state.searchResults.size
-                            ),
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontSize = TypographySizes.large,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.padding(
-                                horizontal = Spacing.Large,
-                                vertical = Spacing.Medium
-                            )
-                        )
                         SearchResultsSection(
                             searchResults = state.searchResults,
                             isSearching = state.isSearching,
@@ -102,13 +79,10 @@ fun HomeScreenUi(
                     }
                 } else {
                     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-                        CategoryChips(
-                            selectedCategory = state.selectedCategory,
-                            onCategorySelected = viewModel::onCategorySelected
-                        )
-                        FilteredPlacesSection(
-                            places = state.filteredPlaces,
-                            onPlaceClick = onPlaceItemClick
+                        PlacesSection(
+                            places = state.allPlaces,
+                            onPlaceClick = onPlaceItemClick,
+                            onSeeAllClick = onSeeAllPlacesClick
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
@@ -127,41 +101,11 @@ fun HomeScreenUi(
     }
 }
 
-
 @Composable
-fun CategoryChips(
-    selectedCategory: Category?,
-    onCategorySelected: (Category?) -> Unit
-) {
-    val categories = remember { listOf<Category?>(null) + Category.values() }
-    LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(categories) { category ->
-            val isSelected = selectedCategory == category
-            Button(
-                onClick = { onCategorySelected(category) },
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            ) {
-                val text = when (category) {
-                    null -> "For You"
-                    else -> category.name.lowercase().replaceFirstChar { it.titlecase() }
-                }
-                Text(text = text, fontSize = 14.sp)
-            }
-        }
-    }
-}
-
-@Composable
-fun FilteredPlacesSection(
+fun PlacesSection(
     places: List<Place>,
     onPlaceClick: (Long) -> Unit,
+    onSeeAllClick: () -> Unit
 ) {
     Column {
         Row(
@@ -172,11 +116,10 @@ fun FilteredPlacesSection(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "Places", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = { onSeeAllClick() }) {
                 Text("See All", color = MaterialTheme.colorScheme.primary)
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -207,7 +150,6 @@ fun FavoritesSection(
                 Text("See All", color = MaterialTheme.colorScheme.primary)
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -225,52 +167,6 @@ fun HighlightSection(place: Place) {
         Text(text = "Highlight of the Day", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(8.dp))
         HighlightCard(place = place)
-    }
-}
-
-
-@Composable
-fun PlaceCard(
-    place: Place,
-    onPlaceClick: () -> Unit,
-    isFavorite: Boolean = false
-) {
-    Card(
-        modifier = Modifier.width(256.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
-    ) {
-        val imageResId = ImageResolver.resolveDrawable(place.imageUrl)
-
-        Box(modifier = Modifier
-            .height(150.dp)
-            .clickable(onClick = onPlaceClick)) {
-            Image(
-                painter = painterResource(id = imageResId),
-                contentDescription = "Place Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.TopEnd)
-                    .clip(CircleShape)
-                    .background(Color.Black.copy(alpha = 0.3f))
-                    .padding(4.dp)
-            ) {
-                Icon(
-                    if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = "Favorite",
-                    tint = Color.White
-                )
-            }
-        }
-        Column(modifier = Modifier.padding(8.dp)) {
-            Text(place.name, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-        }
     }
 }
 
@@ -332,6 +228,7 @@ fun HighlightCard(place: Place) {
 fun DefaultPreview() {
     HomeScreenUi(
         onPlaceItemClick = {},
-        onSeeAllFavoritesClick = {}
+        onSeeAllFavoritesClick = {},
+        onSeeAllPlacesClick = {}
     )
 }

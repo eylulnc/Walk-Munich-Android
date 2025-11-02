@@ -35,13 +35,13 @@ import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 
 @Composable
-fun PlaceCard(
+fun PlaceCardSmall(
     place: Place,
     onPlaceClick: () -> Unit,
     isFavorite: Boolean = false
 ) {
     Card(
-        modifier = Modifier.width(256.dp),
+        modifier = Modifier.width(150.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -51,7 +51,7 @@ fun PlaceCard(
 
         Box(
             modifier = Modifier
-                .height(150.dp)
+                .height(120.dp)
                 .clickable(onClick = onPlaceClick)
         ) {
             Image(
@@ -62,7 +62,7 @@ fun PlaceCard(
             )
             Box(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(6.dp)
                     .align(Alignment.TopEnd)
                     .clip(CircleShape)
                     .background(Color.Black.copy(alpha = 0.3f))
@@ -76,12 +76,12 @@ fun PlaceCard(
             }
         }
 
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp)) {
             Text(
                 text = place.name,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
-                fontSize = 14.sp,
+                fontSize = 13.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

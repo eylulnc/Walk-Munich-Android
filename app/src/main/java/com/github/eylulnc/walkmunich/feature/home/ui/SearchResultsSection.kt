@@ -1,8 +1,14 @@
 package com.github.eylulnc.walkmunich.feature.home.ui
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.SearchResult
+import com.github.eylulnc.walkmunich.core.ui.composable.PlaceCardSmall
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 
@@ -35,7 +42,7 @@ fun SearchResultsSection(
                 Text(
                     text = stringResource(R.string.searching),
                     style = MaterialTheme.typography.headlineSmall,
-                    fontSize = TypographySizes.large,
+                    fontSize = TypographySizes.medium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                     modifier = Modifier.padding(horizontal = Spacing.Large)
@@ -43,15 +50,21 @@ fun SearchResultsSection(
             }
 
             searchResults.isNotEmpty() -> {
-                LazyColumn(
+                // 🟢 Grid layout with 2 columns
+                LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    contentPadding = PaddingValues(horizontal = Spacing.Large, vertical = Spacing.Medium),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.ItemGap)
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(
+                        horizontal = Spacing.Medium,
+                        vertical = Spacing.Medium
+                    ),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.Medium),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.Medium)
                 ) {
                     items(searchResults) { searchResult ->
-                        PlaceCard(
+                        PlaceCardSmall(
                             place = searchResult.place,
                             onPlaceClick = { onPlaceClick(searchResult.place) }
                         )
@@ -63,7 +76,7 @@ fun SearchResultsSection(
                 Text(
                     text = stringResource(R.string.no_search_results),
                     style = MaterialTheme.typography.headlineSmall,
-                    fontSize = TypographySizes.large,
+                    fontSize = TypographySizes.medium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                     modifier = Modifier.padding(horizontal = Spacing.Large)

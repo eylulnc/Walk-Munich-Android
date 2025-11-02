@@ -12,26 +12,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,7 +45,7 @@ fun WMSearchTopAppBarScreen(
     ) {
         Crossfade(targetState = isSearchMode, label = "search-mode") { searchMode ->
             if (searchMode) {
-                // 🔍 Search Mode – white background pinned to top
+                // 🔍 Search Mode – white bar at top
                 Surface(
                     shadowElevation = 4.dp,
                     color = Color.White,
@@ -73,9 +59,15 @@ fun WMSearchTopAppBarScreen(
                                 placeholder = {
                                     Text(
                                         text = "Search for tours or landmarks...",
+                                        fontSize = 16.sp,
                                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                                     )
                                 },
+                                textStyle = TextStyle(
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    fontSize = 16.sp,
+                                    lineHeight = 18.sp
+                                ),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(56.dp)
@@ -88,41 +80,25 @@ fun WMSearchTopAppBarScreen(
                                     cursorColor = MaterialTheme.colorScheme.onSurface
                                 ),
                                 singleLine = true,
-                                textStyle = LocalTextStyle.current.copy(
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                            )
-                        },
-                        navigationIcon = {
-                            IconButton(onClick = {
-                                if (searchQuery.isNotEmpty()) {
-                                    onClearSearch()
-                                } else {
-                                    isSearchMode = false
-                                }
-                            }) {
-                                Crossfade(targetState = searchQuery.isNotEmpty(), label = "icon-change") { hasText ->
-                                    if (hasText) {
+                                trailingIcon = {
+                                    IconButton(onClick = {
+                                        onClearSearch()
+                                        isSearchMode = false
+                                    }) {
                                         Icon(
                                             imageVector = Icons.Outlined.Close,
-                                            contentDescription = "Clear",
-                                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                                        )
-                                    } else {
-                                        Icon(
-                                            imageVector = Icons.Outlined.Search,
-                                            contentDescription = "Search",
+                                            contentDescription = "Close search",
                                             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                                         )
                                     }
                                 }
-                            }
+                            )
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = Color.White,
                             titleContentColor = MaterialTheme.colorScheme.onSurface
                         ),
-                        scrollBehavior = scrollBehavior
+                        scrollBehavior = null
                     )
                 }
             } else {
