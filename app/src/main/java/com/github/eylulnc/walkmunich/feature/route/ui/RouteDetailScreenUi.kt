@@ -1,33 +1,32 @@
 package com.github.eylulnc.walkmunich.feature.route.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.R
@@ -40,6 +39,7 @@ import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
+import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.route.viewmodel.RouteDetailViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -59,23 +59,69 @@ fun RouteDetailScreenUi(
             state.isLoading -> LoadingState()
             state.error != null -> ErrorState(errorMessage = state.error)
             state.routeDetail != null -> {
+                val detail = state.routeDetail!!
+
                 Column(
                     modifier = contentMod
                         .verticalScroll(rememberScrollState())
-                        .padding(horizontal = Spacing.Medium)
+                        .background(MaterialTheme.colorScheme.background)
                 ) {
-                    val detail = state.routeDetail!!
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(Spacing.Large)
+                    // --- Hero Image ---
+                    val heroImage = ImageResolver.resolveDrawable(detail.imageUrl)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(240.dp)
                     ) {
-                        detail.segments.forEach { segment ->
-                            ItinerarySegment(
-                                segment = segment,
-                                displaySubtitle = detail.segments.size != 1,
-                                onPlaceItemClick = onPlaceItemClick
-                            )
-                        }
+                        Image(
+                            painter = painterResource(heroImage),
+                            contentDescription = detail.title,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    Brush.verticalGradient(
+                                        listOf(
+                                            Color.Black.copy(alpha = 0.5f),
+                                            Color.Transparent
+                                        )
+                                    )
+                                )
+                        )
+                    }
+
+                    // --- Description ---
+                    detail.summary?.let {
+                        Text(
+                            text = it,
+                            fontSize = TypographySizes.medium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier
+                                .padding(Spacing.Large)
+                        )
+                    }
+
+                    // --- Itinerary ---
+                    Text(
+                        text = stringResource(R.string.itinerary),
+                        fontSize = TypographySizes.subtitle,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(
+                            horizontal = Spacing.Large,
+                            vertical = Spacing.Small
+                        )
+                    )
+
+                    detail.segments.forEach { segment ->
+                        ItinerarySegment(
+                            segment = segment,
+                            displaySubtitle = detail.segments.size > 1,
+                            onPlaceItemClick = onPlaceItemClick
+                        )
                     }
                 }
             }
@@ -89,99 +135,142 @@ private fun ItinerarySegment(
     displaySubtitle: Boolean,
     onPlaceItemClick: (Long, String?) -> Unit
 ) {
-    Column(
-        modifier = Modifier.padding(Spacing.Medium),
-        verticalArrangement = Arrangement.spacedBy(Spacing.Medium)
-    ) {
+    Column(modifier = Modifier.padding(horizontal = Spacing.Large, vertical = Spacing.Medium)) {
         if (displaySubtitle) {
-            Text(
-                text = segment.title,
-                fontSize = TypographySizes.medium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onBackground
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Outlined.CalendarMonth,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(end = Spacing.Small)
+                )
+                Text(
+                    text = segment.title,
+                    fontSize = TypographySizes.subtitle,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
+
+        Spacer(Modifier.height(Spacing.Medium))
+
+        segment.stops.forEachIndexed { index, stop ->
+            RouteStopCard(
+                stop = stop,
+                stepNumber = index + 1,
+                isLast = index == segment.stops.lastIndex,
+                onClick = { onPlaceItemClick(stop.placeId, null) }
             )
         }
 
-        segment.stops.forEachIndexed { stopIndex, stop ->
-            val nextStop = segment.stops.getOrNull(stopIndex + 1)
-            val subTitle = nextStop?.let { stringResource(R.string.next_stop, it.name)}
-            RouteStopItem(
-                stop = stop,
-                onClick = { onPlaceItemClick(stop.placeId, subTitle) }
-            )
-        }
     }
 }
 
 @Composable
-private fun RouteStopItem(
+fun RouteStopCard(
     stop: RouteStop,
+    stepNumber: Int,
+    isLast: Boolean,
     onClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // Stop number circle
+    Box(modifier = Modifier.fillMaxWidth()) {
+        // --- Dashed line connecting to next stop ---
+        if (!isLast) {
+            Canvas(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(2.dp)
+                    .align(Alignment.TopStart)
+                    .offset(x = 15.dp, y = 40.dp)
+            ) {
+                drawLine(
+                    color = OrangeMain.copy(alpha = 0.4f),
+                    start = Offset(0f, 0f),
+                    end = Offset(0f, size.height),
+                    strokeWidth = 2.dp.toPx(),
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f))
+                )
+            }
+        }
+
+        Row(verticalAlignment = Alignment.Top) {
+            // --- Step Number Circle ---
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(32.dp)
                     .clip(CircleShape)
-                    .background(OrangeMain),
+                    .background(MaterialTheme.colorScheme.primary),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stop.ord.toString(),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = TypographySizes.medium,
-                    fontWeight = FontWeight.Bold
+                    text = stepNumber.toString(),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = TypographySizes.small
                 )
             }
 
-            Spacer(modifier = Modifier.width(Spacing.Small))
+            Spacer(Modifier.width(Spacing.Medium))
 
-            // Stop details card
+            val imageResId = ImageResolver.resolveDrawable(stop.name.lowercase())
+
             Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = Spacing.Small)
+                    .weight(1f)
                     .clickable(onClick = onClick),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(Spacing.CornerRadius),
+                elevation = CardDefaults.cardElevation(defaultElevation = Spacing.None),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
                 border = BorderStroke(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline
+                    Spacing.BorderStroke,
+                    MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
                 )
             ) {
-                val categoryUi = stop.category.toUi()
+                Column {
+                    Box(
+                        modifier = Modifier
+                            .height(Spacing.CardHeightSmall)
+                            .fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(id = imageResId),
+                            contentDescription = stop.name,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Spacing.Medium),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = categoryUi.icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(20.dp)
-                    )
+                        Box(
+                            modifier = Modifier
+                                .padding(Spacing.Small)
+                                .align(Alignment.TopEnd)
+                                .clip(CircleShape)
+                                .background(Color.Black.copy(alpha = 0.3f))
+                                .padding(Spacing.ExtraSmall)
+                        ) {
+                            Icon(
+                                imageVector = stop.category.toUi().icon,
+                                contentDescription = null,
+                                tint = Color.White
+                            )
+                        }
+                    }
 
-                    Spacer(modifier = Modifier.width(Spacing.Small))
-
-                    Text(
-                        text = stop.name,
-                        fontSize = TypographySizes.medium,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    Column(modifier = Modifier.padding(Spacing.Small)) {
+                        Text(
+                            text = stop.name,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = TypographySizes.body,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
         }
     }
+
+    Spacer(Modifier.height(Spacing.Medium))
 }
+

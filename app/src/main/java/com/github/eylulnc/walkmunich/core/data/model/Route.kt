@@ -22,6 +22,8 @@ data class RouteDetail(
     val cityId: Long,
     val title: String,
     val segments: List<RouteSegment>,
+    val imageUrl: String? = null,
+    val summary: String? = null,
     val updatedAt: String
 )
 
