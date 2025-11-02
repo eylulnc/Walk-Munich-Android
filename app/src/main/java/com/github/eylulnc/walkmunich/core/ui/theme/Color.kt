@@ -2,18 +2,24 @@ package com.github.eylulnc.walkmunich.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val BlueLight   = Color(0xFF8ECAE6)
-val BlueTeal    = Color(0xFF219EBC)
-val BlueNavy    = Color(0xFF023047)
+// Primary Brand Palette
+val OrangeMain = Color(0xFFFA8500)
+val OrangeDark = Color(0xFFE06B00)
+val BlueTeal = Color(0xFF219EBC)
+val BlueNavy = Color(0xFF023047)
 
-val Yellow      = Color(0xFFFFB703)
-val OrangeMain  = Color(0xFFFB8500) // ← primary
-val RedOrange   = Color(0xFFEC4E20)
-
-val Green       = Color(0xFF248232)
-val GreenLight  = Color(0xFF9ECE9A)
+// Accent / Utility
+val Yellow = Color(0xFFFFB703)
+val Green = Color(0xFF248232)
+val GreenLight = Color(0xFF9ECE9A)
+val RedError = Color(0xFFD64545)
 
 // Neutrals
-val BgLight     = Color(0xFFFFFFFF)
-val BgDark      = Color(0xFF121212)
-val SurfaceDark = Color(0xFF1B1B1B)
+val NeutralLight = Color(0xFFF8F9FA)
+val NeutralSurface = Color(0xFFE9ECEF)
+val NeutralDark = Color(0xFF101622)
+val NeutralCardDark = Color(0xFF1C2431)
+val TextLight = Color(0xFF212529)
+val TextMutedLight = Color(0xFF495057)
+val TextDark = Color(0xFFF8F9FA)
+val TextMutedDark = Color(0xFFADB5BD)

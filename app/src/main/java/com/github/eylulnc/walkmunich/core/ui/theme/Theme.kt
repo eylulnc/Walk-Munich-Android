@@ -12,60 +12,48 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val LightColorScheme = lightColorScheme(
-    // core roles
     primary = OrangeMain,
     onPrimary = Color.White,
+    primaryContainer = Yellow.copy(alpha = 0.2f),
+    onPrimaryContainer = BlueNavy,
+
     secondary = BlueTeal,
     onSecondary = Color.White,
-    tertiary = Green,
-    onTertiary = Color.White,
-
-    // containers
-    primaryContainer = Yellow,
-    onPrimaryContainer = Color.Black,
-    secondaryContainer = BlueLight,
+    secondaryContainer = BlueTeal.copy(alpha = 0.15f),
     onSecondaryContainer = BlueNavy,
-    tertiaryContainer = GreenLight,
-    onTertiaryContainer = Color.Black,
 
-    // surfaces & backgrounds
-    background = BgLight,
-    onBackground = BlueNavy,
-    surface = BgLight,
-    onSurface = Color.Black,
-    surfaceVariant = BlueLight.copy(alpha = 0.35f),
-    onSurfaceVariant = Color.DarkGray,
+    background = NeutralLight,
+    onBackground = TextLight,
+    surface = NeutralSurface,
+    onSurface = TextLight,
+    surfaceVariant = Color(0xFFDDE1E6),
+    onSurfaceVariant = TextMutedLight,
 
-    // outline / error
-    outline = Color.LightGray,
-    error = RedOrange,
+    outline = Color(0xFFCED4DA),
+    error = RedError,
     onError = Color.White
 )
 
 private val DarkColorScheme = darkColorScheme(
     primary = OrangeMain,
     onPrimary = Color.White,
+    primaryContainer = OrangeDark.copy(alpha = 0.7f),
+    onPrimaryContainer = Color.Black,
+
     secondary = BlueTeal,
     onSecondary = Color.White,
-    tertiary = Green,
-    onTertiary = Color.White,
-
-    primaryContainer = OrangeMain.copy(alpha = 0.85f),
-    onPrimaryContainer = Color.Black,
-    secondaryContainer = BlueNavy,
+    secondaryContainer = BlueNavy.copy(alpha = 0.6f),
     onSecondaryContainer = Color.White,
-    tertiaryContainer = Green.copy(alpha = 0.85f),
-    onTertiaryContainer = Color.Black,
 
-    background = BgDark,
-    onBackground = Color(0xFFECECEC),
-    surface = SurfaceDark,
-    onSurface = Color(0xFFECECEC),
-    surfaceVariant = SurfaceDark.copy(alpha = 0.7f),
-    onSurfaceVariant = Color.LightGray,
+    background = NeutralDark,
+    onBackground = TextDark,
+    surface = NeutralCardDark,
+    onSurface = TextDark,
+    surfaceVariant = Color(0xFF2C3444),
+    onSurfaceVariant = TextMutedDark,
 
-    outline = Color(0xFF909090),
-    error = RedOrange,
+    outline = Color(0xFF3A3F4B),
+    error = RedError,
     onError = Color.White
 )
 

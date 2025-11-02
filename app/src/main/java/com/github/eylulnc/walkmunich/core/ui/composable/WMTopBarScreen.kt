@@ -4,12 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -17,12 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
+import androidx.compose.ui.text.font.FontWeight
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarScreen(
-    title: @Composable (() -> Unit)? = null,
+fun WMTopAppBarScreen(
+    title: String? = null,
     onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.background,
@@ -33,18 +36,27 @@ fun TopBarScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(containerColor)
             .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         TopAppBar(
-            title = { title?.invoke() },
+            title = {
+                if (title != null) {
+                    Text(
+                        text = title,
+                        fontSize = TypographySizes.large,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            },
             navigationIcon = {
-                if (onBack != null) {
-                    IconButton(onClick = onBack) {
+                onBack?.let {
+                    IconButton(onClick = it) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = OrangeMain
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -52,16 +64,18 @@ fun TopBarScreen(
             actions = actions,
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = containerColor,
-                titleContentColor = MaterialTheme.colorScheme.onBackground
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                scrolledContainerColor = MaterialTheme.colorScheme.background
             ),
             scrollBehavior = scrollBehavior
         )
 
-        // Give the caller a modifier they can apply to the scrollable child
         content(
             Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
+                .navigationBarsPadding()
         )
     }
 }
+

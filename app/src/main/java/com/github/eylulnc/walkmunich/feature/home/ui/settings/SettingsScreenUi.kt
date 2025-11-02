@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.R
-import com.github.eylulnc.walkmunich.core.ui.composable.TopBarScreen
+import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import org.koin.androidx.compose.koinViewModel
 
@@ -32,9 +32,8 @@ fun SettingsScreenUi(
     val isDarkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
 
     Column {
-        TopBarScreen(
-            title = { Text(stringResource(id = R.string.settings)) },
-            onBack = onBackClick,
+        WMTopAppBarScreen(
+            title = stringResource(id = R.string.settings),
             content = {
                 DarkModeSwitch(
                     isDarkMode = isDarkTheme,
@@ -55,7 +54,7 @@ fun DarkModeSwitch(
             .fillMaxWidth()
             .padding(Spacing.Medium),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         shape = RoundedCornerShape(Spacing.CornerRadius),
         border = BorderStroke(
             width = 1.dp,

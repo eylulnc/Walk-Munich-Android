@@ -2,11 +2,12 @@ package com.github.eylulnc.walkmunich.feature.home.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.data.model.City
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.SearchResult
-import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
 import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
+import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,11 +20,13 @@ data class HomeScreenUiState(
     val isLoading: Boolean = true,
     val city: City? = null,
     val error: String? = null,
-
     val searchQuery: String = "",
     val allPlaces: List<Place> = emptyList(),
     val searchResults: List<SearchResult> = emptyList(),
-    val isSearching: Boolean = false
+    val isSearching: Boolean = false,
+    val selectedCategory: Category? = null,
+    val filteredPlaces: List<Place> = emptyList(),
+    val highlightedPlace: Place? = null
 )
 
 class HomeScreenViewModel(
@@ -57,12 +60,12 @@ class HomeScreenViewModel(
     private fun loadPlaces() {
         viewModelScope.launch {
             runCatching {
-                // Supports either a suspend list or a Flow<List<PlaceMin>>
-                val data = placesRepository.getPlaces() // suspend returning List<PlaceMin>
+                val data = placesRepository.getPlaces()
                 _uiState.update { it.copy(allPlaces = data) }
                 applySearch(_uiState.value.searchQuery, data)
+                onCategorySelected(null)
+                _uiState.update { it.copy(highlightedPlace = data.random()) }
             }.onFailure { e ->
-                // Don’t fail the whole screen; just keep search empty
                 _uiState.update { it.copy(error = e.message) }
             }
         }
@@ -71,20 +74,29 @@ class HomeScreenViewModel(
     fun onQueryChange(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
         searchJob?.cancel()
-        
+
         if (query.isBlank()) {
             _uiState.update { it.copy(searchResults = emptyList(), isSearching = false) }
             return
         }
-        
+
         _uiState.update { it.copy(isSearching = true) }
         searchJob = viewModelScope.launch {
-            delay(150)
+            delay(450)
             applySearch(query, _uiState.value.allPlaces)
         }
     }
 
     fun onClearQuery() = onQueryChange("")
+
+    fun onCategorySelected(category: Category?) {
+        val filtered = if (category == null) {
+            _uiState.value.allPlaces.shuffled().take(10)
+        } else {
+            _uiState.value.allPlaces.filter { it.category == category }
+        }
+        _uiState.update { it.copy(selectedCategory = category, filteredPlaces = filtered) }
+    }
 
     private fun applySearch(query: String, data: List<Place>) {
         if (query.isBlank()) {

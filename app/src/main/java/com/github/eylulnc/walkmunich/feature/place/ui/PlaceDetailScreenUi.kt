@@ -10,27 +10,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,13 +33,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.R
-import com.github.eylulnc.walkmunich.core.data.model.Fact
 import com.github.eylulnc.walkmunich.core.data.model.Highlight
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
+import com.github.eylulnc.walkmunich.core.ui.composable.ExpandableSection
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
-import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
+import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TextMutedDark
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.place.viewmodel.PlaceViewModel
@@ -70,24 +64,34 @@ fun PlaceDetailScreenUi(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PlaceDetailContent(
     place: Place,
     subTitle: String?,
     onBackClick: () -> Unit
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
-    Box(modifier = Modifier.fillMaxSize()) {
-
+    WMTopAppBarScreen(
+        title = null,
+        onBack = onBackClick,
+        actions = {
+            IconButton(onClick = { /* TODO: Favorite toggle */ }) {
+                Icon(
+                    imageVector = Icons.Filled.FavoriteBorder,
+                    contentDescription = stringResource(R.string.favorite),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        },
+        containerColor = Color.Transparent
+    ) {
         Column(
             modifier = Modifier
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .verticalScroll(rememberScrollState())
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState())
         ) {
             val imageId = ImageResolver.resolveDrawable(place.imageUrl)
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -103,39 +107,9 @@ private fun PlaceDetailContent(
 
             StoryContent(place = place, subTitle = subTitle)
         }
-
-        TopAppBar(
-            title = { /* no title here */ },
-            navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back),
-                        tint = OrangeMain
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = { /* TODO: Favorite toggle */ }) {
-                    Icon(
-                        imageVector = Icons.Filled.FavoriteBorder,
-                        contentDescription = stringResource(R.string.favorite),
-                        tint = OrangeMain
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.Transparent,
-                titleContentColor = OrangeMain,
-                scrolledContainerColor = Color.Transparent,
-                navigationIconContentColor = OrangeMain,
-                actionIconContentColor = OrangeMain
-            ),
-            scrollBehavior = scrollBehavior,
-            modifier = Modifier.statusBarsPadding()
-        )
     }
 }
+
 
 @Composable
 private fun StoryContent(
@@ -147,7 +121,12 @@ private fun StoryContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .offset(y = Spacing.NegativeCardOffset)
-                .clip(RoundedCornerShape(topStart = Spacing.CardCornerRadius, topEnd = Spacing.CardCornerRadius))
+                .clip(
+                    RoundedCornerShape(
+                        topStart = Spacing.CardCornerRadius,
+                        topEnd = Spacing.CardCornerRadius
+                    )
+                )
                 .background(MaterialTheme.colorScheme.background)
                 .padding(horizontal = Spacing.Large, vertical = Spacing.Large)
         ) {
@@ -163,7 +142,8 @@ private fun StoryContent(
                     Text(
                         text = subTitle,
                         fontSize = TypographySizes.medium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        fontWeight = FontWeight.Bold,
+                        color = TextMutedDark
                     )
                 }
 
@@ -181,7 +161,10 @@ private fun StoryContent(
                 }
 
                 if (!place.facts.isNullOrEmpty()) {
-                    FactsSection(facts = place.facts)
+                    ExpandableSection(
+                        title = stringResource(R.string.fun_facts),
+                        content = place.facts.joinToString("\n") { "• ${it.text}" }
+                    )
                 }
             }
         }
@@ -200,26 +183,6 @@ private fun HighlightsSection(highlights: List<Highlight>) {
     Spacer(modifier = Modifier.height(Spacing.Small))
     highlights.forEach { highlight ->
         HighlightItem(highlight)
-    }
-}
-
-@Composable
-private fun FactsSection(facts: List<Fact>) {
-    Spacer(modifier = Modifier.height(Spacing.Large))
-    Text(
-        text = stringResource(R.string.fun_facts),
-        fontSize = TypographySizes.subtitle,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.onBackground
-    )
-    Spacer(modifier = Modifier.height(Spacing.Small))
-    facts.forEach { fact ->
-        Text(
-            text = stringResource(R.string.bullet_fact, fact.text),
-            fontSize = TypographySizes.medium,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = Spacing.ExtraSmall)
-        )
     }
 }
 

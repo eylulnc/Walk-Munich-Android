@@ -1,17 +1,15 @@
 package com.github.eylulnc.walkmunich.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Route
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.ConfirmationNumber
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class RootTab(val label: String, val icon: ImageVector) {
-    data object Home : RootTab("Home", Icons.Outlined.Home)
-    data object Route : RootTab("Routes", Icons.Outlined.Route)
-    data object Favorites : RootTab("Favorites", Icons.Outlined.FavoriteBorder)
+    data object Explore : RootTab("Explore", Icons.Filled.Explore)
+    data object Tours : RootTab("Tours", Icons.Outlined.ConfirmationNumber)
+    data object Favorites : RootTab("Favorites", Icons.Filled.Favorite)
+    data object Profile : RootTab("Profile", Icons.Filled.Person)
 }
-
-val allTabs = listOf(
-    RootTab.Home, RootTab.Route, RootTab.Favorites
-)

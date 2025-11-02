@@ -2,32 +2,16 @@ package com.github.eylulnc.walkmunich.feature.home.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,13 +20,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.eylulnc.walkmunich.R
-import com.github.eylulnc.walkmunich.core.data.model.Category
-import com.github.eylulnc.walkmunich.core.ui.composable.CategoryCard
-import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
+import com.github.eylulnc.walkmunich.core.data.model.Place
+import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
+import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
+import com.github.eylulnc.walkmunich.core.ui.composable.PlaceCard
+import com.github.eylulnc.walkmunich.core.ui.composable.WMSearchTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
@@ -52,138 +36,100 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreenUi(
     viewModel: HomeScreenViewModel = koinViewModel(),
-    onCategoryClick: (Category) -> Unit,
     onPlaceItemClick: (Long) -> Unit,
-    onSettingsClick: () -> Unit
+    onSeeAllFavoritesClick: () -> Unit,
+    onSeeAllPlacesClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        HeaderSection(
-            cityName = state.city?.name ?: stringResource(R.string.munich_title),
-            heroImageUrl = state.city?.heroImage?.imageUrl ?: "",
-            query = state.searchQuery,
-            onQueryChange = viewModel::onQueryChange,
-            onClearQuery = viewModel::onClearQuery,
-            onSettingsClick = onSettingsClick
-        )
-
-        Spacer(modifier = Modifier.height(Spacing.Medium))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ) {
-            if (state.searchQuery.isNotBlank()) {
-                SearchResultsSection(
-                    searchResults = state.searchResults,
-                    isSearching = state.isSearching,
-                    onPlaceClick = { place ->
-                        onPlaceItemClick(place.id)
+    WMSearchTopAppBarScreen(
+        title = "Walk Munich",
+        searchQuery = state.searchQuery,
+        onSearchQueryChange = viewModel::onQueryChange,
+        onClearSearch = viewModel::onClearQuery
+    ) { modifier ->
+        when {
+            state.isLoading -> LoadingState()
+            state.error != null -> ErrorState(errorMessage = state.error)
+            else -> {
+                if (state.searchQuery.isNotBlank()) {
+                    Column(modifier = modifier) {
+                        SearchResultsSection(
+                            searchResults = state.searchResults,
+                            isSearching = state.isSearching,
+                            onPlaceClick = { place -> onPlaceItemClick(place.id) }
+                        )
                     }
-                )
-            } else {
-                CategoriesSection(
-                    onCategoryClick = onCategoryClick
-                )
+                } else {
+                    Column(
+                        modifier = modifier.verticalScroll(rememberScrollState())
+                    ) {
+                        PlacesSection(
+                            places = state.allPlaces,
+                            onPlaceClick = onPlaceItemClick,
+                            onSeeAllClick = onSeeAllPlacesClick
+                        )
+
+                        Spacer(modifier = Modifier.height(Spacing.Large))
+
+                        state.highlightedPlace?.let {
+                            HighlightSection(place = it)
+                        }
+
+                        Spacer(modifier = Modifier.height(Spacing.Large))
+
+                        FavoritesSection(
+                            onSeeAllClick = onSeeAllFavoritesClick,
+                            favorites = state.filteredPlaces,
+                            onPlaceClick = onPlaceItemClick
+                        )
+
+                        Spacer(modifier = Modifier.height(Spacing.Large))
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-private fun HeaderSection(
-    cityName: String,
-    heroImageUrl: String,
-    query: String,
-    onQueryChange: (String) -> Unit,
-    onClearQuery: () -> Unit,
-    onSettingsClick: () -> Unit
+fun PlacesSection(
+    places: List<Place>,
+    onPlaceClick: (Long) -> Unit,
+    onSeeAllClick: () -> Unit
 ) {
-    val resId = ImageResolver.resolveDrawable(heroImageUrl)
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(Spacing.HeroHeight)
-    ) {
-        Image(
-            painter = painterResource(id = resId),
-            contentDescription = stringResource(R.string.munich_title),
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
-        IconButton(
-            onClick = onSettingsClick,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .systemBarsPadding()
-        ) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = stringResource(id = R.string.settings),
-                tint = Color.White
-            )
-        }
-
-        Text(
-            text = cityName,
-            color = Color.White,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = TypographySizes.heroTitle,
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(Spacing.Large)
-        )
-
-        SearchBar(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = Spacing.SearchBarHorizontal)
-                .height(Spacing.SearchBarHeight)
-                .offset(y = Spacing.SearchBarOverlap),
-            query = query,
-            onQueryChange = onQueryChange,
-            onClearQuery = onClearQuery
-        )
-    }
-
-    Spacer(Modifier.height((Spacing.SearchBarOverlap + Spacing.SearchBarHeight) / 2))
-}
-
-@Composable
-private fun CategoriesSection(
-    onCategoryClick: (Category) -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = Spacing.Medium)
-    ) {
-        Text(
-            text = stringResource(R.string.category_title),
-            fontSize = TypographySizes.large,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(horizontal = Spacing.Medium)
-        )
-
-        Spacer(modifier = Modifier.height(Spacing.Medium))
+    Column {
+        SectionHeader(title = "Places", onSeeAllClick = onSeeAllClick)
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(Spacing.Medium),
-            contentPadding = PaddingValues(start = Spacing.Medium, end = Spacing.Medium)
+            contentPadding = PaddingValues(horizontal = Spacing.Medium),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.Medium)
         ) {
-            items(Category.entries.toTypedArray()) { category ->
-                CategoryCard(
-                    category = category,
-                    onClick = { onCategoryClick(category) }
+            items(places.take(5)) { place ->
+                PlaceCard(place = place, onPlaceClick = { onPlaceClick(place.id) })
+            }
+        }
+    }
+}
+
+@Composable
+fun FavoritesSection(
+    onSeeAllClick: () -> Unit,
+    favorites: List<Place>,
+    onPlaceClick: (Long) -> Unit
+) {
+    Column {
+        SectionHeader(title = "Your Favorites", onSeeAllClick = onSeeAllClick)
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = Spacing.Medium),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.Medium)
+        ) {
+            items(favorites.take(5)) { place ->
+                PlaceCard(
+                    place = place,
+                    onPlaceClick = { onPlaceClick(place.id) },
+                    isFavorite = true
                 )
             }
         }
@@ -191,53 +137,97 @@ private fun CategoriesSection(
 }
 
 @Composable
-private fun SearchBar(
-    modifier: Modifier = Modifier,
-    query: String = "",
-    onQueryChange: (String) -> Unit = {},
-    onClearQuery: () -> Unit = {}
+fun SectionHeader(
+    title: String,
+    onSeeAllClick: () -> Unit
 ) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(Spacing.Large),
-        color = MaterialTheme.colorScheme.surface,
-        shadowElevation = Spacing.Medium
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Spacing.Medium),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        TextField(
-            value = query,
-            onValueChange = onQueryChange,
-            placeholder = {
-                Text(text = stringResource(R.string.search_attractions), color = MaterialTheme.colorScheme.onSurface)
-            },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
-                    tint = OrangeMain
-                )
-            },
-            trailingIcon = {
-                if (query.isNotEmpty()) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Clear",
-                        tint = OrangeMain,
-                        modifier = Modifier
-                            .padding(end = Spacing.Small)
-                            .clickable { onClearQuery() }
-                    )
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(Spacing.CornerRadius)),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surface,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            singleLine = true
+        Text(
+            text = title,
+            fontSize = TypographySizes.subtitle,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
         )
+        TextButton(onClick = onSeeAllClick) {
+            Text(
+                text = "See All",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = TypographySizes.body
+            )
+        }
+    }
+}
+
+@Composable
+fun HighlightSection(place: Place) {
+    Column(modifier = Modifier.padding(horizontal = Spacing.Medium)) {
+        Text(
+            text = "Highlight of the Day",
+            fontSize = TypographySizes.subtitle,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Spacer(modifier = Modifier.height(Spacing.Small))
+        HighlightCard(place = place)
+    }
+}
+
+@Composable
+fun HighlightCard(place: Place) {
+    val imageResId = ImageResolver.resolveDrawable(place.imageUrl)
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(Spacing.CornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = Spacing.Small)
+    ) {
+        Box(modifier = Modifier.height(Spacing.HeroHeight / 1.5f)) {
+            Image(
+                painter = painterResource(id = imageResId),
+                contentDescription = "Highlight Image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f))
+            )
+
+            Box(
+                modifier = Modifier
+                    .padding(Spacing.Small)
+                    .align(Alignment.TopEnd)
+                    .clip(CircleShape)
+                    .background(Color.Black.copy(alpha = 0.3f))
+                    .padding(Spacing.ExtraSmall)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.FavoriteBorder,
+                    contentDescription = "Favorite",
+                    tint = Color.White
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(Spacing.Medium)
+            ) {
+                Text(
+                    text = place.name,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    fontSize = TypographySizes.subtitle
+                )
+            }
+        }
     }
 }

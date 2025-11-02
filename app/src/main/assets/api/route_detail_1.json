@@ -2,6 +2,7 @@
   "id": 1,
   "cityId": 1,
   "title": "1-Day Itinerary",
+  "summary": "A perfect one-day stroll through Munich’s historic Old Town — from the chimes of Marienplatz to the surf of Eisbachwelle. Explore Gothic cathedrals, bustling markets, and cozy cafés that capture the city’s rhythm and charm.",
   "segments": [
     {
       "id": 101,

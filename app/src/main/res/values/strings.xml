@@ -26,4 +26,6 @@
     <string name="next_stop">Next stop: %1$s</string>
     <string name="popular_places">Popular Places</string>
     <string name="favorites">Favorites</string>
+
+    <string name="itinerary">Itinerary</string>
 </resources>

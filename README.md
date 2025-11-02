@@ -53,9 +53,9 @@ I’m using **Kotlin** and **modern Android tools** to keep it clean and maintai
 
 Here are a few early design and app screens:
 
-| Home Screen                    | Itineraries                                | Favorites                                | Place Details                        |
-|--------------------------------|--------------------------------------------|------------------------------------------|--------------------------------------|
-| ![Home](/screenshots/home.png) | ![Itineraries](/screenshots/itinerary.png) | ![Favorites](/screenshots/favorites.png) | ![Details](/screenshots/detail.png) |
+| Home Screen                    | Itineraries                                | Itineraries Detail                                                                                                  | Place Details                       |
+|--------------------------------|--------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-------------------------------------|
+| ![Home](/screenshots/home.png) | ![Itineraries](/screenshots/itinerary.png) | ![Itineraries Detail](/screenshots/itinerary_detail1.png) ![Itineraries Detail](/screenshots/itinerary_detail2.png) | ![Details](/screenshots/detail.png) |
 
 These screens show the current direction of the app and may change as development continues.
 
