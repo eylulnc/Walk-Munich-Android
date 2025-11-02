@@ -37,49 +37,42 @@ fun PlacesOverviewScreenUi(
         when {
             state.isLoading -> LoadingState()
             state.error != null -> ErrorState(errorMessage = state.error)
+
             else -> {
                 if (state.searchQuery.isNotBlank()) {
                     Column(modifier = modifier) {
                         SearchResultsSection(
                             searchResults = state.searchResults,
                             isSearching = state.isSearching,
-                            onPlaceClick = { place ->
-                                onPlaceClick(place.id)
-                            }
+                            onPlaceClick = { place -> onPlaceClick(place.id) }
                         )
                     }
                 } else {
-                    Column {
-                        val placesToShow = when {
-                            state.searchQuery.isNotEmpty() -> state.searchResults.map { it.place }
-                            state.selectedCategory != null -> state.filteredPlaces
-                            else -> state.allPlaces
-                        }
+                    val placesToShow = when {
+                        state.selectedCategory != null -> state.filteredPlaces
+                        else -> state.allPlaces
+                    }
 
+                    Column(modifier = modifier) {
+                        CategoryChips(
+                            selectedCategory = state.selectedCategory,
+                            onCategorySelected = viewModel::onCategorySelected
+                        )
 
-                        Column {
-                            CategoryChips(
-                                selectedCategory = state.selectedCategory,
-                                onCategorySelected = viewModel::onCategorySelected
-                            )
-
-                            LazyVerticalGrid(
-                                modifier = modifier,
-                                columns = GridCells.Fixed(2),
-                                contentPadding = PaddingValues(Spacing.Medium),
-                                horizontalArrangement = Arrangement.spacedBy(Spacing.Medium),
-                                verticalArrangement = Arrangement.spacedBy(Spacing.Medium)
-                            ) {
-                                items(placesToShow) { place ->
-                                    PlaceCardSmall(
-                                        place = place,
-                                        onPlaceClick = { onPlaceClick(place.id) }
-                                    )
-                                }
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            contentPadding = PaddingValues(Spacing.Medium),
+                            horizontalArrangement = Arrangement.spacedBy(Spacing.Medium),
+                            verticalArrangement = Arrangement.spacedBy(Spacing.Medium)
+                        ) {
+                            items(placesToShow) { place ->
+                                PlaceCardSmall(
+                                    place = place,
+                                    onPlaceClick = { onPlaceClick(place.id) }
+                                )
                             }
                         }
                     }
-
                 }
             }
         }

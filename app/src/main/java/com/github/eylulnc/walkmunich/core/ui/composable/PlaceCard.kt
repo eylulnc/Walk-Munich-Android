@@ -29,9 +29,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.github.eylulnc.walkmunich.core.data.model.Place
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 
 @Composable
@@ -41,17 +41,17 @@ fun PlaceCard(
     isFavorite: Boolean = false
 ) {
     Card(
-        modifier = Modifier.width(256.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        modifier = Modifier.width(Spacing.CardWidthLarge),
+        shape = RoundedCornerShape(Spacing.CornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = Spacing.None),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+        border = BorderStroke(Spacing.BorderStroke, MaterialTheme.colorScheme.outline)
     ) {
         val imageResId = ImageResolver.resolveDrawable(place.imageUrl)
 
         Box(
             modifier = Modifier
-                .height(150.dp)
+                .height(Spacing.CardHeightMedium)
                 .clickable(onClick = onPlaceClick)
         ) {
             Image(
@@ -60,28 +60,29 @@ fun PlaceCard(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
+
             Box(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(Spacing.Small)
                     .align(Alignment.TopEnd)
                     .clip(CircleShape)
                     .background(Color.Black.copy(alpha = 0.3f))
-                    .padding(4.dp)
+                    .padding(Spacing.ExtraSmall)
             ) {
                 Icon(
-                    if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = "Favorite",
                     tint = Color.White
                 )
             }
         }
 
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(Spacing.Small)) {
             Text(
                 text = place.name,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
-                fontSize = 14.sp,
+                fontSize = TypographySizes.body,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

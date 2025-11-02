@@ -2,11 +2,7 @@ package com.github.eylulnc.walkmunich.core.ui.composable
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -19,9 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,9 +41,9 @@ fun WMSearchTopAppBarScreen(
     ) {
         Crossfade(targetState = isSearchMode, label = "search-mode") { searchMode ->
             if (searchMode) {
-                // 🔍 Search Mode – white bar at top
+                // 🔍 Search Mode – clean white bar at the top
                 Surface(
-                    shadowElevation = 4.dp,
+                    shadowElevation = Spacing.Small,
                     color = Color.White,
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -59,19 +55,19 @@ fun WMSearchTopAppBarScreen(
                                 placeholder = {
                                     Text(
                                         text = "Search for tours or landmarks...",
-                                        fontSize = 16.sp,
+                                        fontSize = TypographySizes.medium,
                                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                                     )
                                 },
                                 textStyle = TextStyle(
                                     color = MaterialTheme.colorScheme.onSurface,
-                                    fontSize = 16.sp,
-                                    lineHeight = 18.sp
+                                    fontSize = TypographySizes.medium,
+                                    lineHeight = TypographySizes.medium
                                 ),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(56.dp)
-                                    .background(Color.White, RoundedCornerShape(12.dp)),
+                                    .height(Spacing.CategoryIconSize) // 56.dp -> design token
+                                    .background(Color.White, RoundedCornerShape(Spacing.CornerRadius)),
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.White,
                                     unfocusedContainerColor = Color.White,
@@ -107,13 +103,13 @@ fun WMSearchTopAppBarScreen(
                     title = {
                         Text(
                             text = title,
-                            fontSize = 20.sp,
+                            fontSize = TypographySizes.large,
                             fontWeight = FontWeight.Bold
                         )
                     },
                     navigationIcon = {
-                        if (onBack != null) {
-                            IconButton(onClick = onBack) {
+                        onBack?.let {
+                            IconButton(onClick = it) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = "Back",

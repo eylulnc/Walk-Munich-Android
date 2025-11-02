@@ -17,3 +17,5 @@ val GreenLight  = Color(0xFF9ECE9A)
 val BgLight     = Color(0xFFFFFFFF)
 val BgDark      = Color(0xFF121212)
 val SurfaceDark = Color(0xFF1B1B1B)
+
+val ChipGray = Color(0xFFE8E8E8)

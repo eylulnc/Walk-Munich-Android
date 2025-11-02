@@ -4,23 +4,13 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,9 +20,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.github.eylulnc.walkmunich.core.data.model.Place
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 
 @Composable
@@ -44,21 +34,21 @@ fun PlaceCardLarge(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp)
+            .height(Spacing.CardHeightMedium)
             .clickable(onClick = onPlaceClick),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        shape = RoundedCornerShape(Spacing.CornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = Spacing.None),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+        border = BorderStroke(Spacing.BorderStroke, MaterialTheme.colorScheme.outline)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            // 🖼️ Image section
             val imageResId = ImageResolver.resolveDrawable(place.imageUrl)
 
+            // 🖼️ Image section
             Box(
                 modifier = Modifier
-                    .height(140.dp)
-                    .weight(0.4f) // 40% image, 60% text area
+                    .height(Spacing.CardHeightMedium)
+                    .weight(0.4f)
             ) {
                 Image(
                     painter = painterResource(id = imageResId),
@@ -66,16 +56,17 @@ fun PlaceCardLarge(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxWidth()
                 )
+
                 Box(
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(Spacing.Small)
                         .align(Alignment.TopEnd)
                         .clip(CircleShape)
                         .background(Color.Black.copy(alpha = 0.3f))
-                        .padding(4.dp)
+                        .padding(Spacing.ExtraSmall)
                 ) {
                     Icon(
-                        if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = "Favorite",
                         tint = Color.White
                     )
@@ -86,25 +77,24 @@ fun PlaceCardLarge(
             Column(
                 modifier = Modifier
                     .weight(0.6f)
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
-                verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
+                    .padding(horizontal = Spacing.Medium, vertical = Spacing.Small),
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = place.name,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = TypographySizes.medium,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                // Optional category badge / text
                 Text(
                     text = place.category.name,
-                    fontSize = 12.sp,
+                    fontSize = TypographySizes.small,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = Spacing.Small)
                 )
             }
         }

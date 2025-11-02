@@ -12,9 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.github.eylulnc.walkmunich.core.data.model.Category
+import com.github.eylulnc.walkmunich.core.ui.theme.ChipGray
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 
 @Composable
 fun CategoryChips(
@@ -22,9 +23,10 @@ fun CategoryChips(
     onCategorySelected: (Category?) -> Unit
 ) {
     val categories = remember { listOf<Category?>(null) + Category.values() }
+
     LazyRow(
-        contentPadding = PaddingValues(horizontal = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        contentPadding = PaddingValues(horizontal = Spacing.Small),
+        horizontalArrangement = Arrangement.spacedBy(Spacing.Small)
     ) {
         items(categories) { category ->
             val isSelected = selectedCategory == category
@@ -32,15 +34,19 @@ fun CategoryChips(
                 onClick = { onCategorySelected(category) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                    containerColor = if (isSelected) MaterialTheme.colorScheme.primary else ChipGray,
                     contentColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                contentPadding = PaddingValues(
+                    horizontal = Spacing.Medium,
+                    vertical = Spacing.ExtraSmall
                 )
             ) {
                 val text = when (category) {
-                    null -> "For You"
+                    null -> "All"
                     else -> category.name.lowercase().replaceFirstChar { it.titlecase() }
                 }
-                Text(text = text, fontSize = 14.sp)
+                Text(text = text, fontSize = TypographySizes.body,)
             }
         }
     }
