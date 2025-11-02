@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
-import com.github.eylulnc.walkmunich.core.ui.theme.Spacing.CardHeightMedium
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 
@@ -36,8 +35,14 @@ fun PlaceCardSmall(
         modifier = Modifier.width(Spacing.CardHeightMedium),
         shape = RoundedCornerShape(Spacing.CornerRadius),
         elevation = CardDefaults.cardElevation(defaultElevation = Spacing.None),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(Spacing.BorderStroke, MaterialTheme.colorScheme.outline)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
+        ),
+        border = BorderStroke(
+            Spacing.BorderStroke,
+            MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+        )
     ) {
         val imageResId = ImageResolver.resolveDrawable(place.imageUrl)
 
@@ -78,7 +83,7 @@ fun PlaceCardSmall(
             Text(
                 text = place.name,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = TypographySizes.small,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

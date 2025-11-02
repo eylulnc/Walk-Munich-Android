@@ -38,8 +38,14 @@ fun PlaceCardLarge(
             .clickable(onClick = onPlaceClick),
         shape = RoundedCornerShape(Spacing.CornerRadius),
         elevation = CardDefaults.cardElevation(defaultElevation = Spacing.None),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(Spacing.BorderStroke, MaterialTheme.colorScheme.outline)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
+        ),
+        border = BorderStroke(
+            Spacing.BorderStroke,
+            MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+        )
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             val imageResId = ImageResolver.resolveDrawable(place.imageUrl)

@@ -54,7 +54,7 @@ fun DarkModeSwitch(
             .fillMaxWidth()
             .padding(Spacing.Medium),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         shape = RoundedCornerShape(Spacing.CornerRadius),
         border = BorderStroke(
             width = 1.dp,

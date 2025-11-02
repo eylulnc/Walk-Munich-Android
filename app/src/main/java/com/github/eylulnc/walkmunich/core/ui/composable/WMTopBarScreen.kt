@@ -20,8 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
+import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,22 +36,27 @@ fun WMTopAppBarScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(containerColor)
             .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         TopAppBar(
             title = {
                 if (title != null) {
-                    Text(text = title, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = title,
+                        fontSize = TypographySizes.large,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
             },
             navigationIcon = {
-                if (onBack != null) {
-                    IconButton(onClick = onBack) {
+                onBack?.let {
+                    IconButton(onClick = it) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = OrangeMain
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -60,16 +64,18 @@ fun WMTopAppBarScreen(
             actions = actions,
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = containerColor,
-                titleContentColor = MaterialTheme.colorScheme.onBackground
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                scrolledContainerColor = MaterialTheme.colorScheme.background
             ),
             scrollBehavior = scrollBehavior
         )
 
-        // Give the caller a modifier they can apply to the scrollable child
         content(
             Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
+                .navigationBarsPadding()
         )
     }
 }
+

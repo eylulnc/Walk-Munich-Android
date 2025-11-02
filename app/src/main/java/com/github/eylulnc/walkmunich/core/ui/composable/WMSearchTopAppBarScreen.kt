@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 
@@ -41,10 +40,9 @@ fun WMSearchTopAppBarScreen(
     ) {
         Crossfade(targetState = isSearchMode, label = "search-mode") { searchMode ->
             if (searchMode) {
-                // 🔍 Search Mode – clean white bar at the top
                 Surface(
                     shadowElevation = Spacing.Small,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.background,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TopAppBar(
@@ -66,11 +64,14 @@ fun WMSearchTopAppBarScreen(
                                 ),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(Spacing.CategoryIconSize) // 56.dp -> design token
-                                    .background(Color.White, RoundedCornerShape(Spacing.CornerRadius)),
+                                    .height(Spacing.SearchBarHeight)
+                                    .background(
+                                        MaterialTheme.colorScheme.background,
+                                        RoundedCornerShape(Spacing.CornerRadius)
+                                    ),
                                 colors = TextFieldDefaults.colors(
-                                    focusedContainerColor = Color.White,
-                                    unfocusedContainerColor = Color.White,
+                                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
                                     focusedIndicatorColor = Color.Transparent,
                                     unfocusedIndicatorColor = Color.Transparent,
                                     cursorColor = MaterialTheme.colorScheme.onSurface
@@ -91,8 +92,8 @@ fun WMSearchTopAppBarScreen(
                             )
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = Color.White,
-                            titleContentColor = MaterialTheme.colorScheme.onSurface
+                            containerColor = MaterialTheme.colorScheme.background,
+                            titleContentColor = MaterialTheme.colorScheme.onBackground
                         ),
                         scrollBehavior = null
                     )
@@ -104,7 +105,8 @@ fun WMSearchTopAppBarScreen(
                         Text(
                             text = title,
                             fontSize = TypographySizes.large,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     },
                     navigationIcon = {
@@ -113,7 +115,7 @@ fun WMSearchTopAppBarScreen(
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = "Back",
-                                    tint = OrangeMain
+                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
                         }
@@ -128,7 +130,7 @@ fun WMSearchTopAppBarScreen(
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = containerColor,
+                        containerColor = MaterialTheme.colorScheme.background,
                         titleContentColor = MaterialTheme.colorScheme.onBackground
                     ),
                     scrollBehavior = scrollBehavior

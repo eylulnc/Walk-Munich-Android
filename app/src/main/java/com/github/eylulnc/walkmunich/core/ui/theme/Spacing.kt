@@ -17,8 +17,8 @@ object Spacing {
     val CardHeightMedium = 150.dp
     val CardHeightSmall = 120.dp
     val CornerRadius = 12.dp
-    val BorderStroke = 1.dp
-    val CategoryIconSize = 44.dp
+    val BorderStroke = 2.dp
+    val SearchBarHeight = 56.dp
 
     val ItemGap = 12.dp
 
