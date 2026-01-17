@@ -3,7 +3,6 @@ package com.github.eylulnc.walkmunich.navigation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,10 +25,10 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
-import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.feature.favorite.ui.FavoritesScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
-import com.github.eylulnc.walkmunich.feature.home.ui.category.ui.PlacesOverviewScreenUi
+import com.github.eylulnc.walkmunich.feature.home.ui.PlacesOverviewScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.settings.SettingsScreenUi
 import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
@@ -153,9 +152,10 @@ fun NavigationRoot(
 
                     is FavoritesScreen -> {
                         NavEntry(key = key) {
-                            Text(
-                                "Favorites",
-                                modifier = Modifier.safeContentPadding()
+                            FavoritesScreenUi(
+                                onPlaceClick = { placeId ->
+                                    favoritesBackStack.add(PlaceDetailScreen(placeId))
+                                }
                             )
                         }
                     }
