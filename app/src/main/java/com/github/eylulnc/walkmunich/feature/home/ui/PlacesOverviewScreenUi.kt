@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.feature.home.ui.category.ui
+package com.github.eylulnc.walkmunich.feature.home.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,6 @@ import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
 import com.github.eylulnc.walkmunich.core.ui.composable.PlaceCardSmall
 import com.github.eylulnc.walkmunich.core.ui.composable.WMSearchTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
-import com.github.eylulnc.walkmunich.feature.home.ui.SearchResultsSection
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -44,7 +43,9 @@ fun PlacesOverviewScreenUi(
                         SearchResultsSection(
                             searchResults = state.searchResults,
                             isSearching = state.isSearching,
-                            onPlaceClick = { place -> onPlaceClick(place.id) }
+                            favoriteIds = state.favoritePlaceIds,
+                            onPlaceClick = { place -> onPlaceClick(place.id) },
+                            onFavoriteClick = viewModel::onToggleFavorite
                         )
                     }
                 } else {
@@ -68,7 +69,9 @@ fun PlacesOverviewScreenUi(
                             items(placesToShow) { place ->
                                 PlaceCardSmall(
                                     place = place,
-                                    onPlaceClick = { onPlaceClick(place.id) }
+                                    onPlaceClick = { onPlaceClick(place.id) },
+                                    isFavorite = state.favoritePlaceIds.contains(place.id.toString()),
+                                    onFavoriteClick = { viewModel.onToggleFavorite(place.id) }
                                 )
                             }
                         }

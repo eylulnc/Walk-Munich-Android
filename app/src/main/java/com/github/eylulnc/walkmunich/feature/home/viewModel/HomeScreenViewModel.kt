@@ -7,11 +7,13 @@ import com.github.eylulnc.walkmunich.core.data.model.City
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.SearchResult
 import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
+import com.github.eylulnc.walkmunich.core.data.repository.UserPreferencesRepository
 import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.Normalizer
@@ -26,12 +28,14 @@ data class HomeScreenUiState(
     val isSearching: Boolean = false,
     val selectedCategory: Category? = null,
     val filteredPlaces: List<Place> = emptyList(),
-    val highlightedPlace: Place? = null
+    val highlightedPlace: Place? = null,
+    val favoritePlaceIds: Set<String> = emptySet()
 )
 
 class HomeScreenViewModel(
     private val repository: CityRepository,
-    private val placesRepository: PlacesRepository
+    private val placesRepository: PlacesRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeScreenUiState())
@@ -42,6 +46,7 @@ class HomeScreenViewModel(
     init {
         loadCity()
         loadPlaces()
+        observeFavorites()
     }
 
     private fun loadCity() {
@@ -68,6 +73,20 @@ class HomeScreenViewModel(
             }.onFailure { e ->
                 _uiState.update { it.copy(error = e.message) }
             }
+        }
+    }
+
+    private fun observeFavorites() {
+        viewModelScope.launch {
+            userPreferencesRepository.favoritePlaceIds.collectLatest { favoriteIds ->
+                _uiState.update { it.copy(favoritePlaceIds = favoriteIds) }
+            }
+        }
+    }
+
+    fun onToggleFavorite(placeId: Long) {
+        viewModelScope.launch {
+            userPreferencesRepository.toggleFavorite(placeId.toString())
         }
     }
 

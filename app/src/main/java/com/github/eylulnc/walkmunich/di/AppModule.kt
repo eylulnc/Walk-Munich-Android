@@ -4,7 +4,7 @@ import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
 import com.github.eylulnc.walkmunich.core.data.repository.UserPreferencesRepository
 import com.github.eylulnc.walkmunich.core.data.service.PlacesService
 import com.github.eylulnc.walkmunich.core.data.service.PlacesServiceImpl
-import com.github.eylulnc.walkmunich.feature.home.ui.category.viewmodel.CategoryPlacesViewModel
+import com.github.eylulnc.walkmunich.feature.favorite.viewmodel.FavoritesViewModel
 import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
 import com.github.eylulnc.walkmunich.feature.home.data.service.CityService
 import com.github.eylulnc.walkmunich.feature.home.data.service.CityServiceImpl
@@ -36,16 +36,13 @@ val appModule = module {
 
     single { UserPreferencesRepository(androidContext()) }
 
-    viewModelOf(::HomeScreenViewModel)
+    viewModel { HomeScreenViewModel(get(), get(), get()) }
+    viewModelOf(::FavoritesViewModel)
     viewModelOf(::RouteListViewModel)
     viewModelOf(::RouteDetailViewModel)
     viewModelOf(::SettingsViewModel)
 
     viewModel { (placeId: Long, subTitle: String?) ->
-        PlaceViewModel(get(), placeId, subTitle)
-    }
-
-    viewModel { (category: com.github.eylulnc.walkmunich.core.data.model.Category) ->
-        CategoryPlacesViewModel(get(), category)
+        PlaceViewModel(get(), get(), placeId, subTitle)
     }
 }

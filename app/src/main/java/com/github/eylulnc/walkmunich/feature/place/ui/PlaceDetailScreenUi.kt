@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,6 +60,8 @@ fun PlaceDetailScreenUi(
         state.place != null -> PlaceDetailContent(
             place = state.place!!,
             subTitle = state.subTitle,
+            isFavorite = state.isFavorite,
+            onFavoriteClick = viewModel::toggleFavorite,
             onBackClick = onBackClick
         )
     }
@@ -68,17 +71,19 @@ fun PlaceDetailScreenUi(
 private fun PlaceDetailContent(
     place: Place,
     subTitle: String?,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
     WMTopAppBarScreen(
         title = null,
         onBack = onBackClick,
         actions = {
-            IconButton(onClick = { /* TODO: Favorite toggle */ }) {
+            IconButton(onClick = onFavoriteClick) {
                 Icon(
-                    imageVector = Icons.Filled.FavoriteBorder,
+                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = stringResource(R.string.favorite),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.primary
                 )
             }
         },

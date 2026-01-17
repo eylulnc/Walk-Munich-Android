@@ -28,7 +28,9 @@ fun SearchResultsSection(
     modifier: Modifier = Modifier,
     searchResults: List<SearchResult>,
     isSearching: Boolean = false,
-    onPlaceClick: (Place) -> Unit
+    favoriteIds: Set<String> = emptySet(),
+    onPlaceClick: (Place) -> Unit,
+    onFavoriteClick: (Long) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -66,7 +68,9 @@ fun SearchResultsSection(
                     items(searchResults) { searchResult ->
                         PlaceCardSmall(
                             place = searchResult.place,
-                            onPlaceClick = { onPlaceClick(searchResult.place) }
+                            onPlaceClick = { onPlaceClick(searchResult.place) },
+                            isFavorite = favoriteIds.contains(searchResult.place.id.toString()),
+                            onFavoriteClick = { onFavoriteClick(searchResult.place.id) }
                         )
                     }
                 }
