@@ -29,7 +29,8 @@ import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 fun PlaceCardSmall(
     place: Place,
     onPlaceClick: () -> Unit,
-    isFavorite: Boolean = false
+    isFavorite: Boolean = false,
+    onFavoriteClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier.width(Spacing.CardHeightMedium),
@@ -58,20 +59,10 @@ fun PlaceCardSmall(
                 modifier = Modifier.fillMaxSize()
             )
 
-            Box(
-                modifier = Modifier
-                    .padding(Spacing.Small)
-                    .align(Alignment.TopEnd)
-                    .clip(CircleShape)
-                    .background(Color.Black.copy(alpha = 0.3f))
-                    .padding(Spacing.ExtraSmall)
-            ) {
-                Icon(
-                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = "Favorite",
-                    tint = Color.White
-                )
-            }
+            FavoriteButton(
+                isFavorite = isFavorite,
+                onClick = onFavoriteClick
+            )
         }
 
         Column(
