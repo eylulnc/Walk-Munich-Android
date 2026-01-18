@@ -19,17 +19,20 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
+import com.github.eylulnc.walkmunich.R
+import com.github.eylulnc.walkmunich.core.ui.composable.SettingsTextDetailScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.favorite.ui.FavoritesScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.PlacesOverviewScreenUi
-import com.github.eylulnc.walkmunich.feature.home.ui.settings.SettingsScreenUi
+import com.github.eylulnc.walkmunich.feature.settings.SettingsScreenUi
 import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
@@ -43,11 +46,11 @@ fun NavigationRoot(
     val exploreBackStack = rememberNavBackStack(HomeScreen)
     val toursBackStack = rememberNavBackStack(ToursScreen)
     val favoritesBackStack = rememberNavBackStack(FavoritesScreen)
-    val profileBackStack = rememberNavBackStack(ProfileScreen)
+    val settingsBackStack = rememberNavBackStack(SettingsScreen)
 
     // Order of tabs shown in the bar
     val tabs =
-        remember { listOf(RootTab.Explore, RootTab.Tours, RootTab.Favorites, RootTab.Profile) }
+        remember { listOf(RootTab.Explore, RootTab.Tours, RootTab.Favorites, RootTab.Settings) }
 
     // Save an Int instead of the sealed object
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
@@ -57,7 +60,7 @@ fun NavigationRoot(
         RootTab.Explore -> exploreBackStack
         RootTab.Tours -> toursBackStack
         RootTab.Favorites -> favoritesBackStack
-        RootTab.Profile -> profileBackStack
+        RootTab.Settings -> settingsBackStack
     }
 
     Scaffold(
@@ -173,15 +176,57 @@ fun NavigationRoot(
                         }
                     }
 
-                    is ProfileScreen -> {
+                    is SettingsScreen -> {
                         NavEntry(key = key) {
                             SettingsScreenUi(
-                                onBackClick = {
-                                    currentBackStack.remove(key)
-                                }
+                                onOpenAppDescription = { settingsBackStack.add(AppDescriptionScreen) },
+                                onOpenDisclaimer = { settingsBackStack.add(DisclaimerScreen) },
+                                onOpenAttribution = { settingsBackStack.add(AttributionScreen) },
+                                onOpenImpressum = { settingsBackStack.add(ImpressumScreen) }
                             )
                         }
                     }
+
+                    is AppDescriptionScreen -> {
+                        NavEntry(key = key) {
+                            SettingsTextDetailScreen(
+                                title = stringResource(R.string.about_app_description_title),
+                                content = stringResource(R.string.about_app_description),
+                                onBackClick = { settingsBackStack.remove(key) }
+                            )
+                        }
+                    }
+
+                    is DisclaimerScreen -> {
+                        NavEntry(key = key) {
+                            SettingsTextDetailScreen(
+                                title = stringResource(R.string.about_disclaimer_title),
+                                content = stringResource(R.string.about_disclaimer),
+                                onBackClick = { settingsBackStack.remove(key) }
+                            )
+                        }
+                    }
+
+                    is AttributionScreen -> {
+                        NavEntry(key = key) {
+                            SettingsTextDetailScreen(
+                                title = stringResource(R.string.about_attribution_title),
+                                content = stringResource(R.string.about_attribution),
+                                onBackClick = { settingsBackStack.remove(key) }
+                            )
+                        }
+                    }
+
+                    is ImpressumScreen -> {
+                        NavEntry(key = key) {
+                            SettingsTextDetailScreen(
+                                title = stringResource(R.string.about_impressum_title),
+                                content = stringResource(R.string.about_impressum),
+                                onBackClick = { settingsBackStack.remove(key) }
+                            )
+                        }
+                    }
+
 
                     is AllPlacesScreen -> {
                         NavEntry(key = key) {

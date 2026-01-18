@@ -23,43 +23,27 @@ import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 @Composable
 fun SettingsNavigationItem(
     title: String,
-    icon: ImageVector,
     onClick: () -> Unit
 ) {
-    Card(
+
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = Spacing.Medium)
-            .clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            .padding(Spacing.Medium)
+            .clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Spacing.Medium),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
 
-            Spacer(modifier = Modifier.width(Spacing.Medium))
+        Text(
+            text = title,
+            modifier = Modifier.weight(1f)
+        )
 
-            Text(
-                text = title,
-                modifier = Modifier.weight(1f)
-            )
-
-            Icon(
-                imageVector = Icons.Outlined.ChevronRight,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
+        Icon(
+            imageVector = Icons.Outlined.ChevronRight,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
+

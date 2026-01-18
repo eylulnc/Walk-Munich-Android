@@ -1,4 +1,4 @@
-package com.github.eylulnc.walkmunich.feature.home.ui.settings
+package com.github.eylulnc.walkmunich.feature.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
