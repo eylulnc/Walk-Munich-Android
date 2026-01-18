@@ -104,6 +104,18 @@ fun HomeScreenUi(
                             onFavoriteClick = viewModel::onToggleFavorite
                         )
 
+                        if (state.recentlyViewedPlaceIds.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(Spacing.Large))
+
+                            RecentlyViewedSection(
+                                allPlaces = state.allPlaces,
+                                recentlyViewedIds = state.recentlyViewedPlaceIds,
+                                favoriteIds = state.favoritePlaceIds,
+                                onPlaceClick = onPlaceItemClick,
+                                onFavoriteClick = viewModel::onToggleFavorite
+                            )
+                        }
+
                         Spacer(modifier = Modifier.height(Spacing.Large))
                     }
                 }
@@ -162,6 +174,46 @@ fun FavoritesSection(
                         place = place,
                         onPlaceClick = { onPlaceClick(place.id) },
                         isFavorite = true,
+                        onFavoriteClick = { onFavoriteClick(place.id) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RecentlyViewedSection(
+    allPlaces: List<Place>,
+    recentlyViewedIds: List<String>,
+    favoriteIds: Set<String>,
+    onPlaceClick: (Long) -> Unit,
+    onFavoriteClick: (Long) -> Unit
+) {
+    // Map IDs to Place objects, maintaining the order from recentlyViewedIds
+    val recentlyViewedPlaces = recentlyViewedIds.mapNotNull { id ->
+        allPlaces.find { it.id.toString() == id }
+    }
+
+    if (recentlyViewedPlaces.isNotEmpty()) {
+        Column {
+            Text(
+                text = "Recently Viewed",
+                fontSize = TypographySizes.subtitle,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(horizontal = Spacing.Medium, vertical = Spacing.Small)
+            )
+
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = Spacing.Medium),
+                horizontalArrangement = Arrangement.spacedBy(Spacing.Medium)
+            ) {
+                items(recentlyViewedPlaces) { place ->
+                    PlaceCard(
+                        place = place,
+                        onPlaceClick = { onPlaceClick(place.id) },
+                        isFavorite = favoriteIds.contains(place.id.toString()),
                         onFavoriteClick = { onFavoriteClick(place.id) }
                     )
                 }

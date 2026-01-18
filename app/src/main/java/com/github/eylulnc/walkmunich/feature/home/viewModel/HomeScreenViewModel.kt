@@ -3,12 +3,10 @@ package com.github.eylulnc.walkmunich.feature.home.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.eylulnc.walkmunich.core.data.model.Category
-import com.github.eylulnc.walkmunich.core.data.model.City
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.SearchResult
 import com.github.eylulnc.walkmunich.core.data.repository.PlacesRepository
 import com.github.eylulnc.walkmunich.core.data.repository.UserPreferencesRepository
-import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +18,6 @@ import java.text.Normalizer
 
 data class HomeScreenUiState(
     val isLoading: Boolean = true,
-    val city: City? = null,
     val error: String? = null,
     val searchQuery: String = "",
     val allPlaces: List<Place> = emptyList(),
@@ -29,11 +26,11 @@ data class HomeScreenUiState(
     val selectedCategory: Category? = null,
     val filteredPlaces: List<Place> = emptyList(),
     val highlightedPlace: Place? = null,
-    val favoritePlaceIds: Set<String> = emptySet()
+    val favoritePlaceIds: Set<String> = emptySet(),
+    val recentlyViewedPlaceIds: List<String> = emptyList()
 )
 
 class HomeScreenViewModel(
-    private val repository: CityRepository,
     private val placesRepository: PlacesRepository,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
@@ -44,42 +41,51 @@ class HomeScreenViewModel(
     private var searchJob: Job? = null
 
     init {
-        loadCity()
         loadPlaces()
         observeFavorites()
-    }
-
-    private fun loadCity() {
-        _uiState.update { it.copy(isLoading = true, error = null) }
-        viewModelScope.launch {
-            runCatching {
-                repository.getCity().collect { city ->
-                    _uiState.update { it.copy(isLoading = false, city = city) }
-                }
-            }.onFailure { e ->
-                _uiState.update { it.copy(isLoading = false, error = e.message) }
-            }
-        }
+        observeRecentlyViewed()
     }
 
     private fun loadPlaces() {
+        _uiState.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             runCatching {
-                val data = placesRepository.getPlaces()
-                _uiState.update { it.copy(allPlaces = data) }
-                applySearch(_uiState.value.searchQuery, data)
+                placesRepository.getPlaces()
+            }.onSuccess { places ->
+                _uiState.update {
+                    it.copy(
+                        allPlaces = places,
+                        highlightedPlace = places.randomOrNull(),
+                        isLoading = false
+                    )
+                }
+
+                applySearch(_uiState.value.searchQuery, places)
                 onCategorySelected(null)
-                _uiState.update { it.copy(highlightedPlace = data.random()) }
             }.onFailure { e ->
-                _uiState.update { it.copy(error = e.message) }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = e.message
+                    )
+                }
             }
         }
     }
+
 
     private fun observeFavorites() {
         viewModelScope.launch {
             userPreferencesRepository.favoritePlaceIds.collectLatest { favoriteIds ->
                 _uiState.update { it.copy(favoritePlaceIds = favoriteIds) }
+            }
+        }
+    }
+
+    private fun observeRecentlyViewed() {
+        viewModelScope.launch {
+            userPreferencesRepository.recentlyViewedPlaceIds.collectLatest { recentlyViewedIds ->
+                _uiState.update { it.copy(recentlyViewedPlaceIds = recentlyViewedIds) }
             }
         }
     }

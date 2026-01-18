@@ -36,7 +36,7 @@ val appModule = module {
 
     single { UserPreferencesRepository(androidContext()) }
 
-    viewModel { HomeScreenViewModel(get(), get(), get()) }
+    viewModel { HomeScreenViewModel(get(), get()) }
     viewModelOf(::FavoritesViewModel)
     viewModelOf(::RouteListViewModel)
     viewModelOf(::RouteDetailViewModel)
