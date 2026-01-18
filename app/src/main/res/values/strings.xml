@@ -28,4 +28,46 @@
     <string name="favorites">Favorites</string>
 
     <string name="itinerary">Itinerary</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_preferences">Preferences</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+    <string name="settings_about">About</string>
+    <!-- About Walk Munich -->
+    <string name="about_walk_munich_title">About Walk Munich</string>
+
+    <!-- App Description -->
+    <string name="about_app_description_title">App Description</string>
+    <string name="about_app_description">
+        Walk Munich is a curated city guide designed to help you discover interesting places and walking routes while exploring Munich.\n\n
+        The routes and recommendations presented in the app are personally curated suggestions, based on individual exploration, research, and personal interest.\n\n
+        The app focuses on walkable experiences, cultural highlights, and local spots, presented in a simple and enjoyable way.
+    </string>
+
+    <!-- Disclaimer -->
+    <string name="about_disclaimer_title">Disclaimer</string>
+    <string name="about_disclaimer">
+        Walk Munich is a non-commercial, personal project created for learning, experimentation, and portfolio purposes.\n\n
+        It is not an official city guide and is not affiliated with the City of Munich, local authorities, or any tourism organization.\n\n
+        Routes, place descriptions, and recommendations reflect personal suggestions and interpretations and may not be complete, up to date, or suitable for every user.\n\n
+        All information is provided “as is” without any guarantees regarding accuracy or reliability.
+    </string>
+
+    <!-- Attribution -->
+    <string name="about_attribution_title">Attribution &amp; Sources</string>
+    <string name="about_attribution">
+        Images, place information, and background content used in this app come from publicly available sources and open references.\n\n
+        Where applicable, sources and attributions are included.\n\n
+        If you believe any content is incorrectly attributed or should be removed, please get in touch.
+    </string>
+
+    <!-- Impressum -->
+    <string name="about_impressum_title">Impressum</string>
+    <string name="about_impressum">
+        Developer: Eylül\n
+        Purpose: Personal / educational project\n
+        Location: Munich, Germany\n\n
+        This app is not intended for commercial use.
+    </string>
 </resources>
