@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Article
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.Gavel
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -60,7 +63,7 @@ fun AboutScreenUi(
                 HorizontalDivider()
 
                 SettingsNavigationItem(
-                    icon = Icons.Outlined.Info,
+                    icon = Icons.Outlined.Gavel,
                     title = stringResource(R.string.about_disclaimer_title),
                     hasChevron = true,
                     onClick = onOpenDisclaimer
@@ -69,7 +72,7 @@ fun AboutScreenUi(
                 HorizontalDivider()
 
                 SettingsNavigationItem(
-                    icon = Icons.Outlined.Info,
+                    icon = Icons.Outlined.Description,
                     title = stringResource(R.string.about_attribution_title),
                     hasChevron = true,
                     onClick = onOpenAttribution
@@ -78,7 +81,7 @@ fun AboutScreenUi(
                 HorizontalDivider()
 
                 SettingsNavigationItem(
-                    icon = Icons.Outlined.Info,
+                    icon = Icons.AutoMirrored.Outlined.Article,
                     title = stringResource(R.string.about_impressum_title),
                     hasChevron = true,
                     onClick = onOpenImpressum
