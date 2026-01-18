@@ -8,6 +8,7 @@ import com.github.eylulnc.walkmunich.core.data.repository.UserPreferencesReposit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -15,6 +16,7 @@ data class FavoritesScreenUiState(
     val isLoading: Boolean = false,
     val favoritePlaces: List<Place> = emptyList(),
     val favoritePlaceIds: Set<String> = emptySet(),
+    val isGridView: Boolean = true,
     val error: String? = null
 )
 
@@ -32,8 +34,13 @@ class FavoritesViewModel(
 
     private fun observeFavorites() {
         viewModelScope.launch {
-            userPreferencesRepository.favoritePlaceIds.collectLatest { favoriteIds ->
-                _uiState.update { it.copy(favoritePlaceIds = favoriteIds, isLoading = true) }
+            combine(
+                userPreferencesRepository.favoritePlaceIds,
+                userPreferencesRepository.isGridView
+            ) { favoriteIds, isGridView ->
+                Pair(favoriteIds, isGridView)
+            }.collectLatest { (favoriteIds, isGridView) ->
+                _uiState.update { it.copy(favoritePlaceIds = favoriteIds, isGridView = isGridView, isLoading = true) }
                 loadFavoritePlaces(favoriteIds)
             }
         }
@@ -54,6 +61,12 @@ class FavoritesViewModel(
     fun onToggleFavorite(placeId: Long) {
         viewModelScope.launch {
             userPreferencesRepository.toggleFavorite(placeId.toString())
+        }
+    }
+
+    fun onToggleLayout() {
+        viewModelScope.launch {
+            userPreferencesRepository.setGridView(!_uiState.value.isGridView)
         }
     }
 }
