@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ class UserPreferencesRepository(private val context: Context) {
 
     private val isDarkThemeKey = booleanPreferencesKey("is_dark_theme")
     private val favoritePlacesKey = stringSetPreferencesKey("favorite_places")
+    private val recentlyViewedKey = stringPreferencesKey("recently_viewed_places")
 
     val isDarkTheme: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
@@ -25,6 +27,11 @@ class UserPreferencesRepository(private val context: Context) {
     val favoritePlaceIds: Flow<Set<String>> = context.dataStore.data
         .map { preferences ->
             preferences[favoritePlacesKey] ?: emptySet()
+        }
+
+    val recentlyViewedPlaceIds: Flow<List<String>> = context.dataStore.data
+        .map { preferences ->
+            preferences[recentlyViewedKey]?.split(",")?.filter { it.isNotEmpty() } ?: emptyList()
         }
 
     suspend fun setDarkTheme(isDarkTheme: Boolean) {
@@ -42,6 +49,19 @@ class UserPreferencesRepository(private val context: Context) {
                 currentFavorites + placeId
             }
             preferences[favoritePlacesKey] = newFavorites
+        }
+    }
+
+    suspend fun addToRecentlyViewed(placeId: String) {
+        context.dataStore.edit { preferences ->
+            val currentList = preferences[recentlyViewedKey]?.split(",")?.filter { it.isNotEmpty() }?.toMutableList() ?: mutableListOf()
+
+            currentList.remove(placeId)
+            currentList.add(0, placeId)
+
+            val limitedList = currentList.take(6)
+
+            preferences[recentlyViewedKey] = limitedList.joinToString(",")
         }
     }
 }

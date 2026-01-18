@@ -42,6 +42,7 @@ class PlaceViewModel(
                 repository.getPlace(placeId)
             }.onSuccess { place ->
                 _uiState.update { it.copy(isLoading = false, place = place) }
+                userPreferencesRepository.addToRecentlyViewed(placeId.toString())
             }.onFailure { e ->
                 _uiState.update { it.copy(isLoading = false, error = e.message) }
             }

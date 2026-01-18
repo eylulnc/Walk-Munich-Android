@@ -8,7 +8,7 @@ import com.github.eylulnc.walkmunich.feature.favorite.viewmodel.FavoritesViewMod
 import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
 import com.github.eylulnc.walkmunich.feature.home.data.service.CityService
 import com.github.eylulnc.walkmunich.feature.home.data.service.CityServiceImpl
-import com.github.eylulnc.walkmunich.feature.home.ui.settings.SettingsViewModel
+import com.github.eylulnc.walkmunich.feature.settings.SettingsViewModel
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import com.github.eylulnc.walkmunich.feature.place.viewmodel.PlaceViewModel
 import com.github.eylulnc.walkmunich.feature.route.data.RoutesRepository
@@ -36,7 +36,7 @@ val appModule = module {
 
     single { UserPreferencesRepository(androidContext()) }
 
-    viewModel { HomeScreenViewModel(get(), get(), get()) }
+    viewModel { HomeScreenViewModel(get(), get()) }
     viewModelOf(::FavoritesViewModel)
     viewModelOf(::RouteListViewModel)
     viewModelOf(::RouteDetailViewModel)
