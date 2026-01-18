@@ -36,6 +36,7 @@ import com.github.eylulnc.walkmunich.feature.settings.SettingsScreenUi
 import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteListScreenUi
+import com.github.eylulnc.walkmunich.feature.settings.AboutScreenUi
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -179,10 +180,23 @@ fun NavigationRoot(
                     is SettingsScreen -> {
                         NavEntry(key = key) {
                             SettingsScreenUi(
+                                onAboutClick = {
+                                    settingsBackStack.add(AboutScreen)
+                                }
+                            )
+                        }
+                    }
+
+                    is AboutScreen -> {
+                        NavEntry(key = key) {
+                            AboutScreenUi(
                                 onOpenAppDescription = { settingsBackStack.add(AppDescriptionScreen) },
                                 onOpenDisclaimer = { settingsBackStack.add(DisclaimerScreen) },
                                 onOpenAttribution = { settingsBackStack.add(AttributionScreen) },
-                                onOpenImpressum = { settingsBackStack.add(ImpressumScreen) }
+                                onOpenImpressum = { settingsBackStack.add(ImpressumScreen) },
+                                onBackClick = {
+                                    currentBackStack.remove(key)
+                                }
                             )
                         }
                     }
