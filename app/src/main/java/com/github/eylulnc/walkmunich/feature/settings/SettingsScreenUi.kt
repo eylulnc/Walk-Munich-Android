@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -19,8 +20,10 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,6 +34,7 @@ import com.github.eylulnc.walkmunich.core.ui.composable.SettingsNavigationItem
 import com.github.eylulnc.walkmunich.core.ui.composable.SettingsSectionHeader
 import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
+import com.github.eylulnc.walkmunich.core.ui.util.getAppVersion
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -39,6 +43,8 @@ fun SettingsScreenUi(
     onAboutClick: () -> Unit
 ) {
     val isDarkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val appVersion = remember { context.getAppVersion() }
 
     WMTopAppBarScreen(
         title = stringResource(R.string.settings_title),
@@ -65,7 +71,7 @@ fun SettingsScreenUi(
                 SettingsCard {
                     SettingsNavigationItem(
                         icon = Icons.Outlined.Info,
-                        title = "About App",
+                        title = stringResource(R.string.settings_about_app),
                         hasChevron = true,
                         onClick = onAboutClick
                     )
@@ -74,8 +80,12 @@ fun SettingsScreenUi(
 
                     SettingsNavigationItem(
                         icon = Icons.Outlined.Terminal,
-                        title = "Version",
-                        trailingText = "1.0.2 (24)"
+                        title = stringResource(R.string.settings_version),
+                        trailingText = stringResource(
+                            R.string.version_display,
+                            appVersion.versionName,
+                            appVersion.versionCode
+                        )
                     )
                 }
             }
@@ -101,7 +111,7 @@ fun DarkModeSwitch(
             tint = MaterialTheme.colorScheme.primary
         )
 
-        Spacer(Modifier.height(Spacing.Large))
+        Spacer(Modifier.width(Spacing.Large))
 
         Text(
             stringResource(R.string.dark_mode),
