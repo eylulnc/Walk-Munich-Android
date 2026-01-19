@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.data.model.Place
@@ -164,10 +163,10 @@ fun MapScreenUi(
 
             if (hasLocationPermission) {
                 Surface(
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(Spacing.ActionIconSize),
                     shape = CircleShape,
                     color = MaterialTheme.colorScheme.surface,
-                    tonalElevation = 4.dp
+                    tonalElevation = Spacing.ExtraSmall
                 ) {
                     IconButton(onClick = { moveToUserLocationOrMunich() }) {
                         Icon(
@@ -180,10 +179,10 @@ fun MapScreenUi(
             }
 
             Surface(
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(Spacing.ActionIconSize),
                 shape = CircleShape,
                 color = MaterialTheme.colorScheme.surface,
-                tonalElevation = 4.dp
+                tonalElevation = Spacing.ExtraSmall
             ) {
                 IconButton(onClick = { showLegendDialog = true }) {
                     Icon(
@@ -251,7 +250,7 @@ fun CategoryLegendDialog(
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(14.dp)
+                                .size(Spacing.ItemGap)
                                 .clip(CircleShape)
                                 .background(getMarkerColor(category))
                         )

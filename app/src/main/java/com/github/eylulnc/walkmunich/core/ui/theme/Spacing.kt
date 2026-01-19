@@ -11,7 +11,7 @@ object Spacing {
     val Large = 24.dp
     val ExtraLarge = 32.dp
 
-
+    val ActionIconSize = 48.dp
     val HeroHeight = 300.dp
     val CardWidthLarge = 256.dp
     val CardHeightMedium = 150.dp
