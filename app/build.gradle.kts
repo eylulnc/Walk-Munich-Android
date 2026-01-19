@@ -76,4 +76,8 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.material.icons.extended)
+
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 }
