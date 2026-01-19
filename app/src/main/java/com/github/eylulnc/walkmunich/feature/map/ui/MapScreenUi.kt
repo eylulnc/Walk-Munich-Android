@@ -3,33 +3,37 @@ package com.github.eylulnc.walkmunich.feature.map.ui
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.data.model.Category
+import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.toUi
+import com.github.eylulnc.walkmunich.core.ui.composable.PlaceCardSmall
+import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.map.viewmodel.MapViewModel
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -39,11 +43,10 @@ fun MapScreenUi(
     onPlaceClick: (Long) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
-    var hasLocationPermission by remember {
-        mutableStateOf(false)
-    }
+    var hasLocationPermission by remember { mutableStateOf(false) }
+    var selectedPlace by remember { mutableStateOf<Place?>(null) }
+    var showLegendDialog by remember { mutableStateOf(false) }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -66,6 +69,7 @@ fun MapScreenUi(
     }
 
     Box(modifier = modifier.fillMaxSize()) {
+
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
@@ -74,23 +78,62 @@ fun MapScreenUi(
             ),
             uiSettings = MapUiSettings(
                 myLocationButtonEnabled = hasLocationPermission,
-                zoomControlsEnabled = false
-            )
+                zoomControlsEnabled = true,
+                compassEnabled = true
+            ),
+            onMapClick = { selectedPlace = null }
         ) {
             uiState.places.forEach { place ->
                 place.coords?.let { coords ->
-                    val position = LatLng(coords.lat, coords.lon)
                     Marker(
-                        state = MarkerState(position = position),
+                        state = MarkerState(
+                            position = LatLng(coords.lat, coords.lon)
+                        ),
                         title = place.name,
-                        snippet = place.category.name,
                         icon = rememberMarkerIcon(place.category),
                         onClick = {
-                            onPlaceClick(place.id)
-                            true
+                            selectedPlace = place
+                            false
                         }
                     )
                 }
+            }
+        }
+
+        // ⓘ Info button (bottom-left)
+        Surface(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(Spacing.Medium)
+                .size(48.dp),
+            shape = CircleShape,
+            color = MaterialTheme.colorScheme.surface,
+            tonalElevation = 4.dp,
+            shadowElevation = 4.dp
+        ) {
+            IconButton(onClick = { showLegendDialog = true }) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "Map legend",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+
+        // Selected place card
+        AnimatedVisibility(
+            visible = selectedPlace != null,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(Spacing.Medium)
+        ) {
+            selectedPlace?.let { place ->
+                PlaceCardSmall(
+                    place = place,
+                    onPlaceClick = { onPlaceClick(place.id) }
+                )
             }
         }
 
@@ -98,33 +141,78 @@ fun MapScreenUi(
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
+
+    if (showLegendDialog) {
+        CategoryLegendDialog(
+            onDismiss = { showLegendDialog = false }
+        )
+    }
 }
 
 @Composable
-fun rememberMarkerIcon(category: Category): BitmapDescriptor? {
-    val tint = MaterialTheme.colorScheme.primary
-    val categoryUi = category.toUi()
-    val context = LocalContext.current
+fun CategoryLegendDialog(
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            IconButton(onClick = onDismiss) {
+                Icon(Icons.Default.Close, contentDescription = "Close")
+            }
+        },
+        title = {
+            Text(
+                text = "Categories",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.Small)) {
+                Category.entries.forEach { category ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(Spacing.Small)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(15.dp)
+                                .clip(CircleShape)
+                                .background(getMarkerColor(category))
+                        )
+                        Text(
+                            text = stringResource(category.toUi().titleResource),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+            }
+        }
+    )
+}
 
-    // We can't easily convert ImageVector to BitmapDescriptor in a generic way without a Composable context or a lot of boilerplate.
-    // For now, let's use a simpler approach: use the category to map to a resource ID if possible,
-    // or just use different colors for default markers as a fallback if vector conversion is too complex here.
-    // However, the requirement is "display icon that belong to the place category".
-
-    return remember(category, tint) {
-        // Since we are using Material Icons, we don't have direct drawable resource IDs easily.
-        // A common trick is to draw the vector into a bitmap.
+@Composable
+fun rememberMarkerIcon(category: Category): BitmapDescriptor {
+    return remember(category) {
         BitmapDescriptorFactory.defaultMarker(getMarkerHue(category))
     }
 }
 
-private fun getMarkerHue(category: Category): Float {
-    return when (category) {
+private fun getMarkerHue(category: Category): Float =
+    when (category) {
         Category.LANDMARK -> BitmapDescriptorFactory.HUE_RED
         Category.MUSEUM -> BitmapDescriptorFactory.HUE_AZURE
         Category.VIEWPOINT -> BitmapDescriptorFactory.HUE_GREEN
         Category.COFFEE -> BitmapDescriptorFactory.HUE_ORANGE
         Category.FOOD -> BitmapDescriptorFactory.HUE_YELLOW
     }
+
+private fun getMarkerColor(category: Category): Color {
+    val hue = getMarkerHue(category)
+    return Color.hsv(
+        hue = hue,
+        saturation = 1f,
+        value = 1f
+    )
 }
 
