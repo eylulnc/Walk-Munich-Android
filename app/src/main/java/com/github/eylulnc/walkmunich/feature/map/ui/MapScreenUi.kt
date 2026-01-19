@@ -1,6 +1,7 @@
 package com.github.eylulnc.walkmunich.feature.map.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -9,16 +10,16 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,13 +30,17 @@ import com.github.eylulnc.walkmunich.core.data.model.toUi
 import com.github.eylulnc.walkmunich.core.ui.composable.PlaceCardSmall
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.map.viewmodel.MapViewModel
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+@SuppressLint("MissingPermission")
 @Composable
 fun MapScreenUi(
     modifier: Modifier = Modifier,
@@ -43,15 +48,60 @@ fun MapScreenUi(
     onPlaceClick: (Long) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val fusedLocationClient =
+        remember { LocationServices.getFusedLocationProviderClient(context) }
 
     var hasLocationPermission by remember { mutableStateOf(false) }
     var selectedPlace by remember { mutableStateOf<Place?>(null) }
     var showLegendDialog by remember { mutableStateOf(false) }
 
+    val munich = LatLng(48.1351, 11.5820)
+
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(munich, 12f)
+    }
+
+    var isMapLoaded by remember { mutableStateOf(false) }
+
     val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestMultiplePermissions()
+        ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         hasLocationPermission = permissions.values.all { it }
+    }
+
+    fun moveCamera(target: LatLng, zoom: Float) {
+        if (!isMapLoaded) return
+
+        scope.launch {
+            cameraPositionState.animate(
+                CameraUpdateFactory.newLatLngZoom(target, zoom)
+            )
+        }
+    }
+
+
+    fun moveToUserLocationOrMunich() {
+        if (!hasLocationPermission) {
+            moveCamera(munich, 12f)
+            return
+        }
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    moveCamera(
+                        LatLng(location.latitude, location.longitude),
+                        16f
+                    )
+                } else {
+                    moveCamera(munich, 12f)
+                }
+            }
+            .addOnFailureListener {
+                moveCamera(munich, 12f)
+            }
     }
 
     LaunchedEffect(Unit) {
@@ -63,10 +113,12 @@ fun MapScreenUi(
         )
     }
 
-    val munich = LatLng(48.1351, 11.5820)
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(munich, 12f)
+    LaunchedEffect(hasLocationPermission, isMapLoaded) {
+        if (isMapLoaded) {
+            moveToUserLocationOrMunich()
+        }
     }
+
 
     Box(modifier = modifier.fillMaxSize()) {
 
@@ -77,10 +129,13 @@ fun MapScreenUi(
                 isMyLocationEnabled = hasLocationPermission
             ),
             uiSettings = MapUiSettings(
-                myLocationButtonEnabled = hasLocationPermission,
                 zoomControlsEnabled = true,
-                compassEnabled = true
+                compassEnabled = true,
+                myLocationButtonEnabled = false
             ),
+            onMapLoaded = {
+                isMapLoaded = true
+            },
             onMapClick = { selectedPlace = null }
         ) {
             uiState.places.forEach { place ->
@@ -100,27 +155,46 @@ fun MapScreenUi(
             }
         }
 
-        // ⓘ Info button (bottom-left)
-        Surface(
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(Spacing.Medium)
-                .size(48.dp),
-            shape = CircleShape,
-            color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 4.dp,
-            shadowElevation = 4.dp
+                .padding(Spacing.Medium),
+            verticalArrangement = Arrangement.spacedBy(Spacing.Small)
         ) {
-            IconButton(onClick = { showLegendDialog = true }) {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Map legend",
-                    tint = MaterialTheme.colorScheme.primary
-                )
+
+            if (hasLocationPermission) {
+                Surface(
+                    modifier = Modifier.size(48.dp),
+                    shape = CircleShape,
+                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 4.dp
+                ) {
+                    IconButton(onClick = { moveToUserLocationOrMunich() }) {
+                        Icon(
+                            imageVector = Icons.Default.MyLocation,
+                            contentDescription = "My location",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+
+            Surface(
+                modifier = Modifier.size(48.dp),
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.surface,
+                tonalElevation = 4.dp
+            ) {
+                IconButton(onClick = { showLegendDialog = true }) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Map legend",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
         }
 
-        // Selected place card
         AnimatedVisibility(
             visible = selectedPlace != null,
             enter = fadeIn(),
@@ -138,7 +212,9 @@ fun MapScreenUi(
         }
 
         if (uiState.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
     }
 
@@ -156,14 +232,13 @@ fun CategoryLegendDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            IconButton(onClick = onDismiss) {
-                Icon(Icons.Default.Close, contentDescription = "Close")
+            TextButton(onClick = onDismiss) {
+                Text("Close")
             }
         },
         title = {
             Text(
                 text = "Categories",
-                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -176,13 +251,12 @@ fun CategoryLegendDialog(
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(15.dp)
+                                .size(14.dp)
                                 .clip(CircleShape)
                                 .background(getMarkerColor(category))
                         )
                         Text(
-                            text = stringResource(category.toUi().titleResource),
-                            style = MaterialTheme.typography.bodyLarge
+                            text = stringResource(category.toUi().titleResource)
                         )
                     }
                 }
@@ -192,11 +266,10 @@ fun CategoryLegendDialog(
 }
 
 @Composable
-fun rememberMarkerIcon(category: Category): BitmapDescriptor {
-    return remember(category) {
+fun rememberMarkerIcon(category: Category): BitmapDescriptor =
+    remember(category) {
         BitmapDescriptorFactory.defaultMarker(getMarkerHue(category))
     }
-}
 
 private fun getMarkerHue(category: Category): Float =
     when (category) {
@@ -207,12 +280,9 @@ private fun getMarkerHue(category: Category): Float =
         Category.FOOD -> BitmapDescriptorFactory.HUE_YELLOW
     }
 
-private fun getMarkerColor(category: Category): Color {
-    val hue = getMarkerHue(category)
-    return Color.hsv(
-        hue = hue,
-        saturation = 1f,
-        value = 1f
+private fun getMarkerColor(category: Category): Color =
+    Color.hsv(
+        hue = getMarkerHue(category),
+        saturation = 0.8f,
+        value = 0.9f
     )
-}
-
