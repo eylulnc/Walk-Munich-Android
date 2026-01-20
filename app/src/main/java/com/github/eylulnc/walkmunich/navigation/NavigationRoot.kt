@@ -32,6 +32,7 @@ import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.favorite.ui.FavoritesScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.HomeScreenUi
 import com.github.eylulnc.walkmunich.feature.home.ui.PlacesOverviewScreenUi
+import com.github.eylulnc.walkmunich.feature.map.ui.MapScreenUi
 import com.github.eylulnc.walkmunich.feature.settings.SettingsScreenUi
 import com.github.eylulnc.walkmunich.feature.place.ui.PlaceDetailScreenUi
 import com.github.eylulnc.walkmunich.feature.route.ui.RouteDetailScreenUi
@@ -45,13 +46,14 @@ fun NavigationRoot(
     modifier: Modifier = Modifier
 ) {
     val exploreBackStack = rememberNavBackStack(HomeScreen)
+    val mapBackStack = rememberNavBackStack(MapScreen)
     val toursBackStack = rememberNavBackStack(ToursScreen)
     val favoritesBackStack = rememberNavBackStack(FavoritesScreen)
     val settingsBackStack = rememberNavBackStack(SettingsScreen)
 
     // Order of tabs shown in the bar
     val tabs =
-        remember { listOf(RootTab.Explore, RootTab.Tours, RootTab.Favorites, RootTab.Settings) }
+        remember { listOf(RootTab.Explore,RootTab.Tours, RootTab.Map, RootTab.Favorites, RootTab.Settings) }
 
     // Save an Int instead of the sealed object
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
@@ -60,6 +62,7 @@ fun NavigationRoot(
     val currentBackStack = when (currentTab) {
         RootTab.Explore -> exploreBackStack
         RootTab.Tours -> toursBackStack
+        RootTab.Map -> mapBackStack
         RootTab.Favorites -> favoritesBackStack
         RootTab.Settings -> settingsBackStack
     }
@@ -120,6 +123,16 @@ fun NavigationRoot(
                                 },
                                 onSeeAllPlacesClick = {
                                     exploreBackStack.add(AllPlacesScreen)
+                                }
+                            )
+                        }
+                    }
+
+                    is MapScreen -> {
+                        NavEntry(key = key) {
+                            MapScreenUi(
+                                onPlaceClick = { placeId ->
+                                    mapBackStack.add(PlaceDetailScreen(placeId))
                                 }
                             )
                         }

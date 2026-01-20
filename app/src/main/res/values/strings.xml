@@ -66,4 +66,10 @@
 
     <string name="about_footer">An open-source project built with care and a passion for simple, thoughtful design.© 2026 Eylül Naz Can · MIT License</string>
 
+    <!-- Map -->
+    <string name="map_my_location_content_description">My location</string>
+    <string name="map_legend_content_description">Map legend</string>
+    <string name="map_legend_close">Close</string>
+    <string name="map_legend_categories_title">Categories</string>
+
 </resources>
