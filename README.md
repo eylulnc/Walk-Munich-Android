@@ -54,7 +54,7 @@ I’m using **Kotlin** and **modern Android tools** to keep the codebase clean a
 This project uses **Google Maps** to display places on an interactive map.  
 To run the app locally, you must provide your own **Google Maps API key**.
 
-### Create a Google Maps API key
+### 1️⃣ Create a Google Maps API key
 
 1. Go to the **Google Cloud Console**
 2. Create or select a project
@@ -69,6 +69,14 @@ You can obtain the debug SHA-1 by running:
 
 ```bash
 ./gradlew signingReport
+```
+
+### 2️⃣ Add the API key to `local.properties`
+
+In the **root of the project**, create or update the `local.properties` file and add:
+
+```properties
+MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
 ```
 ---
 
