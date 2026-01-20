@@ -19,6 +19,7 @@ class UserPreferencesRepository(private val context: Context) {
     private val favoritePlacesKey = stringSetPreferencesKey("favorite_places")
     private val recentlyViewedKey = stringPreferencesKey("recently_viewed_places")
     private val isGridViewKey = booleanPreferencesKey("is_grid_view")
+    private val hasSeenDisclaimerKey = booleanPreferencesKey("has_seen_disclaimer")
 
     val isDarkTheme: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
@@ -38,6 +39,11 @@ class UserPreferencesRepository(private val context: Context) {
     val isGridView: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
             preferences[isGridViewKey] ?: true
+        }
+
+    val hasSeenDisclaimer: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[hasSeenDisclaimerKey] ?: false
         }
 
     suspend fun setDarkTheme(isDarkTheme: Boolean) {
@@ -74,6 +80,12 @@ class UserPreferencesRepository(private val context: Context) {
     suspend fun setGridView(isGridView: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[isGridViewKey] = isGridView
+        }
+    }
+
+    suspend fun setHasSeenDisclaimer(hasSeen: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[hasSeenDisclaimerKey] = hasSeen
         }
     }
 }
