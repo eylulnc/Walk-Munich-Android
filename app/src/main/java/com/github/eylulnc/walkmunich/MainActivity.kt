@@ -23,7 +23,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val isDarkTheme by userPreferencesRepository.isDarkTheme.collectAsStateWithLifecycle(initialValue = false)
-            val hasSeenDisclaimer by userPreferencesRepository.hasSeenDisclaimer.collectAsStateWithLifecycle(initialValue = true)
+            val hasSeenDisclaimer by userPreferencesRepository.hasSeenDisclaimer.collectAsStateWithLifecycle(initialValue = false)
+
             val scope = rememberCoroutineScope()
 
             WalkMunichTheme(darkTheme = isDarkTheme) {
