@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.toUi
@@ -171,7 +172,7 @@ fun MapScreenUi(
                     IconButton(onClick = { moveToUserLocationOrMunich() }) {
                         Icon(
                             imageVector = Icons.Default.MyLocation,
-                            contentDescription = "My location",
+                            contentDescription = stringResource(R.string.map_my_location_content_description),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -187,7 +188,7 @@ fun MapScreenUi(
                 IconButton(onClick = { showLegendDialog = true }) {
                     Icon(
                         imageVector = Icons.Default.Info,
-                        contentDescription = "Map legend",
+                        contentDescription = stringResource(R.string.map_legend_content_description),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -232,12 +233,12 @@ fun CategoryLegendDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Close")
+                Text(text = stringResource(R.string.map_legend_close))
             }
         },
         title = {
             Text(
-                text = "Categories",
+                text = stringResource(R.string.map_legend_categories_title),
                 fontWeight = FontWeight.Bold
             )
         },
