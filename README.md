@@ -3,7 +3,7 @@
 Walk Munich is an Android app I’m building to create and organize walking routes in Munich.  
 The main idea is to make it easier to plan small itineraries for friends, family, and visitors when showing them around the city.
 
-The app helps collect interesting places, group them into routes, and display them in a simple, map-based way — so it’s easier to explore Munich on foot.
+The app helps to find interesting places, group them into routes, and display them in a simple, map-based way — so it’s easier to explore Munich on foot.
 
 It’s still **a work in progress**, and I’m gradually improving it as I learn and experiment with Android architecture, navigation, and data handling.
 
@@ -13,30 +13,30 @@ It’s still **a work in progress**, and I’m gradually improving it as I learn
 
 **Walk Munich** started as a small side project to make personal sightseeing plans easier.  
 Instead of keeping notes and maps separately, the goal is to have one app where I can:
-- list places worth visiting,
-- connect them into walking routes and
-- short stories and highlight related to the places
 
-I’m using **Kotlin** and **modern Android tools** to keep it clean and maintainable while learning new concepts along the way.
+- List places worth visiting
+- Connect them into walking routes
+- Add short stories and highlights related to each place
+
+I’m using **Kotlin** and **modern Android tools** to keep the codebase clean and maintainable while learning new concepts along the way.
 
 ---
 
-## ⚙️ Current Features (Work in Progress)
+## ⚙️ Current Features
 
 - Categories
 - Add search and filtering by area or theme  
 - See specially created itineraries  
 - Add detailed view for each stop (photos, short stories, or history)
+- Favorites
+- Map support
+- Improve UI/UX for smoother navigation
 
 ---
 
 ## 🚧 Planned Features
 
-- Favorites  
-- Create and save custom walking routes  
-- Show walking directions between places  
-- Map support  
-- Improve UI/UX for smoother navigation
+- Create and save custom walking routes
   
 ---
 
@@ -47,6 +47,37 @@ I’m using **Kotlin** and **modern Android tools** to keep it clean and maintai
 - **Navigation:** Jetpack Navigation (v3)  
 - **Architecture:** Feature-based modular structure  
 
+---
+
+## 🗺️ Google Maps Setup
+
+This project uses **Google Maps** to display places on an interactive map.  
+To run the app locally, you must provide your own **Google Maps API key**.
+
+### 1️⃣ Create a Google Maps API key
+
+1. Go to the **Google Cloud Console**
+2. Create or select a project
+3. Enable **Maps SDK for Android**
+4. Create an **API key**
+5. Restrict the key:
+    - **Application restriction:** Android apps
+    - Add the app’s **package name**
+    - Add your **SHA-1 fingerprint** (debug SHA-1 is sufficient for development)
+
+You can obtain the debug SHA-1 by running:
+
+```bash
+./gradlew signingReport
+```
+
+### 2️⃣ Add the API key to `local.properties`
+
+In the **root of the project**, create or update the `local.properties` file and add:
+
+```properties
+MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
+```
 ---
 
 ## 📸 Preview
