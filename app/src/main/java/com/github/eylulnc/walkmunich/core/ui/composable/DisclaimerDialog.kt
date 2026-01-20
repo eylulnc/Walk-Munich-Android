@@ -14,7 +14,7 @@ fun DisclaimerDialog(
     onConfirm: () -> Unit
 ) {
     AlertDialog(
-        onDismissRequest = { /* Mandatory acknowledgment */ },
+        onDismissRequest = { },
         properties = DialogProperties(
             dismissOnBackPress = false,
             dismissOnClickOutside = false
