@@ -52,6 +52,7 @@ fun MapScreenUi(
     val scope = rememberCoroutineScope()
     val fusedLocationClient =
         remember { LocationServices.getFusedLocationProviderClient(context) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
     var hasLocationPermission by remember { mutableStateOf(false) }
     var selectedPlace by remember { mutableStateOf<Place?>(null) }
@@ -116,6 +117,12 @@ fun MapScreenUi(
     LaunchedEffect(hasLocationPermission, isMapLoaded) {
         if (isMapLoaded) {
             moveToUserLocationOrMunich()
+        }
+    }
+
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let {
+            snackbarHostState.showSnackbar(it)
         }
     }
 
@@ -210,6 +217,11 @@ fun MapScreenUi(
                 )
             }
         }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
 
         if (uiState.isLoading) {
             CircularProgressIndicator(
