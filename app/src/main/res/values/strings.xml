@@ -51,6 +51,11 @@
         Walk Munich is a non-commercial, personal project created for learning, experimentation, and portfolio purposes.\n\nIt is not an official city guide and is not affiliated with the City of Munich, local authorities, or any tourism organization.\n\nRoutes, place descriptions, and recommendations reflect personal suggestions and interpretations and may not be complete, up to date, or suitable for every user.\n\nAll information is provided “as is” without any guarantees regarding accuracy or reliability.
     </string>
 
+    <string name="disclaimer_first_launch_message">
+    This app is a personal and educational project created for learning, exploration, and portfolio purposes. It is not affiliated with any official tourism organization or authority. Content is curated from publicly available sources and provided for informational purposes only.
+    </string>
+    <string name="disclaimer_understand_button">I Understand</string>
+
     <!-- Attribution -->
     <string name="about_attribution_title">Attribution &amp; Sources</string>
     <string name="about_attribution">
