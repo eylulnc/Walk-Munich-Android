@@ -5,10 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.data.repository.UserPreferencesRepository
+import com.github.eylulnc.walkmunich.core.ui.composable.DisclaimerDialog
 import com.github.eylulnc.walkmunich.navigation.NavigationRoot
 import com.github.eylulnc.walkmunich.core.ui.theme.WalkMunichTheme
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
@@ -20,8 +23,21 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val isDarkTheme by userPreferencesRepository.isDarkTheme.collectAsStateWithLifecycle(initialValue = false)
+            val hasSeenDisclaimer by userPreferencesRepository.hasSeenDisclaimer.collectAsStateWithLifecycle(initialValue = true)
+            val scope = rememberCoroutineScope()
+
             WalkMunichTheme(darkTheme = isDarkTheme) {
                 NavigationRoot()
+
+                if (!hasSeenDisclaimer) {
+                    DisclaimerDialog(
+                        onConfirm = {
+                            scope.launch {
+                                userPreferencesRepository.setHasSeenDisclaimer(true)
+                            }
+                        }
+                    )
+                }
             }
         }
     }
