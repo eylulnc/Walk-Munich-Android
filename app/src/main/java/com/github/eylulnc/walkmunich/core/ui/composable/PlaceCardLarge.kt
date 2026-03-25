@@ -58,12 +58,14 @@ fun PlaceCardLarge(
                     .height(Spacing.CardHeightMedium)
                     .weight(0.4f)
             ) {
-                Image(
-                    painter = painterResource(id = imageResId),
-                    contentDescription = "Place Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                imageResId?.let {
+                    Image(
+                        painter = painterResource(id = it),
+                        contentDescription = "Place Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
                 FavoriteButton(
                     isFavorite = isFavorite,

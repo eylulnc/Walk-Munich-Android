@@ -1,6 +1,5 @@
 package com.github.eylulnc.walkmunich.feature.home.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,20 +14,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.core.data.model.Place
@@ -36,10 +43,10 @@ import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.FavoriteButton
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
 import com.github.eylulnc.walkmunich.core.ui.composable.PlaceCard
+import com.github.eylulnc.walkmunich.core.ui.composable.PlaceImage
 import com.github.eylulnc.walkmunich.core.ui.composable.WMSearchTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
-import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -63,19 +70,42 @@ fun HomeScreenUi(
             state.error != null -> ErrorState(errorMessage = state.error)
             else -> {
                 if (state.searchQuery.isNotBlank()) {
-                    Column(modifier = modifier) {
-                        SearchResultsSection(
-                            searchResults = state.searchResults,
-                            isSearching = state.isSearching,
-                            favoriteIds = state.favoritePlaceIds,
-                            onPlaceClick = { place -> onPlaceItemClick(place.id) },
-                            onFavoriteClick = viewModel::onToggleFavorite
-                        )
-                    }
+                    // Search field lives inside the grid as a full-span header
+                    // so it scrolls away with the results
+                    SearchResultsSection(
+                        modifier = modifier,
+                        searchResults = state.searchResults,
+                        isSearching = state.isSearching,
+                        favoriteIds = state.favoritePlaceIds,
+                        onPlaceClick = { place -> onPlaceItemClick(place.id) },
+                        onFavoriteClick = viewModel::onToggleFavorite,
+                        header = {
+                            HomeSearchField(
+                                query = state.searchQuery,
+                                onQueryChange = viewModel::onQueryChange,
+                                onClear = viewModel::onClearQuery
+                            )
+                        }
+                    )
                 } else {
+                    // Normal mode: search field is the first item in the scroll —
+                    // it disappears naturally when the user scrolls down
                     Column(
                         modifier = modifier.verticalScroll(rememberScrollState())
                     ) {
+                        Row(Modifier
+                            .fillMaxWidth()
+                            .padding(Spacing.Small)) {
+                            HomeSearchField(
+                                query = state.searchQuery,
+                                onQueryChange = viewModel::onQueryChange,
+                                onClear = viewModel::onClearQuery
+                            )
+                        }
+
+
+                        Spacer(modifier = Modifier.height(Spacing.Small))
+
                         PlacesSection(
                             places = state.allPlaces,
                             favoriteIds = state.favoritePlaceIds,
@@ -84,7 +114,7 @@ fun HomeScreenUi(
                             onFavoriteClick = viewModel::onToggleFavorite
                         )
 
-                        Spacer(modifier = Modifier.height(Spacing.Large))
+                        Spacer(modifier = Modifier.height(Spacing.Medium))
 
                         state.highlightedPlace?.let {
                             HighlightSection(
@@ -94,7 +124,7 @@ fun HomeScreenUi(
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(Spacing.Large))
+                        Spacer(modifier = Modifier.height(Spacing.Medium))
 
                         FavoritesSection(
                             onSeeAllClick = onSeeAllFavoritesClick,
@@ -105,7 +135,7 @@ fun HomeScreenUi(
                         )
 
                         if (state.recentlyViewedPlaceIds.isNotEmpty()) {
-                            Spacer(modifier = Modifier.height(Spacing.Large))
+                            Spacer(modifier = Modifier.height(Spacing.Medium))
 
                             RecentlyViewedSection(
                                 allPlaces = state.allPlaces,
@@ -133,7 +163,7 @@ fun PlacesSection(
     onFavoriteClick: (Long) -> Unit
 ) {
     Column {
-        SectionHeader(title = "Places", onSeeAllClick = onSeeAllClick)
+        SectionHeader(title = "Explore Munich", onSeeAllClick = onSeeAllClick)
 
         LazyRow(
             contentPadding = PaddingValues(horizontal = Spacing.Medium),
@@ -278,25 +308,30 @@ fun HighlightCard(
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit
 ) {
-    val imageResId = ImageResolver.resolveDrawable(place.imageUrl)
-
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(Spacing.CornerRadius),
         elevation = CardDefaults.cardElevation(defaultElevation = Spacing.Small)
     ) {
         Box(modifier = Modifier.height(Spacing.HeroHeight / 1.5f)) {
-            Image(
-                painter = painterResource(id = imageResId),
-                contentDescription = "Highlight Image",
-                contentScale = ContentScale.Crop,
+            PlaceImage(
+                imageUrl = place.imageUrl,
+                contentDescription = place.name,
                 modifier = Modifier.fillMaxSize()
             )
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.4f))
+                    .background(
+                        Brush.verticalGradient(
+                            colorStops = arrayOf(
+                                0.0f to Color.Transparent,
+                                0.45f to Color.Transparent,
+                                1.0f to Color.Black.copy(alpha = 0.7f)
+                            )
+                        )
+                    )
             )
 
             FavoriteButton(isFavorite, onFavoriteClick)
@@ -306,6 +341,14 @@ fun HighlightCard(
                     .align(Alignment.BottomStart)
                     .padding(Spacing.Medium)
             ) {
+                place.story?.mainTitle?.let { mainTitle ->
+                    Text(
+                        text = mainTitle,
+                        fontWeight = FontWeight.Normal,
+                        color = Color.White.copy(alpha = 0.8f),
+                        fontSize = TypographySizes.small
+                    )
+                }
                 Text(
                     text = place.name,
                     fontWeight = FontWeight.Bold,
@@ -315,4 +358,58 @@ fun HighlightCard(
             }
         }
     }
+}
+
+@Composable
+private fun HomeSearchField(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onClear: () -> Unit
+) {
+    TextField(
+        value = query,
+        onValueChange = onQueryChange,
+        placeholder = {
+            Text(
+                text = "Search places...",
+                fontSize = TypographySizes.body,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            )
+        },
+        textStyle = TextStyle(
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = TypographySizes.body
+        ),
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Outlined.Search,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            )
+        },
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                IconButton(onClick = onClear) {
+                    Icon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = "Clear",
+                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    )
+                }
+            }
+        },
+        singleLine = true,
+        shape = CircleShape,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(Spacing.SearchBarHeight)
+            .padding(horizontal = Spacing.Medium)
+    )
 }

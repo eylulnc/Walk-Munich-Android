@@ -73,12 +73,14 @@ fun RouteDetailScreenUi(
                             .fillMaxWidth()
                             .height(240.dp)
                     ) {
-                        Image(
-                            painter = painterResource(heroImage),
-                            contentDescription = detail.title,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
+                        heroImage?.let {
+                            Image(
+                                painter = painterResource(it),
+                                contentDescription = detail.title,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -233,12 +235,14 @@ fun RouteStopCard(
                             .height(Spacing.CardHeightSmall)
                             .fillMaxWidth()
                     ) {
-                        Image(
-                            painter = painterResource(id = imageResId),
-                            contentDescription = stop.name,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
-                        )
+                        imageResId?.let {
+                            Image(
+                                painter = painterResource(id = it),
+                                contentDescription = stop.name,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
 
                         Box(
                             modifier = Modifier
