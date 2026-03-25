@@ -5,9 +5,6 @@ import com.github.eylulnc.walkmunich.core.data.repository.UserPreferencesReposit
 import com.github.eylulnc.walkmunich.core.data.service.PlacesService
 import com.github.eylulnc.walkmunich.core.data.service.PlacesServiceImpl
 import com.github.eylulnc.walkmunich.feature.favorite.viewmodel.FavoritesViewModel
-import com.github.eylulnc.walkmunich.feature.home.data.repository.CityRepository
-import com.github.eylulnc.walkmunich.feature.home.data.service.CityService
-import com.github.eylulnc.walkmunich.feature.home.data.service.CityServiceImpl
 import com.github.eylulnc.walkmunich.feature.settings.SettingsViewModel
 import com.github.eylulnc.walkmunich.feature.home.viewModel.HomeScreenViewModel
 import com.github.eylulnc.walkmunich.feature.map.viewmodel.MapViewModel
@@ -25,9 +22,6 @@ import org.koin.dsl.module
 
 val appModule = module {
     single { Json { ignoreUnknownKeys = true } }
-
-    single<CityService> { CityServiceImpl(androidContext(), get()) }
-    single { CityRepository(get()) }
 
     single<PlacesService> { PlacesServiceImpl(androidContext(), get()) }
     single { PlacesRepository(get()) }
