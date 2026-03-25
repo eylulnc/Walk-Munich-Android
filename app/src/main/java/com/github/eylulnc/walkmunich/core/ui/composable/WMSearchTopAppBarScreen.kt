@@ -1,21 +1,24 @@
 package com.github.eylulnc.walkmunich.core.ui.composable
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +32,6 @@ fun WMSearchTopAppBarScreen(
     containerColor: Color = MaterialTheme.colorScheme.background,
     content: @Composable (Modifier) -> Unit
 ) {
-    var isSearchMode by remember { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
     Column(
@@ -38,111 +40,37 @@ fun WMSearchTopAppBarScreen(
             .background(containerColor)
             .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        Crossfade(targetState = isSearchMode, label = "search-mode") { searchMode ->
-            if (searchMode) {
-                Surface(
-                    shadowElevation = Spacing.Small,
-                    color = MaterialTheme.colorScheme.background,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TopAppBar(
-                        title = {
-                            TextField(
-                                value = searchQuery,
-                                onValueChange = onSearchQueryChange,
-                                placeholder = {
-                                    Text(
-                                        text = "Search for tours or landmarks...",
-                                        fontSize = TypographySizes.medium,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                                    )
-                                },
-                                textStyle = TextStyle(
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    fontSize = TypographySizes.medium,
-                                    lineHeight = TypographySizes.medium
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(Spacing.SearchBarHeight)
-                                    .background(
-                                        MaterialTheme.colorScheme.background,
-                                        RoundedCornerShape(Spacing.CornerRadius)
-                                    ),
-                                colors = TextFieldDefaults.colors(
-                                    focusedContainerColor = MaterialTheme.colorScheme.background,
-                                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                                    focusedIndicatorColor = Color.Transparent,
-                                    unfocusedIndicatorColor = Color.Transparent,
-                                    cursorColor = MaterialTheme.colorScheme.onSurface
-                                ),
-                                singleLine = true,
-                                trailingIcon = {
-                                    IconButton(onClick = {
-                                        onClearSearch()
-                                        isSearchMode = false
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.Outlined.Close,
-                                            contentDescription = "Close search",
-                                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                                        )
-                                    }
-                                }
-                            )
-                        },
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.background,
-                            titleContentColor = MaterialTheme.colorScheme.onBackground
-                        ),
-                        scrollBehavior = null
-                    )
-                }
-            } else {
-                // 🏙️ Normal Mode
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = title,
-                            fontSize = TypographySizes.large,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    },
-                    navigationIcon = {
-                        onBack?.let {
-                            IconButton(onClick = it) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = "Back",
-                                    tint = MaterialTheme.colorScheme.primary
-                                )
-                            }
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = { isSearchMode = true }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Search,
-                                contentDescription = "Search",
-                                tint = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                        titleContentColor = MaterialTheme.colorScheme.onBackground
-                    ),
-                    scrollBehavior = scrollBehavior
+        TopAppBar(
+            title = {
+                Text(
+                    text = title,
+                    fontSize = TypographySizes.large,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
-            }
-        }
+            },
+            navigationIcon = {
+                onBack?.let {
+                    IconButton(onClick = it) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = containerColor,
+                titleContentColor = MaterialTheme.colorScheme.onBackground
+            ),
+            scrollBehavior = scrollBehavior
+        )
 
-        // --- Main Content ---
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                .background(containerColor)
         ) {
             content(Modifier.fillMaxSize())
         }

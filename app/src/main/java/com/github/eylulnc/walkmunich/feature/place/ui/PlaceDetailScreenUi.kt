@@ -102,12 +102,14 @@ private fun PlaceDetailContent(
                     .fillMaxWidth()
                     .height(Spacing.HeroHeight)
             ) {
-                Image(
-                    painter = painterResource(imageId),
-                    contentDescription = place.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
+                imageId?.let { id ->
+                    Image(
+                        painter = painterResource(id),
+                        contentDescription = place.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
 
             StoryContent(place = place, subTitle = subTitle)

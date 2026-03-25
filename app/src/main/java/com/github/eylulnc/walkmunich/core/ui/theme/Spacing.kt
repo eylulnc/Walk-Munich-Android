@@ -14,6 +14,7 @@ object Spacing {
     val ActionIconSize = 48.dp
     val HeroHeight = 300.dp
     val CardWidthLarge = 256.dp
+    val CardHeightPoster = 260.dp
     val CardHeightMedium = 150.dp
     val CardHeightSmall = 120.dp
     val CornerRadius = 12.dp
