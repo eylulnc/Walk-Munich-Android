@@ -60,10 +60,7 @@ fun HomeScreenUi(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     WMSearchTopAppBarScreen(
-        title = "Walk Munich",
-        searchQuery = state.searchQuery,
-        onSearchQueryChange = viewModel::onQueryChange,
-        onClearSearch = viewModel::onClearQuery
+        title = "Walk Munich"
     ) { modifier ->
         when {
             state.isLoading -> LoadingState()
