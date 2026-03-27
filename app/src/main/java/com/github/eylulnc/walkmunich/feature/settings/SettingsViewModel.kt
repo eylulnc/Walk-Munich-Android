@@ -19,4 +19,12 @@ class SettingsViewModel(
             userPreferencesRepository.setDarkTheme(isDarkTheme)
         }
     }
+
+    fun clearRecentlyViewed() {
+        viewModelScope.launch { userPreferencesRepository.clearRecentlyViewed() }
+    }
+
+    fun clearFavorites() {
+        viewModelScope.launch { userPreferencesRepository.clearFavorites() }
+    }
 }

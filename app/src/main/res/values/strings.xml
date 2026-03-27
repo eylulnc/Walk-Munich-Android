@@ -38,6 +38,13 @@
     <string name="settings_about">About</string>
     <string name="settings_about_app">About App</string>
     <string name="settings_version">Version</string>
+    <string name="settings_data">Data</string>
+    <string name="settings_clear_recently_viewed">Clear Recently Viewed</string>
+    <string name="settings_clear_favorites">Clear All Favorites</string>
+    <string name="alert_clear">Clear</string>
+    <string name="alert_cancel">Cancel</string>
+    <string name="alert_clear_recently_viewed_message">This will remove all recently viewed places from your history.</string>
+    <string name="alert_clear_favorites_message">This will remove all your saved favorite places.</string>
     <!-- About Walk Munich -->
     <string name="about_walk_munich_title">About Walk Munich</string>
 

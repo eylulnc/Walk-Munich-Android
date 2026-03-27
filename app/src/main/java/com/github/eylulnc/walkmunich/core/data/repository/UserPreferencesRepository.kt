@@ -88,4 +88,16 @@ class UserPreferencesRepository(private val context: Context) {
             preferences[hasSeenDisclaimerKey] = hasSeen
         }
     }
+
+    suspend fun clearRecentlyViewed() {
+        context.dataStore.edit { preferences ->
+            preferences.remove(recentlyViewedKey)
+        }
+    }
+
+    suspend fun clearFavorites() {
+        context.dataStore.edit { preferences ->
+            preferences.remove(favoritePlacesKey)
+        }
+    }
 }
