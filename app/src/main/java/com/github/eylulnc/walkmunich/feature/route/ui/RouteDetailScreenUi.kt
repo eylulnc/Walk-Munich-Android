@@ -11,7 +11,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,12 +32,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.eylulnc.walkmunich.R
+import com.github.eylulnc.walkmunich.core.data.model.RouteDetail
 import com.github.eylulnc.walkmunich.core.data.model.RouteSegment
 import com.github.eylulnc.walkmunich.core.data.model.RouteStop
 import com.github.eylulnc.walkmunich.core.data.model.toUi
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
-import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
 import com.github.eylulnc.walkmunich.core.ui.theme.OrangeMain
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
@@ -51,72 +53,106 @@ fun RouteDetailScreenUi(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    WMTopAppBarScreen(
-        title = state.routeDetail?.title ?: stringResource(R.string.route_details),
-        onBack = onBackClick
-    ) { contentMod ->
-        when {
-            state.isLoading -> LoadingState()
-            state.error != null -> ErrorState(errorMessage = state.error)
-            state.routeDetail != null -> {
-                val detail = state.routeDetail!!
+    when {
+        state.isLoading -> LoadingState()
+        state.error != null -> ErrorState(errorMessage = state.error)
+        state.routeDetail != null -> RouteDetailContent(
+            detail = state.routeDetail!!,
+            onPlaceItemClick = onPlaceItemClick,
+            onBackClick = onBackClick
+        )
+    }
+}
 
-                Column(
-                    modifier = contentMod
-                        .verticalScroll(rememberScrollState())
-                        .background(MaterialTheme.colorScheme.background)
-                ) {
-                    // --- Hero Image ---
-                    val heroImage = ImageResolver.resolveDrawable(detail.imageUrl)
-                    Box(
+@Composable
+private fun RouteDetailContent(
+    detail: RouteDetail,
+    onPlaceItemClick: (Long, String?) -> Unit,
+    onBackClick: () -> Unit
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            val heroImage = ImageResolver.resolveDrawable(detail.imageUrl) ?: R.drawable.hero_munich
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(280.dp)
+            ) {
+                Image(
+                    painter = painterResource(heroImage),
+                    contentDescription = detail.title,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                listOf(Color.Black.copy(alpha = 0.5f), Color.Transparent)
+                            )
+                        )
+                )
+            }
+
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset(y = Spacing.NegativeCardOffset),
+                shape = RoundedCornerShape(topStart = Spacing.CardCornerRadius, topEnd = Spacing.CardCornerRadius),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column {
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(240.dp)
+                            .padding(horizontal = Spacing.Large)
+                            .padding(top = Spacing.Large, bottom = Spacing.Medium)
                     ) {
-                        heroImage?.let {
-                            Image(
-                                painter = painterResource(it),
-                                contentDescription = detail.title,
-                                modifier = Modifier.fillMaxSize(),
-                                contentScale = ContentScale.Crop
+                        Text(
+                            text = detail.title,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = TypographySizes.title,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+
+                        detail.summary?.let {
+                            Spacer(Modifier.height(Spacing.Small))
+                            Text(
+                                text = it,
+                                fontSize = TypographySizes.medium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    Brush.verticalGradient(
-                                        listOf(
-                                            Color.Black.copy(alpha = 0.5f),
-                                            Color.Transparent
-                                        )
-                                    )
-                                )
-                        )
                     }
 
-                    // --- Description ---
-                    detail.summary?.let {
-                        Text(
-                            text = it,
-                            fontSize = TypographySizes.medium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier
-                                .padding(Spacing.Large)
-                        )
-                    }
-
-                    // --- Itinerary ---
-                    Text(
-                        text = stringResource(R.string.itinerary),
-                        fontSize = TypographySizes.subtitle,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.padding(
-                            horizontal = Spacing.Large,
-                            vertical = Spacing.Small
-                        )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = Spacing.Large),
+                        color = MaterialTheme.colorScheme.outlineVariant
                     )
+
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = Spacing.Large, vertical = Spacing.Medium),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(Spacing.Small)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Map,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(22.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.itinerary),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = TypographySizes.large,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
 
                     detail.segments.forEach { segment ->
                         ItinerarySegment(
@@ -125,9 +161,42 @@ fun RouteDetailScreenUi(
                             onPlaceItemClick = onPlaceItemClick
                         )
                     }
+
+                    Spacer(Modifier.height(Spacing.Large))
                 }
             }
         }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(horizontal = Spacing.Small, vertical = Spacing.ExtraSmall)
+        ) {
+            HeroIconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back),
+                    tint = Color.White
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun HeroIconButton(
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(Spacing.ActionIconSize)
+            .background(Color.Black.copy(alpha = 0.35f), CircleShape)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        content()
     }
 }
 
@@ -150,12 +219,11 @@ private fun ItinerarySegment(
                     text = segment.title,
                     fontSize = TypographySizes.subtitle,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
+            Spacer(Modifier.height(Spacing.Medium))
         }
-
-        Spacer(Modifier.height(Spacing.Medium))
 
         segment.stops.forEachIndexed { index, stop ->
             RouteStopCard(
@@ -165,7 +233,6 @@ private fun ItinerarySegment(
                 onClick = { onPlaceItemClick(stop.placeId, null) }
             )
         }
-
     }
 }
 
@@ -177,27 +244,8 @@ fun RouteStopCard(
     onClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
-        // --- Dashed line connecting to next stop ---
-        if (!isLast) {
-            Canvas(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(2.dp)
-                    .align(Alignment.TopStart)
-                    .offset(x = 15.dp, y = 40.dp)
-            ) {
-                drawLine(
-                    color = OrangeMain.copy(alpha = 0.4f),
-                    start = Offset(0f, 0f),
-                    end = Offset(0f, size.height),
-                    strokeWidth = 2.dp.toPx(),
-                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f))
-                )
-            }
-        }
-
         Row(verticalAlignment = Alignment.Top) {
-            // --- Step Number Circle ---
+            // Step number circle
             Box(
                 modifier = Modifier
                     .size(32.dp)
@@ -243,14 +291,13 @@ fun RouteStopCard(
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
-
                         Box(
                             modifier = Modifier
                                 .padding(Spacing.Small)
                                 .align(Alignment.TopEnd)
                                 .clip(CircleShape)
-                                .background(Color.Black.copy(alpha = 0.3f))
-                                .padding(Spacing.ExtraSmall)
+                                .background(Color.Black.copy(alpha = 0.2f))
+                                .padding(Spacing.Small)
                         ) {
                             Icon(
                                 imageVector = stop.category.toUi().icon,
@@ -277,4 +324,3 @@ fun RouteStopCard(
 
     Spacer(Modifier.height(Spacing.Medium))
 }
-
