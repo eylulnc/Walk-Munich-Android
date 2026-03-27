@@ -27,7 +27,6 @@ import com.github.eylulnc.walkmunich.R
 import com.github.eylulnc.walkmunich.core.data.model.Category
 import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.data.model.toUi
-import com.github.eylulnc.walkmunich.core.ui.composable.PlaceCardSmall
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.feature.map.viewmodel.MapViewModel
 import com.google.android.gms.location.LocationServices
@@ -55,13 +54,13 @@ fun MapScreenUi(
     val snackbarHostState = remember { SnackbarHostState() }
 
     var hasLocationPermission by remember { mutableStateOf(false) }
-    var selectedPlace by remember { mutableStateOf<Place?>(null) }
+    val selectedPlace = uiState.selectedPlace
     var showLegendDialog by remember { mutableStateOf(false) }
 
     val munich = LatLng(48.1351, 11.5820)
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(munich, 12f)
+        position = uiState.savedCameraPosition
     }
 
     var isMapLoaded by remember { mutableStateOf(false) }
@@ -74,35 +73,33 @@ fun MapScreenUi(
 
     fun moveCamera(target: LatLng, zoom: Float) {
         if (!isMapLoaded) return
-
         scope.launch {
-            cameraPositionState.animate(
-                CameraUpdateFactory.newLatLngZoom(target, zoom)
-            )
+            cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(target, zoom))
         }
     }
-
 
     fun moveToUserLocationOrMunich() {
         if (!hasLocationPermission) {
             moveCamera(munich, 12f)
             return
         }
-
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
-                    moveCamera(
-                        LatLng(location.latitude, location.longitude),
-                        16f
-                    )
+                    moveCamera(LatLng(location.latitude, location.longitude), 16f)
                 } else {
                     moveCamera(munich, 12f)
                 }
             }
-            .addOnFailureListener {
-                moveCamera(munich, 12f)
-            }
+            .addOnFailureListener { moveCamera(munich, 12f) }
+        viewModel.markCameraCentered()
+    }
+
+    // Save camera position to ViewModel whenever the camera stops moving
+    LaunchedEffect(cameraPositionState.isMoving) {
+        if (!cameraPositionState.isMoving && isMapLoaded) {
+            viewModel.saveCameraPosition(cameraPositionState.position)
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -114,8 +111,9 @@ fun MapScreenUi(
         )
     }
 
+    // Only auto-center on the very first launch, not on every return
     LaunchedEffect(hasLocationPermission, isMapLoaded) {
-        if (isMapLoaded) {
+        if (isMapLoaded && !uiState.hasCenteredCamera) {
             moveToUserLocationOrMunich()
         }
     }
@@ -143,7 +141,7 @@ fun MapScreenUi(
             onMapLoaded = {
                 isMapLoaded = true
             },
-            onMapClick = { selectedPlace = null }
+            onMapClick = { viewModel.clearSelectedPlace() }
         ) {
             uiState.places.forEach { place ->
                 place.coords?.let { coords ->
@@ -154,7 +152,7 @@ fun MapScreenUi(
                         title = place.name,
                         icon = rememberMarkerIcon(place.category),
                         onClick = {
-                            selectedPlace = place
+                            viewModel.selectPlace(place)
                             false
                         }
                     )
@@ -211,7 +209,7 @@ fun MapScreenUi(
                 .padding(Spacing.Medium)
         ) {
             selectedPlace?.let { place ->
-                PlaceCardSmall(
+                MapPlaceCard(
                     place = place,
                     onPlaceClick = { onPlaceClick(place.id) }
                 )
