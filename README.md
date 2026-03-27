@@ -47,13 +47,9 @@ Instead of juggling notes, maps, and screenshots, the goal is one app where you 
 
 ## 📸 Preview
 
-| Explore | Search |
-|------|--------|
-| ![Explore](/screenshots/explore.png) | ![Search](/screenshots/search.png) |
-
-| Place Detail | Tour List | Tour Detail |
-|--------------|-----------|-------------|
-| ![Place Detail](/screenshots/detail.png) | ![Tours](/screenshots/tour.png) | ![Tour Detail](/screenshots/tour_detai.png) |
+| Explore | Search | Place Detail |Tour List | Tour Detail |
+|---------|--------|--------------|-----------|-------------|
+| ![Explore](/screenshots/explore.png) | ![Search](/screenshots/search.png) | ![Place Detail](/screenshots/detail.png) | ![Tours](/screenshots/tour.png) | ![Tour Detail](/screenshots/tour_detai.png) |
 
 | Map | Map Detail | Favorites | Favorites Grid | Settings |
 |-----|------------|-----------|----------------|----------|
