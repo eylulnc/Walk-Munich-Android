@@ -41,7 +41,7 @@ fun SearchResultsSection(
         modifier = modifier.fillMaxSize(),
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(
-            horizontal = Spacing.Small,
+            horizontal = Spacing.Medium,
             vertical = Spacing.Small
         ),
         horizontalArrangement = Arrangement.spacedBy(Spacing.Medium),

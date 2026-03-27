@@ -28,6 +28,8 @@
     <string name="favorites">Favorites</string>
 
     <string name="itinerary">Itinerary</string>
+    <string name="tour_header_title">Explore Munich Your Way</string>
+    <string name="tour_header_subtitle">Choose an itinerary and discover the city\'s best places at your own pace.</string>
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
