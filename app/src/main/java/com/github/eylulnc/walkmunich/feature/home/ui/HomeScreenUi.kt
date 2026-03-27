@@ -60,10 +60,7 @@ fun HomeScreenUi(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     WMSearchTopAppBarScreen(
-        title = "Walk Munich",
-        searchQuery = state.searchQuery,
-        onSearchQueryChange = viewModel::onQueryChange,
-        onClearSearch = viewModel::onClearQuery
+        title = "Walk Munich"
     ) { modifier ->
         when {
             state.isLoading -> LoadingState()
@@ -85,17 +82,18 @@ fun HomeScreenUi(
                                 onQueryChange = viewModel::onQueryChange,
                                 onClear = viewModel::onClearQuery
                             )
-                        }
-                    )
+                        })
                 } else {
                     // Normal mode: search field is the first item in the scroll —
                     // it disappears naturally when the user scrolls down
                     Column(
                         modifier = modifier.verticalScroll(rememberScrollState())
                     ) {
-                        Row(Modifier
-                            .fillMaxWidth()
-                            .padding(Spacing.Small)) {
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(Spacing.Small)
+                        ) {
                             HomeSearchField(
                                 query = state.searchQuery,
                                 onQueryChange = viewModel::onQueryChange,
@@ -120,8 +118,7 @@ fun HomeScreenUi(
                             HighlightSection(
                                 place = it,
                                 isFavorite = state.favoritePlaceIds.contains(it.id.toString()),
-                                onFavoriteClick = { viewModel.onToggleFavorite(it.id) }
-                            )
+                                onFavoriteClick = { viewModel.onToggleFavorite(it.id) })
                         }
 
                         Spacer(modifier = Modifier.height(Spacing.Medium))
@@ -174,8 +171,7 @@ fun PlacesSection(
                     place = place,
                     onPlaceClick = { onPlaceClick(place.id) },
                     isFavorite = favoriteIds.contains(place.id.toString()),
-                    onFavoriteClick = { onFavoriteClick(place.id) }
-                )
+                    onFavoriteClick = { onFavoriteClick(place.id) })
             }
         }
     }
@@ -204,8 +200,7 @@ fun FavoritesSection(
                         place = place,
                         onPlaceClick = { onPlaceClick(place.id) },
                         isFavorite = true,
-                        onFavoriteClick = { onFavoriteClick(place.id) }
-                    )
+                        onFavoriteClick = { onFavoriteClick(place.id) })
                 }
             }
         }
@@ -244,8 +239,7 @@ fun RecentlyViewedSection(
                         place = place,
                         onPlaceClick = { onPlaceClick(place.id) },
                         isFavorite = favoriteIds.contains(place.id.toString()),
-                        onFavoriteClick = { onFavoriteClick(place.id) }
-                    )
+                        onFavoriteClick = { onFavoriteClick(place.id) })
                 }
             }
         }
@@ -254,8 +248,7 @@ fun RecentlyViewedSection(
 
 @Composable
 fun SectionHeader(
-    title: String,
-    onSeeAllClick: () -> Unit
+    title: String, onSeeAllClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -282,31 +275,26 @@ fun SectionHeader(
 
 @Composable
 fun HighlightSection(
-    place: Place,
-    isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    place: Place, isFavorite: Boolean, onFavoriteClick: () -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = Spacing.Medium)) {
         Text(
             text = "Highlight of the Day",
             fontSize = TypographySizes.subtitle,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(vertical = Spacing.Small)
         )
         Spacer(modifier = Modifier.height(Spacing.Small))
         HighlightCard(
-            place = place,
-            isFavorite = isFavorite,
-            onFavoriteClick = onFavoriteClick
+            place = place, isFavorite = isFavorite, onFavoriteClick = onFavoriteClick
         )
     }
 }
 
 @Composable
 fun HighlightCard(
-    place: Place,
-    isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    place: Place, isFavorite: Boolean, onFavoriteClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -362,9 +350,7 @@ fun HighlightCard(
 
 @Composable
 private fun HomeSearchField(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    onClear: () -> Unit
+    query: String, onQueryChange: (String) -> Unit, onClear: () -> Unit
 ) {
     TextField(
         value = query,
@@ -377,8 +363,7 @@ private fun HomeSearchField(
             )
         },
         textStyle = TextStyle(
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = TypographySizes.body
+            color = MaterialTheme.colorScheme.onSurface, fontSize = TypographySizes.body
         ),
         leadingIcon = {
             Icon(

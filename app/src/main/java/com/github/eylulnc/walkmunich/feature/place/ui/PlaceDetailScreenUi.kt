@@ -1,32 +1,36 @@
 package com.github.eylulnc.walkmunich.feature.place.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -39,11 +43,10 @@ import com.github.eylulnc.walkmunich.core.data.model.Place
 import com.github.eylulnc.walkmunich.core.ui.composable.ErrorState
 import com.github.eylulnc.walkmunich.core.ui.composable.ExpandableSection
 import com.github.eylulnc.walkmunich.core.ui.composable.LoadingState
-import com.github.eylulnc.walkmunich.core.ui.composable.WMTopAppBarScreen
+import com.github.eylulnc.walkmunich.core.ui.composable.PlaceImage
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.TextMutedDark
 import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
-import com.github.eylulnc.walkmunich.core.ui.util.ImageResolver
 import com.github.eylulnc.walkmunich.feature.place.viewmodel.PlaceViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -75,48 +78,64 @@ private fun PlaceDetailContent(
     onFavoriteClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    WMTopAppBarScreen(
-        title = null,
-        onBack = onBackClick,
-        actions = {
-            IconButton(onClick = onFavoriteClick) {
-                Icon(
-                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = stringResource(R.string.favorite),
-                    tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.primary
-                )
-            }
-        },
-        containerColor = Color.Transparent
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
         ) {
-            val imageId = ImageResolver.resolveDrawable(place.imageUrl)
-
-            Box(
+            PlaceImage(
+                imageUrl = place.imageUrl,
+                contentDescription = place.name,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(Spacing.HeroHeight)
-            ) {
-                imageId?.let { id ->
-                    Image(
-                        painter = painterResource(id),
-                        contentDescription = place.name,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            }
+            )
 
             StoryContent(place = place, subTitle = subTitle)
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(horizontal = Spacing.Small, vertical = Spacing.ExtraSmall),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            HeroIconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.White
+                )
+            }
+            HeroIconButton(onClick = onFavoriteClick) {
+                Icon(
+                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = stringResource(R.string.favorite),
+                    tint = if (isFavorite) Color.Red else Color.White
+                )
+            }
         }
     }
 }
 
+@Composable
+private fun HeroIconButton(
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(Spacing.ActionIconSize)
+            .background(Color.Black.copy(alpha = 0.35f), CircleShape)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        content()
+    }
+}
 
 @Composable
 private fun StoryContent(
