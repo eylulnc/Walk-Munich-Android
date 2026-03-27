@@ -9,7 +9,7 @@ object Spacing {
     val Small = 8.dp
     val Medium = 16.dp
     val Large = 24.dp
-    val ExtraLarge = 32.dp
+    val ExtraLarge = 40.dp
 
     val ActionIconSize = 48.dp
     val HeroHeight = 300.dp

@@ -70,6 +70,7 @@ import com.github.eylulnc.walkmunich.core.ui.theme.RedError
 import com.github.eylulnc.walkmunich.core.ui.theme.Spacing
 import com.github.eylulnc.walkmunich.core.ui.theme.Yellow
 import com.github.eylulnc.walkmunich.feature.map.viewmodel.MapViewModel
+import com.github.eylulnc.walkmunich.feature.map.viewmodel.munich
 import org.koin.androidx.compose.koinViewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapEventsReceiver
@@ -206,8 +207,8 @@ fun MapScreenUi(
         if (hasLocationPermission && !uiState.hasCenteredCamera) {
             val location = getLastKnownLocation(context)
             val target = if (location != null) GeoPoint(location.latitude, location.longitude)
-                         else GeoPoint(48.1351, 11.5820)
-            val zoom = if (location != null) 16.0 else 12.0
+                         else GeoPoint(munich.lat, munich.lon)
+            val zoom = if (location != null) 18.5 else 12.0
             mapView.controller.animateTo(target, zoom, 1000L)
             viewModel.markCameraCentered()
         }
@@ -240,8 +241,8 @@ fun MapScreenUi(
                     IconButton(onClick = {
                         val location = getLastKnownLocation(context)
                         val target = if (location != null) GeoPoint(location.latitude, location.longitude)
-                                     else GeoPoint(48.1351, 11.5820)
-                        mapView.controller.animateTo(target, 16.0, 1000L)
+                                     else GeoPoint(munich.lat, munich.lon)
+                        mapView.controller.animateTo(target, 18.5, 1000L)
                     }) {
                         Icon(
                             imageVector = Icons.Default.MyLocation,
@@ -260,6 +261,7 @@ fun MapScreenUi(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(Spacing.Medium)
+                .padding(bottom = Spacing.ExtraLarge)
         ) {
             selectedPlace?.let { place ->
                 MapPlaceCard(
