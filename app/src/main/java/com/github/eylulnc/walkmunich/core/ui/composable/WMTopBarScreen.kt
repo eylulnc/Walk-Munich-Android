@@ -29,6 +29,7 @@ fun WMTopAppBarScreen(
     onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.background,
+    navigationIconTint: Color? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -56,7 +57,7 @@ fun WMTopAppBarScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = navigationIconTint ?: MaterialTheme.colorScheme.primary
                         )
                     }
                 }
