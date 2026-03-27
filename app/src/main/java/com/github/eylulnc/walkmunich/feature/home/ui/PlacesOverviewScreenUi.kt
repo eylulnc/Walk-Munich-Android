@@ -28,9 +28,6 @@ fun PlacesOverviewScreenUi(
 
     WMSearchTopAppBarScreen(
         title = "All Places",
-        searchQuery = state.searchQuery,
-        onSearchQueryChange = viewModel::onQueryChange,
-        onClearSearch = viewModel::onClearQuery,
         onBack = onBackClick
     ) { modifier ->
         when {
