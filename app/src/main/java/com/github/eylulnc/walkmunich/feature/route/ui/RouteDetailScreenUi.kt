@@ -243,7 +243,6 @@ private fun ItinerarySegment(
             RouteStopCard(
                 stop = stop,
                 stepNumber = index + 1,
-                isLast = index == segment.stops.lastIndex,
                 onClick = { onPlaceItemClick(stop.placeId, null) }
             )
         }
@@ -254,12 +253,10 @@ private fun ItinerarySegment(
 fun RouteStopCard(
     stop: RouteStop,
     stepNumber: Int,
-    isLast: Boolean,
     onClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
         Row(verticalAlignment = Alignment.Top) {
-            // Step number circle
             Box(
                 modifier = Modifier
                     .size(32.dp)
