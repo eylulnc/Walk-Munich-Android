@@ -25,9 +25,6 @@ import com.github.eylulnc.walkmunich.core.ui.theme.TypographySizes
 @Composable
 fun WMSearchTopAppBarScreen(
     title: String,
-    searchQuery: String,
-    onSearchQueryChange: (String) -> Unit,
-    onClearSearch: () -> Unit,
     onBack: (() -> Unit)? = null,
     containerColor: Color = MaterialTheme.colorScheme.background,
     content: @Composable (Modifier) -> Unit
