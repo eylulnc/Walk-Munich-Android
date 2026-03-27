@@ -47,9 +47,9 @@ Instead of juggling notes, maps, and screenshots, the goal is one app where you 
 
 ## 📸 Preview
 
-| Home | Explore | Search |
-|------|---------|--------|
-| ![Home](/screenshots/home.png) | ![Explore](/screenshots/explore.png) | ![Search](/screenshots/search.png) |
+| Explore | Search |
+|------|--------|
+| ![Explore](/screenshots/explore.png) | ![Search](/screenshots/search.png) |
 
 | Place Detail | Tour List | Tour Detail |
 |--------------|-----------|-------------|
